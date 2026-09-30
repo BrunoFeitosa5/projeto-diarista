@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
+import { classeCampo, classeRotulo } from "@/components/ui/Campo";
 import { mascaraCnpj, mascaraData, mascaraTelefone } from "@/lib/mascaras";
 
 // Chave usada para levar os dados até o cadastro de diarista (etapa 7), que preenche o formulário.
@@ -58,7 +59,7 @@ export function FormTrabalheConosco() {
     <form onSubmit={enviar} className="flex flex-col gap-5">
       {CAMPOS.map((campo) => (
         <div key={campo.nome}>
-          <label htmlFor={`tc-${campo.nome}`} className="mb-2 block text-pequeno text-marinho">
+          <label htmlFor={`tc-${campo.nome}`} className={classeRotulo}>
             {campo.rotulo}
             {campo.obrigatorio && "*"}
           </label>
@@ -74,7 +75,7 @@ export function FormTrabalheConosco() {
             placeholder={campo.placeholder}
             value={valores[campo.nome]}
             onChange={alterar(campo)}
-            className="h-12 w-full rounded-botao-lg border border-white bg-white px-4 text-corpo text-marinho transition-colors placeholder:text-texto-secundario/60 hover:bg-campo-hover focus:bg-campo-hover focus:outline-2 focus:outline-rosa-forte md:text-pequeno"
+            className={classeCampo}
           />
         </div>
       ))}

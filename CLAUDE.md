@@ -88,6 +88,23 @@ Perfis: `cliente`, `diarista` e `admin`.
 - **Chaves e segredos** ficam só em `.env.local`, que nunca vai para o git.
   O `.env.example` fica no git, sem valores.
 
+## Login e áreas (etapa 7)
+- Rotas: `/entrar`, `/cadastro` (`?perfil=diarista` marca "Sou diarista"),
+  `/auth/confirmar` (link do e-mail) e os painéis `/cliente`, `/diarista`,
+  `/admin` (grupo `(painel)`).
+- `src/proxy.ts` roda só nessas rotas; as páginas públicas seguem estáticas.
+  Sem `.env.local`, Entrar/Cadastro mostram um aviso e os painéis mandam
+  para `/entrar`.
+- Em páginas e Server Actions restritas, chamar `exigirPapel(...)` de
+  `src/lib/auth.ts` (2ª camada; o proxy sozinho não basta).
+- No servidor, usar `getClaims()` (confere o token), nunca `getSession()`.
+- O item "Entrar" no menu é o único acréscimo ao header original.
+- CPF/CNPJ/Pix NÃO vão no cadastro (os metadados do usuário entram no token
+  de login); a diarista preenche no perfil (etapa 9).
+- Configuração no painel do Supabase (Authentication > URL Configuration):
+  Site URL = endereço do site; Redirect URLs incluem
+  `http://localhost:3000/auth/confirmar` e o endereço da Vercel.
+
 ## Tabelas
 `profiles`, `diaristas_privado`, `pedidos`, `pedido_enderecos`,
 `candidaturas` (única por pedido + diarista) e `pedido_historico`.
@@ -118,10 +135,31 @@ Qualquer status antes de `paga` também pode ir para `cancelada`.
 
 Trabalhar **uma etapa por vez** e mostrar o resultado antes de seguir.
 
+**Situação em 30/09/2026:** etapas 1 a 7 concluídas e com commit.
+
+## Próximo passo (o usuário vai fazer): configurar o Supabase
+Antes da etapa 8. Checklist:
+1. Criar o projeto em supabase.com (região São Paulo).
+2. SQL Editor: colar e rodar
+   `supabase/migrations/20260930000001_estrutura_inicial.sql`.
+3. Authentication > URL Configuration: Site URL `http://localhost:3000`;
+   Redirect URLs: `http://localhost:3000/auth/confirmar`.
+4. Project Settings > API: copiar URL, chave `anon` e chave `service_role`.
+5. Criar `.env.local` a partir do `.env.example` (chaves + WhatsApp da dona)
+   e reiniciar o `npm run dev`. As chaves nunca vão para o chat nem para o git.
+6. Testar: cadastrar um cliente e uma diarista, confirmar os e-mails, entrar
+   e ver cada um cair no próprio painel.
+7. A dona cria a conta dela pelo site e roda `supabase/tornar-admin.sql`
+   (com o e-mail dela) no SQL Editor.
+Depois disso: etapa 8 (painel do cliente).
+
 ## Pendências
 - Valor do repasse de cada plano (fica `0` em `planos.ts` até ser definido)
-- O formulário do Trabalhe Conosco guarda os dados em `sessionStorage`
-  (`pre-cadastro-diarista`) e leva a `/cadastro?perfil=diarista`, que ainda
-  não existe (etapa 7 deve ler esses dados e preencher o cadastro)
+- O Trabalhe Conosco guarda nome, CNPJ, telefone e nascimento em
+  `sessionStorage` (`pre-cadastro-diarista`). O cadastro já usa nome e
+  telefone; CNPJ e nascimento devem preencher o perfil da diarista (etapa 9).
+- Imagens em alta resolução: o site original tem versões maiores dos cards
+  4h/6h/8h (1122x1402), da Segurança (1388x1133) e do topo de Serviços
+  (1909x824). Aguardando o usuário decidir se troca.
 - Telefone: o rodapé do original mostra (11) 93501-2450, mas os links de
   WhatsApp do original usam (11) 93501-2436. Confirmar qual é o certo.

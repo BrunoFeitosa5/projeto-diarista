@@ -13,7 +13,8 @@ export function NavMenu() {
   const pathname = usePathname();
   const [aberto, setAberto] = useState(false);
 
-  const links = NAV_LINKS.map(({ href, label }) => (
+  // "Entrar" não existe no site original: é a porta de entrada da plataforma de pedidos
+  const links = [...NAV_LINKS, { href: "/entrar", label: "Entrar" }].map(({ href, label }) => (
     <Link
       key={href}
       href={href}
