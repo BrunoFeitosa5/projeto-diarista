@@ -28,6 +28,14 @@ Perfis: `cliente`, `diarista` e `admin`.
   soltas nos componentes.
 - Logo e fotos pertencem à dona. Usar só os arquivos que ela fornecer; até
   lá, usar imagens provisórias.
+- Imagens ficam em `public/img/` (nomes sem espaço nem acento) e os caminhos
+  em `src/config/imagens.ts`. Onde o valor é `null`, aparece um degradê.
+- Escurecimento do hero da Início: `bg-black/48`, medido no print original.
+  A foto da faixa final (`chamada-final-passadoria.avif`) já vem escurecida
+  no arquivo, então fica sem camada extra.
+- Os cards de preço da Início usam as imagens prontas da dona, que já trazem o
+  preço desenhado (decisão do usuário, para ficar igual ao original). **Se um
+  preço mudar em `planos.ts`, a imagem do card precisa ser refeita.**
 
 ## Decisões de arquitetura
 - **Dados sensíveis em tabelas separadas.** O RLS protege linhas, não colunas.
@@ -94,4 +102,5 @@ Trabalhar **uma etapa por vez** e mostrar o resultado antes de seguir.
 
 ## Pendências
 - Valor do repasse de cada plano (fica `0` em `planos.ts` até ser definido)
-- Logo e fotos originais da dona
+- Telefone: o rodapé do original mostra (11) 93501-2450, mas os links de
+  WhatsApp do original usam (11) 93501-2436. Confirmar qual é o certo.

@@ -20,7 +20,8 @@
   --color-rosa-forte: #d17896; /* faixa da página Segurança, traço do rodapé */
   --color-rosa-destaque: #d97999; /* texto rosa em destaque */
   --color-rosa-card: #f5dbe4; /* cards "Agende de forma simples" */
-  --color-rosa-card-ativo: #f487a5; /* card em destaque (medido no print) */
+  --color-rosa-card-ativo: #e38ca9; /* card do meio em "Agende de forma simples" */
+  --color-rosa-preco: #fd98a7; /* "Horas" e preço nos cards de plano (medido no print) */
   --color-rosa-claro: #fbf0f2; /* fundo das seções da home e Segurança */
   --color-rosa-suave: #f7ecf0;
   --color-bege: #f7efef; /* fundo do rodapé, Serviços e Trabalhe Conosco */
@@ -53,8 +54,9 @@
   --text-botao--line-height: 1.3;
 
   /* Medidas */
-  --radius-botao: 4px;
-  --radius-card: 12px;
+  --radius-botao: 6px; /* botões dos cards de preço */
+  --radius-botao-lg: 8px; /* botões do hero e da faixa final */
+  --radius-card: 16px;
   --radius-icone: 12px;
   --container-site: 1224px;
 }
