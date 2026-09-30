@@ -2,7 +2,14 @@
 // Onde o valor é null, o componente FotoFundo mostra um degradê provisório.
 
 export const IMAGENS: Record<
-  "logo" | "hero" | "plano4h" | "plano6h" | "plano8h" | "chamadaFinal" | "seguranca",
+  | "logo"
+  | "hero"
+  | "plano4h"
+  | "plano6h"
+  | "plano8h"
+  | "chamadaFinal"
+  | "servicosHero"
+  | "seguranca",
   string | null
 > = {
   logo: "/img/logo-imperio-diarista.avif", // 375x484
@@ -10,6 +17,9 @@ export const IMAGENS: Record<
   plano4h: "/img/card-plano-4h.avif", // 375x469, com texto e preço desenhados
   plano6h: "/img/card-plano-6h.avif",
   plano8h: "/img/card-plano-8h.avif",
-  chamadaFinal: "/img/chamada-final-passadoria.avif", // 1024x360, já vem escurecida
-  seguranca: "/img/seguranca-diarista.avif", // 375x500, usada na etapa 5
+  chamadaFinal: "/img/chamada-final-passadoria-hd.png", // 2115x743, clara (escurecida no componente)
+  servicosHero: "/img/servicos-hero-escritorio.avif", // 1440x621, já vem escurecida
+  // Ao trocar uma foto, use um NOME NOVO de arquivo: o otimizador do Next e a CDN
+  // guardam as imagens pelo nome e continuariam mostrando a versão antiga.
+  seguranca: "/img/seguranca-diarista-sala.avif", // quase quadrada, combina com o quadro 612x600
 };

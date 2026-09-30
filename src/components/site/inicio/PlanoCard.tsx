@@ -14,7 +14,9 @@ export function PlanoCard({ id, foto }: Props) {
   }, por ${formatarReais(plano.precoCliente)}`;
 
   return (
-    <article className="relative mx-auto flex h-[424px] w-full max-w-[400px] justify-center overflow-hidden">
+    // Destaque: cresce 4% com sombra ao passar o mouse, ao tocar (celular) ou com foco do teclado.
+    // Quem pediu "reduzir movimento" no sistema não vê a animação.
+    <article className="relative mx-auto flex h-[424px] w-full max-w-[400px] justify-center overflow-hidden transition-[transform,box-shadow] duration-300 ease-out hover:z-10 hover:scale-[1.04] hover:shadow-2xl focus-within:z-10 focus-within:scale-[1.04] focus-within:shadow-2xl active:z-10 active:scale-[1.04] active:shadow-2xl motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:focus-within:scale-100 motion-reduce:active:scale-100">
       <Image
         src={foto}
         alt={descricao}

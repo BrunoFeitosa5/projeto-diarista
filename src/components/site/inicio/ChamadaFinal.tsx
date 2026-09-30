@@ -9,8 +9,8 @@ export function ChamadaFinal() {
       <FotoFundo
         src={IMAGENS.chamadaFinal}
         provisorio="bg-linear-to-r from-marinho via-rosa-forte to-rosa-botao"
-        // O arquivo já vem escurecido; sem camada extra fica igual ao print original
-        escurecer=""
+        // Foto clara: mesma camada do hero (48%, medida no print original)
+        escurecer="bg-black/48"
       />
       <div className="mx-auto flex max-w-[700px] flex-col items-center">
         <h2 className="text-h2">Pronto para uma Casa Impecável?</h2>

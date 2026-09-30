@@ -30,9 +30,13 @@ Perfis: `cliente`, `diarista` e `admin`.
   lá, usar imagens provisórias.
 - Imagens ficam em `public/img/` (nomes sem espaço nem acento) e os caminhos
   em `src/config/imagens.ts`. Onde o valor é `null`, aparece um degradê.
+- Ao **substituir** uma foto, salve com um **nome de arquivo novo** (e apague o
+  antigo). O otimizador de imagens do Next e a CDN da Vercel guardam as imagens
+  pelo nome e continuariam mostrando a versão antiga.
 - Escurecimento do hero da Início: `bg-black/48`, medido no print original.
-  A foto da faixa final (`chamada-final-passadoria.avif`) já vem escurecida
-  no arquivo, então fica sem camada extra.
+  A foto da faixa final (`chamada-final-passadoria-hd.png`) é clara e usa a
+  mesma camada de 48%. A foto do topo de Serviços já vem escurecida no arquivo
+  e fica sem camada.
 - Os cards de preço da Início usam as imagens prontas da dona, que já trazem o
   preço desenhado (decisão do usuário, para ficar igual ao original). **Se um
   preço mudar em `planos.ts`, a imagem do card precisa ser refeita.**
@@ -102,5 +106,8 @@ Trabalhar **uma etapa por vez** e mostrar o resultado antes de seguir.
 
 ## Pendências
 - Valor do repasse de cada plano (fica `0` em `planos.ts` até ser definido)
+- O formulário do Trabalhe Conosco guarda os dados em `sessionStorage`
+  (`pre-cadastro-diarista`) e leva a `/cadastro?perfil=diarista`, que ainda
+  não existe (etapa 7 deve ler esses dados e preencher o cadastro)
 - Telefone: o rodapé do original mostra (11) 93501-2450, mas os links de
   WhatsApp do original usam (11) 93501-2436. Confirmar qual é o certo.

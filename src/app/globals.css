@@ -22,6 +22,7 @@
   --color-rosa-card: #f5dbe4; /* cards "Agende de forma simples" */
   --color-rosa-card-ativo: #e38ca9; /* card do meio em "Agende de forma simples" */
   --color-rosa-preco: #fd98a7; /* "Horas" e preço nos cards de plano (medido no print) */
+  --color-rosa-reservar: #e37a9d; /* botão "Reservar Horário" (Serviços): rgba(227,122,157,.96) */
   --color-rosa-claro: #fbf0f2; /* fundo das seções da home e Segurança */
   --color-rosa-suave: #f7ecf0;
   --color-bege: #f7efef; /* fundo do rodapé, Serviços e Trabalhe Conosco */
@@ -31,6 +32,7 @@
   --color-texto-secundario: #3f5461;
   --color-gelo: #f4f8fb;
   --color-borda: #e0e0e0;
+  --color-campo-hover: #e0e4e6; /* fundo dos campos de formulário ao passar o mouse */
 
   /* Apoio */
   --color-menta: #bbded7; /* fundo dos ícones dos cards */

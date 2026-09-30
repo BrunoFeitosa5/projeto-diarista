@@ -2,7 +2,15 @@ import Link from "next/link";
 import type { ComponentProps } from "react";
 
 // Cada variante reproduz um botão do site original (cor normal + cor ao passar o mouse).
-type Variante = "rosa" | "rosa-card" | "rosa-chamada" | "verde";
+type Variante =
+  | "rosa"
+  | "rosa-card"
+  | "rosa-chamada"
+  | "rosa-reservar"
+  | "rosa-escuro"
+  | "rosa-forte"
+  | "verde"
+  | "verde-form";
 type Tamanho = "padrao" | "card";
 
 const base =
@@ -14,7 +22,13 @@ const variantes: Record<Variante, string> = {
   "rosa-card": "bg-rosa-botao hover:bg-transparent hover:ring-1 hover:ring-white",
   // Faixa "Pronto para uma Casa Impecável?": escurece ao passar o mouse
   "rosa-chamada": "bg-rosa-botao hover:bg-texto-secundario",
+  // Serviços: "Reservar Horário" e "Fale Conosco"; Segurança: "Agendar Diária Com Segurança"
+  "rosa-reservar": "bg-rosa-reservar hover:bg-texto-secundario",
+  "rosa-escuro": "bg-rosa-botao-hover hover:bg-texto-secundario",
+  "rosa-forte": "bg-rosa-forte hover:bg-texto-secundario",
   verde: "bg-verde hover:bg-verde-hover",
+  // Formulário do Trabalhe Conosco: texto preto que fica branco ao passar o mouse
+  "verde-form": "bg-verde text-black! hover:bg-verde-hover hover:text-white!",
 };
 
 const tamanhos: Record<Tamanho, string> = {
