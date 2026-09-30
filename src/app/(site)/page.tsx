@@ -1,4 +1,5 @@
 // Guia de estilo provisório (etapa 2). Será substituído pela página Início na etapa 4.
+import { Button, ButtonLink } from "@/components/ui/Button";
 
 const cores = [
   ["rosa-topo", "bg-rosa-topo"],
@@ -20,11 +21,7 @@ const cores = [
 
 export default function GuiaDeEstilo() {
   return (
-    <main className="mx-auto w-full max-w-site space-y-12 px-4 py-12">
-      <p className="bg-rosa-topo py-2 text-center font-nav text-corpo font-light text-white">
-        São Paulo, SP e Região Metropolitana
-      </p>
-
+    <div className="mx-auto w-full max-w-site space-y-12 px-4 py-12">
       <section className="space-y-4">
         <h1 className="text-h1">
           Sua Casa <strong className="font-medium">Impecável</strong>, Sem Complicação
@@ -36,21 +33,13 @@ export default function GuiaDeEstilo() {
           Nossa plataforma foi pensada para tornar sua experiência simples, segura e transparente.
         </p>
         <p className="text-pequeno text-texto-secundario">Texto pequeno do rodapé.</p>
-        <nav className="flex gap-10 font-nav text-black">
-          <span className="border-b border-black">Início</span>
-          <span>Serviços</span>
-          <span>Segurança</span>
-          <span>Trabalhe Conosco</span>
-        </nav>
       </section>
 
       <section className="flex flex-wrap gap-4">
-        <button className="rounded-botao bg-rosa-botao px-7 py-[17px] text-botao font-medium text-white hover:bg-rosa-botao-hover">
-          Agendar agora
-        </button>
-        <button className="rounded-botao bg-verde px-7 py-[17px] text-botao font-medium text-white hover:bg-verde-hover">
+        <ButtonLink href="/servicos">Agendar agora</ButtonLink>
+        <Button variante="verde" type="button">
           Enviar Mensagem
-        </button>
+        </Button>
       </section>
 
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-5">
@@ -61,6 +50,6 @@ export default function GuiaDeEstilo() {
           </div>
         ))}
       </section>
-    </main>
+    </div>
   );
 }
