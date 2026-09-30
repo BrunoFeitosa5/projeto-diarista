@@ -1,69 +1,66 @@
-import Image from "next/image";
+// Guia de estilo provisório (etapa 2). Será substituído pela página Início na etapa 4.
 
-export default function Home() {
+const cores = [
+  ["rosa-topo", "bg-rosa-topo"],
+  ["rosa-botao", "bg-rosa-botao"],
+  ["rosa-botao-hover", "bg-rosa-botao-hover"],
+  ["rosa-forte", "bg-rosa-forte"],
+  ["rosa-destaque", "bg-rosa-destaque"],
+  ["rosa-card", "bg-rosa-card"],
+  ["rosa-card-ativo", "bg-rosa-card-ativo"],
+  ["rosa-claro", "bg-rosa-claro"],
+  ["rosa-suave", "bg-rosa-suave"],
+  ["bege", "bg-bege"],
+  ["marinho", "bg-marinho"],
+  ["texto-secundario", "bg-texto-secundario"],
+  ["gelo", "bg-gelo"],
+  ["menta", "bg-menta"],
+  ["verde", "bg-verde"],
+] as const;
+
+export default function GuiaDeEstilo() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="mx-auto w-full max-w-site space-y-12 px-4 py-12">
+      <p className="bg-rosa-topo py-2 text-center font-nav text-corpo font-light text-white">
+        São Paulo, SP e Região Metropolitana
+      </p>
+
+      <section className="space-y-4">
+        <h1 className="text-h1">
+          Sua Casa <strong className="font-medium">Impecável</strong>, Sem Complicação
+        </h1>
+        <h2 className="text-h2">Agende de forma simples e segura.</h2>
+        <h3 className="text-h3">Profissionais Verificadas</h3>
+        <h4 className="text-h4">Império Diarista</h4>
+        <p className="text-corpo">
+          Nossa plataforma foi pensada para tornar sua experiência simples, segura e transparente.
+        </p>
+        <p className="text-pequeno text-texto-secundario">Texto pequeno do rodapé.</p>
+        <nav className="flex gap-10 font-nav text-black">
+          <span className="border-b border-black">Início</span>
+          <span>Serviços</span>
+          <span>Segurança</span>
+          <span>Trabalhe Conosco</span>
+        </nav>
+      </section>
+
+      <section className="flex flex-wrap gap-4">
+        <button className="rounded-botao bg-rosa-botao px-7 py-[17px] text-botao font-medium text-white hover:bg-rosa-botao-hover">
+          Agendar agora
+        </button>
+        <button className="rounded-botao bg-verde px-7 py-[17px] text-botao font-medium text-white hover:bg-verde-hover">
+          Enviar Mensagem
+        </button>
+      </section>
+
+      <section className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+        {cores.map(([nome, classe]) => (
+          <div key={nome} className="overflow-hidden rounded-card border border-borda bg-white">
+            <div className={`h-16 ${classe}`} />
+            <p className="px-2 py-1 text-pequeno">{nome}</p>
+          </div>
+        ))}
+      </section>
+    </main>
   );
 }

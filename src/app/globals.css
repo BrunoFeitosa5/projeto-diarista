@@ -1,26 +1,87 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Tema do Império Diarista.
+ * Valores extraídos do site ao vivo (imperiodiarista.com.br, construtor Zyro).
+ * Nos componentes, use só estes tokens (ex.: bg-rosa-botao, text-marinho, text-h1).
+ */
+
+@theme {
+  /* Fontes (carregadas em src/app/layout.tsx via next/font) */
+  --font-titulo: var(--font-schibsted), ui-sans-serif, system-ui, sans-serif;
+  --font-texto: var(--font-schibsted), ui-sans-serif, system-ui, sans-serif;
+  --font-nav: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-destaque: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Rosas */
+  --color-rosa-topo: #ff8fa5; /* barra "São Paulo, SP..." (é uma imagem no site; tom medido no print) */
+  --color-rosa-botao: #e38da9; /* botões: rgba(227,141,169,.96) */
+  --color-rosa-botao-hover: #d66e91; /* rgba(214,110,145,.96) */
+  --color-rosa-forte: #d17896; /* faixa da página Segurança, traço do rodapé */
+  --color-rosa-destaque: #d97999; /* texto rosa em destaque */
+  --color-rosa-card: #f5dbe4; /* cards "Agende de forma simples" */
+  --color-rosa-card-ativo: #f487a5; /* card em destaque (medido no print) */
+  --color-rosa-claro: #fbf0f2; /* fundo das seções da home e Segurança */
+  --color-rosa-suave: #f7ecf0;
+  --color-bege: #f7efef; /* fundo do rodapé, Serviços e Trabalhe Conosco */
+
+  /* Neutros */
+  --color-marinho: #102a3a; /* títulos e texto principal */
+  --color-texto-secundario: #3f5461;
+  --color-gelo: #f4f8fb;
+  --color-borda: #e0e0e0;
+
+  /* Apoio */
+  --color-menta: #bbded7; /* fundo dos ícones dos cards */
+  --color-verde: #10b981; /* botão "Enviar Mensagem" */
+  --color-verde-hover: #0c9467;
+
+  /* Tipografia (desktop). No celular, h1/h2/h3 diminuem — ver regras abaixo. */
+  --text-h1: 72px;
+  --text-h1--line-height: 1.02;
+  --text-h2: 52px;
+  --text-h2--line-height: 1.08;
+  --text-h3: 34px;
+  --text-h3--line-height: 1.2;
+  --text-h4: 20px;
+  --text-h4--line-height: 1.3;
+  --text-corpo: 16px;
+  --text-corpo--line-height: 1.6;
+  --text-pequeno: 13px;
+  --text-pequeno--line-height: 1.4;
+  --text-botao: 15px;
+  --text-botao--line-height: 1.3;
+
+  /* Medidas */
+  --radius-botao: 4px;
+  --radius-card: 12px;
+  --radius-icone: 12px;
+  --container-site: 1224px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    background: var(--color-rosa-claro);
+    color: var(--color-marinho);
+    font-family: var(--font-texto);
+    font-size: var(--text-corpo);
+    line-height: var(--text-corpo--line-height);
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-titulo);
+    font-weight: 500;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Tamanhos de título no celular (valores "m-" do site original) */
+@media (max-width: 920px) {
+  :root {
+    --text-h1: 42px;
+    --text-h2: 34px;
+    --text-h3: 26px;
+  }
 }
