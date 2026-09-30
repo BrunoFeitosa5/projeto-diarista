@@ -68,7 +68,21 @@ Perfis: `cliente`, `diarista` e `admin`.
   2. As Server Actions conferem o perfil antes de gravar.
   3. O RLS no banco, que é a defesa principal.
 - **Operações que precisam acontecer de uma vez só** viram funções SQL (RPC):
-  `candidatar(pedido_id)` e `aprovar_candidatura(candidatura_id)`.
+  `candidatar(pedido_id)`, `aprovar_candidatura(candidatura_id)` e
+  `mudar_status_pedido(pedido_id, status)`.
+- **Pedido só é criado pelo servidor:** a função `criar_pedido(...)` só aceita
+  a chave `service_role` (`SUPABASE_SERVICE_ROLE_KEY`, usada apenas no
+  servidor). A Server Action confere a sessão do cliente, calcula os valores
+  por `planos.ts` e chama a função. O navegador não consegue criar pedido.
+- As tabelas `pedidos`, `pedido_enderecos`, `candidaturas` e
+  `pedido_historico` não aceitam escrita direta do app (permissão revogada);
+  só mudam pelas funções.
+- A diarista só se candidata com CPF e chave Pix preenchidos no perfil.
+- Cliente e diarista veem o perfil (nome e telefone) uma da outra só depois
+  que o pedido entre elas é aprovado.
+- **Testes do banco:** `npm run test:db` aplica as migrações num Postgres local
+  (PGlite) e confere o fluxo e o RLS. Rodar sempre que mudar uma migração.
+  Para tornar a dona admin: `supabase/tornar-admin.sql` no SQL Editor.
 - **WhatsApp:** link `wa.me` sem API paga. O número da dona fica em
   `NEXT_PUBLIC_WHATSAPP_DONA`.
 - **Chaves e segredos** ficam só em `.env.local`, que nunca vai para o git.
