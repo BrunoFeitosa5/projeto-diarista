@@ -20,6 +20,11 @@ export function mascaraTelefone(valor: string): string {
   return d.replace(/^(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
 }
 
+// 01310-100
+export function mascaraCep(valor: string): string {
+  return digitos(valor, 8).replace(/^(\d{5})(\d)/, "$1-$2");
+}
+
 // 31/12/1990
 export function mascaraData(valor: string): string {
   const d = digitos(valor, 8);

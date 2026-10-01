@@ -105,6 +105,19 @@ Perfis: `cliente`, `diarista` e `admin`.
   Site URL = endereço do site; Redirect URLs incluem
   `http://localhost:3000/auth/confirmar` e o endereço da Vercel.
 
+## Painel do cliente (etapa 8)
+- Rotas: `/cliente` (Meus pedidos), `/cliente/novo-pedido` (`?plano=4h|6h|8h`
+  vem dos cards da Início) e `/cliente/pedidos/[id]` (detalhe).
+- A Server Action `criarPedido` (`src/actions/pedidos.ts`) confere o perfil,
+  valida os campos, calcula os valores por `planos.ts` e chama `criar_pedido`
+  com o cliente `service_role` de `src/lib/supabase/servico.ts` (só servidor).
+- Horários de início, antecedência mínima (1 dia) e limite (90 dias) ficam
+  em `src/config/agendamento.ts`.
+- Nomes e cores dos status ficam em `src/lib/status.ts` (para os 3 painéis).
+- O CEP preenche rua, bairro e cidade pelo ViaCEP (o cliente pode corrigir).
+- Cancelamento: **só a dona**, pelo painel admin. O cliente pede pelo
+  WhatsApp (botão no detalhe do pedido, com o código).
+
 ## Tabelas
 `profiles`, `diaristas_privado`, `pedidos`, `pedido_enderecos`,
 `candidaturas` (única por pedido + diarista) e `pedido_historico`.
@@ -135,25 +148,29 @@ Qualquer status antes de `paga` também pode ir para `cancelada`.
 
 Trabalhar **uma etapa por vez** e mostrar o resultado antes de seguir.
 
-**Situação em 30/09/2026:** etapas 1 a 7 concluídas e com commit.
+**Situação em 01/10/2026:** etapas 1 a 8 concluídas e com commit. Supabase
+configurado (projeto `imperio-diarista`, região São Paulo, migração aplicada,
+URLs de login configuradas, `.env.local` preenchido com as chaves legacy
+`anon`/`service_role`). Login testado: cliente e diarista caem cada uma no
+próprio painel, e o proxy bloqueia as áreas dos outros perfis.
 
-## Próximo passo (o usuário vai fazer): configurar o Supabase
-Antes da etapa 8. Checklist:
-1. Criar o projeto em supabase.com (região São Paulo).
-2. SQL Editor: colar e rodar
-   `supabase/migrations/20260930000001_estrutura_inicial.sql`.
-3. Authentication > URL Configuration: Site URL `http://localhost:3000`;
-   Redirect URLs: `http://localhost:3000/auth/confirmar`.
-4. Project Settings > API: copiar URL, chave `anon` e chave `service_role`.
-5. Criar `.env.local` a partir do `.env.example` (chaves + WhatsApp da dona)
-   e reiniciar o `npm run dev`. As chaves nunca vão para o chat nem para o git.
-6. Testar: cadastrar um cliente e uma diarista, confirmar os e-mails, entrar
-   e ver cada um cair no próprio painel.
-7. A dona cria a conta dela pelo site e roda `supabase/tornar-admin.sql`
-   (com o e-mail dela) no SQL Editor.
-Depois disso: etapa 8 (painel do cliente).
+## Próximo passo
+- Etapa 9 (painel da diarista).
+- Admins: a dona **e a filha dela** se cadastram pelo site e o usuário roda
+  `supabase/tornar-admin.sql` no SQL Editor, uma vez com cada e-mail.
+- Rodar **um só** `npm run dev` por vez. Neste PC o Next roda em WASM, sem
+  trava na pasta `.next`, e dois servidores juntos corrompem o cache (o site
+  aparece sem CSS). Para resolver: parar todos, apagar `.next` e subir um só.
+- O e-mail grátis do Supabase envia só uns 2 e-mails por hora. Ao estourar,
+  o cadastro mostra "Muitas tentativas".
+- Teste no celular: `http://<IP do PC>:3000`. O `allowedDevOrigins` do
+  `next.config.ts` libera `192.168.*.*` (sem ele o Next bloqueia o JS no dev).
 
 ## Pendências
+- Confirmar com a dona os horários de início (hoje 07:00 às 14:00) e a
+  antecedência mínima (hoje 1 dia), em `src/config/agendamento.ts`.
+- Antes do deploy: apagar os pedidos e contas de teste (o IMP-000001 é teste)
+  e reiniciar a numeração dos pedidos.
 - Valor do repasse de cada plano (fica `0` em `planos.ts` até ser definido)
 - O Trabalhe Conosco guarda nome, CNPJ, telefone e nascimento em
   `sessionStorage` (`pre-cadastro-diarista`). O cadastro já usa nome e
@@ -163,3 +180,4 @@ Depois disso: etapa 8 (painel do cliente).
   (1909x824). Aguardando o usuário decidir se troca.
 - Telefone: o rodapé do original mostra (11) 93501-2450, mas os links de
   WhatsApp do original usam (11) 93501-2436. Confirmar qual é o certo.
+  Por enquanto o `.env.local` usa o final 2436.
