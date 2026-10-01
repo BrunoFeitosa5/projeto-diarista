@@ -50,3 +50,14 @@ export const STATUS: Record<StatusPedido, { nome: string; descricao: string; cla
 
 // A partir destes status o pedido tem uma diarista definida
 export const STATUS_COM_DIARISTA: StatusPedido[] = ["aprovada", "confirmada", "paga", "concluida"];
+
+// Próximo passo que a admin pode dar em cada status (igual ao gatilho
+// validar_transicao_status do banco; "aprovada" vem da aprovação de uma candidatura)
+export const PROXIMO_STATUS: Partial<Record<StatusPedido, { status: StatusPedido; acao: string }>> = {
+  aprovada: { status: "confirmada", acao: "Marcar como confirmada" },
+  confirmada: { status: "paga", acao: "Marcar como paga" },
+  paga: { status: "concluida", acao: "Marcar como concluída" },
+};
+
+// Qualquer status antes de "paga" ainda pode ser cancelado
+export const PODE_CANCELAR: StatusPedido[] = ["aberta", "candidatura_recebida", "aprovada", "confirmada"];

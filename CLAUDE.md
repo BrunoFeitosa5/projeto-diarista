@@ -137,6 +137,19 @@ Perfis: `cliente`, `diarista` e `admin`.
 - "Meus serviços": pedidos aprovados para ela, com endereço completo e nome e
   telefone do cliente (o banco libera só depois da aprovação).
 
+## Painel admin (etapa 10)
+- Rotas: `/admin` (pedidos com filtros; a aba inicial é "Aprovar diarista")
+  e `/admin/pedidos/[id]` (candidatas com CPF/CNPJ/Pix, aprovar, próximo
+  status, cancelar, cliente, valores e histórico com quem mudou).
+- Server Actions em `src/actions/admin.ts` chamam as RPCs
+  `aprovar_candidatura` e `mudar_status_pedido` pelo cliente da admin.
+- Regras de botões em `src/lib/status.ts` (`PROXIMO_STATUS`, `PODE_CANCELAR`),
+  iguais ao gatilho do banco. Ações perigosas pedem um 2º clique
+  (`BotaoAcaoAdmin`), sem `confirm()` do navegador.
+- Telefones de cliente e diarista têm link de WhatsApp (`linkWhatsAppPara`).
+- Na diarista, serviço "aprovada" ou "confirmada" mostra uma faixa de
+  parabéns em "Meus serviços".
+
 ## Tabelas
 `profiles`, `diaristas_privado`, `pedidos`, `pedido_enderecos`,
 `candidaturas` (única por pedido + diarista) e `pedido_historico`.
@@ -167,14 +180,14 @@ Qualquer status antes de `paga` também pode ir para `cancelada`.
 
 Trabalhar **uma etapa por vez** e mostrar o resultado antes de seguir.
 
-**Situação em 01/10/2026:** etapas 1 a 9 concluídas e com commit. Supabase
+**Situação em 01/10/2026:** etapas 1 a 10 concluídas e com commit. Supabase
 configurado (projeto `imperio-diarista`, região São Paulo, migração aplicada,
 URLs de login configuradas, `.env.local` preenchido com as chaves legacy
 `anon`/`service_role`). Login testado: cliente e diarista caem cada uma no
 próprio painel, e o proxy bloqueia as áreas dos outros perfis.
 
 ## Próximo passo
-- Etapa 10 (painel admin).
+- Etapa 11 (revisão de segurança com contas de teste).
 - Admins: a dona **e a filha dela** se cadastram pelo site e o usuário roda
   `supabase/tornar-admin.sql` no SQL Editor, uma vez com cada e-mail.
 - Rodar **um só** `npm run dev` por vez. Neste PC o Next roda em WASM, sem
@@ -188,8 +201,9 @@ próprio painel, e o proxy bloqueia as áreas dos outros perfis.
 ## Pendências
 - Confirmar com a dona os horários de início (hoje 07:00 às 14:00) e a
   antecedência mínima (hoje 1 dia), em `src/config/agendamento.ts`.
-- Antes do deploy: apagar os pedidos e contas de teste (o IMP-000001 é teste)
-  e reiniciar a numeração dos pedidos.
+- Antes do deploy: apagar os pedidos e contas de teste (IMP-000001 e
+  IMP-000002, a conta `+admin` de ensaio e as contas de cliente/diarista de
+  teste) e reiniciar a numeração dos pedidos.
 - Repasse: 80/20 é provisório até a dona confirmar (`PERCENTUAL_REPASSE`
   em `planos.ts`). Cada pedido guarda o valor do momento em que foi criado:
   o IMP-000001, feito com repasse 0, continua "a combinar".

@@ -99,6 +99,16 @@ export default async function DiaristaPage() {
               const cliente = clientes.find((c) => c.id === s.cliente_id);
               return (
                 <li key={s.id} className="rounded-card bg-white p-6">
+                  {(s.status === "aprovada" || s.status === "confirmada") && (
+                    <div className="mb-5 rounded-botao-lg bg-menta px-4 py-3">
+                      <p className="font-medium">🎉 Parabéns! Você foi aprovada para este serviço.</p>
+                      <p className="mt-1 text-pequeno text-texto-secundario">
+                        {s.status === "aprovada"
+                          ? "A Império vai entrar em contato para confirmar os detalhes. Confira o endereço e o contato do cliente abaixo."
+                          : "Serviço confirmado! Chegue no horário combinado e bom trabalho."}
+                      </p>
+                    </div>
+                  )}
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <p className="text-pequeno text-texto-secundario">{s.codigo}</p>
                     <EtiquetaStatus status={s.status} />
