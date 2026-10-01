@@ -33,6 +33,9 @@ Perfis: `cliente`, `diarista` e `admin`.
 - Ao **substituir** uma foto, salve com um **nome de arquivo novo** (e apague o
   antigo). O otimizador de imagens do Next e a CDN da Vercel guardam as imagens
   pelo nome e continuariam mostrando a versão antiga.
+- Ícone da aba: `src/app/icon.png` (diamante recortado do logo, fundo
+  transparente, 512px) e `src/app/apple-icon.png` (fundo branco, 180px, para
+  iPhone). O Next põe um código no link, então trocar o arquivo já basta.
 - Escurecimento do hero da Início: `bg-black/48`, medido no print original.
   A foto da faixa final (`chamada-final-passadoria-hd.png`) é clara e usa a
   mesma camada de 48%. A foto do topo de Serviços já vem escurecida no arquivo
@@ -191,14 +194,21 @@ Qualquer status antes de `paga` também pode ir para `cancelada`.
 
 Trabalhar **uma etapa por vez** e mostrar o resultado antes de seguir.
 
-**Situação em 01/10/2026:** etapas 1 a 11 concluídas e com commit. Supabase
-configurado (projeto `imperio-diarista`, região São Paulo, migração aplicada,
-URLs de login configuradas, `.env.local` preenchido com as chaves legacy
-`anon`/`service_role`). Login testado: cliente e diarista caem cada uma no
-próprio painel, e o proxy bloqueia as áreas dos outros perfis.
+**Situação em 01/10/2026:** as 12 etapas estão concluídas. Site no ar em
+**https://projeto-diarista-ten.vercel.app** (Vercel ligada ao GitHub
+`BrunoFeitosa5/projeto-diarista`: cada `git push` na `main` publica sozinho).
+As 4 variáveis do `.env.example` estão no painel da Vercel. O
+`npm run test:seguranca` passou contra o site publicado
+(`SITE_URL=https://projeto-diarista-ten.vercel.app npm run test:seguranca`;
+a seção 5 só roda contra o `npm run dev`). Supabase: projeto
+`imperio-diarista`, região São Paulo, chaves legacy `anon`/`service_role`.
 
 ## Próximo passo
-- Etapa 12 (deploy na Vercel).
+- Supabase > Authentication > URL Configuration: Site URL = endereço da
+  Vercel e Redirect URLs com `<endereço>/auth/confirmar`.
+- Limpar os dados de teste com `supabase/limpar-dados-teste.sql` (apaga
+  todos os pedidos e contas, menos os e-mails da lista "manter", e volta a
+  numeração para IMP-000001). Fazer **antes** de cadastrar as admins.
 - Admins: a dona **e a filha dela** se cadastram pelo site e o usuário roda
   `supabase/tornar-admin.sql` no SQL Editor, uma vez com cada e-mail.
 - Rodar **um só** `npm run dev` por vez. Neste PC o Next roda em WASM, sem
@@ -220,9 +230,9 @@ próprio painel, e o proxy bloqueia as áreas dos outros perfis.
   um profissional.
 - Confirmar com a dona os horários de início (hoje 07:00 às 14:00) e a
   antecedência mínima (hoje 1 dia), em `src/config/agendamento.ts`.
-- Antes do deploy: apagar os pedidos e contas de teste (IMP-000001 e
-  IMP-000002, a conta `+admin` de ensaio e as contas de cliente/diarista de
-  teste) e reiniciar a numeração dos pedidos.
+- Domínio próprio (`imperiodiarista.com.br`): trocar o DNS tira o site
+  original do ar. Só com o acordo da dona; depois atualizar as URLs no
+  Supabase.
 - Repasse: 80/20 é provisório até a dona confirmar (`PERCENTUAL_REPASSE`
   em `planos.ts`). Cada pedido guarda o valor do momento em que foi criado:
   o IMP-000001, feito com repasse 0, continua "a combinar".
