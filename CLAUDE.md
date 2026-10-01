@@ -37,6 +37,10 @@ Perfis: `cliente`, `diarista` e `admin`.
   A foto da faixa final (`chamada-final-passadoria-hd.png`) é clara e usa a
   mesma camada de 48%. A foto do topo de Serviços já vem escurecida no arquivo
   e fica sem camada.
+- Trabalhe Conosco é **só para diaristas** (decisão do usuário): os textos
+  mudaram em relação ao original ("Trabalhe Conosco", texto sobre vagas, botão
+  "Quero ser diarista") e o CNPJ é opcional até a dona decidir se exige MEI.
+  O cliente com dúvida usa o WhatsApp.
 - Os cards de preço da Início usam as imagens prontas da dona, que já trazem o
   preço desenhado (decisão do usuário, para ficar igual ao original). **Se um
   preço mudar em `planos.ts`, a imagem do card precisa ser refeita.**
@@ -51,7 +55,8 @@ Perfis: `cliente`, `diarista` e `admin`.
     lista de vagas.
 - **Preços e repasse ficam num único arquivo: `src/config/planos.ts`.**
   - O cliente paga 4h = R$160, 6h = R$199 e 8h = R$230.
-  - O repasse da diarista ainda será definido.
+  - Repasse provisório: a diarista recebe 80% (`PERCENTUAL_REPASSE`) e a
+    Império fica com 20%: 4h = R$128, 6h = R$159,20 e 8h = R$184.
   - O servidor calcula `valor_cliente` e `valor_diarista` a partir desse arquivo
     e grava os dois no pedido na hora em que ele é criado. Esses valores nunca
     vêm do formulário.
@@ -118,6 +123,20 @@ Perfis: `cliente`, `diarista` e `admin`.
 - Cancelamento: **só a dona**, pelo painel admin. O cliente pede pelo
   WhatsApp (botão no detalhe do pedido, com o código).
 
+## Painel da diarista (etapa 9)
+- Rotas: `/diarista` (vagas abertas + "Meus serviços") e `/diarista/perfil`.
+- Perfil: CPF e chave Pix obrigatórios (com o tipo), CNPJ e nascimento
+  opcionais; CPF/CNPJ conferidos pelos dígitos (`src/lib/documentos.ts`).
+  Grava em `diaristas_privado` pelo cliente do usuário (RLS). CNPJ e
+  nascimento do Trabalhe Conosco vêm do `sessionStorage`.
+- "Me candidatar" chama a RPC `candidatar` e depois mostra o botão
+  "Avisar a Império no WhatsApp" (o clique é da diarista; abrir sozinho seria
+  bloqueado pelo navegador).
+- Vagas mostram bairro, cidade, observações e o ganho. Pedido com repasse 0
+  aparece como "Valor a combinar com a Império" (`textoRepasse` em `planos.ts`).
+- "Meus serviços": pedidos aprovados para ela, com endereço completo e nome e
+  telefone do cliente (o banco libera só depois da aprovação).
+
 ## Tabelas
 `profiles`, `diaristas_privado`, `pedidos`, `pedido_enderecos`,
 `candidaturas` (única por pedido + diarista) e `pedido_historico`.
@@ -148,14 +167,14 @@ Qualquer status antes de `paga` também pode ir para `cancelada`.
 
 Trabalhar **uma etapa por vez** e mostrar o resultado antes de seguir.
 
-**Situação em 01/10/2026:** etapas 1 a 8 concluídas e com commit. Supabase
+**Situação em 01/10/2026:** etapas 1 a 9 concluídas e com commit. Supabase
 configurado (projeto `imperio-diarista`, região São Paulo, migração aplicada,
 URLs de login configuradas, `.env.local` preenchido com as chaves legacy
 `anon`/`service_role`). Login testado: cliente e diarista caem cada uma no
 próprio painel, e o proxy bloqueia as áreas dos outros perfis.
 
 ## Próximo passo
-- Etapa 9 (painel da diarista).
+- Etapa 10 (painel admin).
 - Admins: a dona **e a filha dela** se cadastram pelo site e o usuário roda
   `supabase/tornar-admin.sql` no SQL Editor, uma vez com cada e-mail.
 - Rodar **um só** `npm run dev` por vez. Neste PC o Next roda em WASM, sem
@@ -171,10 +190,12 @@ próprio painel, e o proxy bloqueia as áreas dos outros perfis.
   antecedência mínima (hoje 1 dia), em `src/config/agendamento.ts`.
 - Antes do deploy: apagar os pedidos e contas de teste (o IMP-000001 é teste)
   e reiniciar a numeração dos pedidos.
-- Valor do repasse de cada plano (fica `0` em `planos.ts` até ser definido)
+- Repasse: 80/20 é provisório até a dona confirmar (`PERCENTUAL_REPASSE`
+  em `planos.ts`). Cada pedido guarda o valor do momento em que foi criado:
+  o IMP-000001, feito com repasse 0, continua "a combinar".
 - O Trabalhe Conosco guarda nome, CNPJ, telefone e nascimento em
   `sessionStorage` (`pre-cadastro-diarista`). O cadastro já usa nome e
-  telefone; CNPJ e nascimento devem preencher o perfil da diarista (etapa 9).
+  telefone; o perfil da diarista (etapa 9) usa CNPJ e nascimento.
 - Imagens em alta resolução: o site original tem versões maiores dos cards
   4h/6h/8h (1122x1402), da Segurança (1388x1133) e do topo de Serviços
   (1909x824). Aguardando o usuário decidir se troca.

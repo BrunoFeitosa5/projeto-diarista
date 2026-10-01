@@ -2,6 +2,14 @@
 
 const digitos = (valor: string, max: number) => valor.replace(/\D/g, "").slice(0, max);
 
+// 000.000.000-00
+export function mascaraCpf(valor: string): string {
+  return digitos(valor, 11)
+    .replace(/^(\d{3})(\d)/, "$1.$2")
+    .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+    .replace(/\.(\d{3})(\d)/, ".$1-$2");
+}
+
 // 00.000.000/0001-00
 export function mascaraCnpj(valor: string): string {
   const d = digitos(valor, 14);

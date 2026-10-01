@@ -153,7 +153,11 @@ export function FormNovoPedido({ planoInicial, dataMinima, dataMaxima }: Props) 
           defaultValue={v?.observacoes}
           placeholder="Ex.: tenho um cachorro, foco na cozinha, trazer escada..."
           className={`${classeCampo} h-auto py-3`}
+          aria-describedby="ajuda-observacoes"
         />
+        <p id="ajuda-observacoes" className="mt-1 text-pequeno text-texto-secundario">
+          As diaristas leem este texto antes de se candidatar. Não coloque endereço nem telefone aqui.
+        </p>
       </div>
 
       <Button type="submit" variante="rosa-forte" disabled={enviando} className="self-start">
