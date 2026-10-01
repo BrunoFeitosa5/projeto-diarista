@@ -150,6 +150,17 @@ Perfis: `cliente`, `diarista` e `admin`.
 - Na diarista, serviço "aprovada" ou "confirmada" mostra uma faixa de
   parabéns em "Meus serviços".
 
+## Revisão de segurança (etapa 11)
+- `npm run test:seguranca` (com o `npm run dev` ligado) testa o Supabase de
+  verdade e o site: visitante, cliente curiosa, diaristas, Server Actions
+  chamadas direto (com controle positivo), ação vinda de outro site, chave
+  secreta fora do navegador e cabeçalhos. Cria contas e 1 pedido temporários
+  e apaga no final (gasta 1 número de pedido). Rodar antes de cada deploy.
+- `next.config.ts` envia cabeçalhos de segurança em todas as páginas
+  (X-Frame-Options DENY/frame-ancestors contra clickjacking, nosniff,
+  Referrer-Policy, Permissions-Policy). Não há CSP completa: cuidado ao
+  adicionar uma (o ViaCEP e o Supabase precisariam estar liberados).
+
 ## Tabelas
 `profiles`, `diaristas_privado`, `pedidos`, `pedido_enderecos`,
 `candidaturas` (única por pedido + diarista) e `pedido_historico`.
@@ -180,14 +191,14 @@ Qualquer status antes de `paga` também pode ir para `cancelada`.
 
 Trabalhar **uma etapa por vez** e mostrar o resultado antes de seguir.
 
-**Situação em 01/10/2026:** etapas 1 a 10 concluídas e com commit. Supabase
+**Situação em 01/10/2026:** etapas 1 a 11 concluídas e com commit. Supabase
 configurado (projeto `imperio-diarista`, região São Paulo, migração aplicada,
 URLs de login configuradas, `.env.local` preenchido com as chaves legacy
 `anon`/`service_role`). Login testado: cliente e diarista caem cada uma no
 próprio painel, e o proxy bloqueia as áreas dos outros perfis.
 
 ## Próximo passo
-- Etapa 11 (revisão de segurança com contas de teste).
+- Etapa 12 (deploy na Vercel).
 - Admins: a dona **e a filha dela** se cadastram pelo site e o usuário roda
   `supabase/tornar-admin.sql` no SQL Editor, uma vez com cada e-mail.
 - Rodar **um só** `npm run dev` por vez. Neste PC o Next roda em WASM, sem
@@ -199,6 +210,14 @@ próprio painel, e o proxy bloqueia as áreas dos outros perfis.
   `next.config.ts` libera `192.168.*.*` (sem ele o Next bloqueia o JS no dev).
 
 ## Pendências
+- Supabase > Authentication: subir o tamanho mínimo de senha para 8 (o site
+  já exige 8, mas quem chama o Supabase direto passa com 6).
+- Plano grátis do Supabase não tem backup que dê para baixar. Antes de ter
+  pedidos reais, decidir entre o plano Pro ou exportar os dados de tempos em
+  tempos.
+- O site guarda CPF, Pix, endereço e telefone: ter uma Política de
+  Privacidade (LGPD) antes de lançar. Texto deve ser revisado pela dona ou por
+  um profissional.
 - Confirmar com a dona os horários de início (hoje 07:00 às 14:00) e a
   antecedência mínima (hoje 1 dia), em `src/config/agendamento.ts`.
 - Antes do deploy: apagar os pedidos e contas de teste (IMP-000001 e
