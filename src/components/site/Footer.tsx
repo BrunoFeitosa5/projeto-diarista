@@ -48,6 +48,11 @@ export function Footer() {
           <p className="text-pequeno md:pl-1">
             {SITE.nome} <span className="text-rosa-botao-hover">- </span>
             {SITE.rodapeResumo}
+            {/* Acréscimo ao original: link exigido pela LGPD */}
+            <span className="text-rosa-botao-hover"> - </span>
+            <Link href="/privacidade" className="underline underline-offset-2 hover:text-rosa-forte">
+              Política de Privacidade
+            </Link>
           </p>
           <p className={rotulo}>{SITE.rodapeServicos}</p>
         </div>

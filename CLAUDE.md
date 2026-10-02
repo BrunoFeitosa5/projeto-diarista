@@ -225,9 +225,11 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
 - Plano grátis do Supabase não tem backup que dê para baixar. Antes de ter
   pedidos reais, decidir entre o plano Pro ou exportar os dados de tempos em
   tempos.
-- O site guarda CPF, Pix, endereço e telefone: ter uma Política de
-  Privacidade (LGPD) antes de lançar. Texto deve ser revisado pela dona ou por
-  um profissional.
+- Política de Privacidade (LGPD): rascunho em `/privacidade`
+  (`src/app/(site)/privacidade/page.tsx`), com link no rodapé e no cadastro.
+  Falta a dona ou um profissional revisar: CNPJ/razão social da Império,
+  e-mail de contato para privacidade, prazo de guarda dos dados e a regra de
+  18 anos. Ao mudar o texto, atualizar `ATUALIZADA_EM`.
 - Confirmar com a dona os horários de início (hoje 07:00 às 14:00) e a
   antecedência mínima (hoje 1 dia), em `src/config/agendamento.ts`.
 - Domínio próprio (`imperiodiarista.com.br`): trocar o DNS tira o site

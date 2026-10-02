@@ -99,6 +99,14 @@ export function FormCadastro({ papelInicial }: { papelInicial: PapelCadastro }) 
         </p>
       )}
 
+      <p className="text-pequeno text-texto-secundario">
+        Ao criar a conta, você confirma que tem 18 anos ou mais e que leu a{" "}
+        <Link href="/privacidade" target="_blank" className="text-rosa-forte underline underline-offset-2">
+          Política de Privacidade
+        </Link>
+        .
+      </p>
+
       <Button type="submit" variante="rosa-forte" disabled={enviando} className="self-start">
         {enviando ? "Criando conta..." : "Criar conta"}
       </Button>
