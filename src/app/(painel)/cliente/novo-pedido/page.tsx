@@ -19,8 +19,8 @@ export default async function NovoPedidoPage({ searchParams }: PageProps<"/clien
       </Link>
       <h1 className="mt-4 text-h2">Agendar diária</h1>
       <p className="mt-4 max-w-[611px] text-texto-secundario">
-        Escolha o plano, a data e o endereço. Assim que uma diarista for aprovada pela Império, você vê aqui o nome e o
-        telefone dela.
+        Escolha o plano, a data e o endereço. Assim que uma diarista for aprovada pela Império, você vê aqui o nome
+        dela.
       </p>
       <div className="mt-10 max-w-[760px]">
         <FormNovoPedido

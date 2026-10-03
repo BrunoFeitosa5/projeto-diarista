@@ -86,8 +86,9 @@ Perfis: `cliente`, `diarista` e `admin`.
   `pedido_historico` não aceitam escrita direta do app (permissão revogada);
   só mudam pelas funções.
 - A diarista só se candidata com CPF e chave Pix preenchidos no perfil.
-- Cliente e diarista veem o perfil (nome e telefone) uma da outra só depois
-  que o pedido entre elas é aprovado.
+- Cliente e diarista veem só o **nome** uma da outra, e só depois que o
+  pedido entre elas é aprovado (view `nomes_visiveis`). O telefone de todos
+  fica só com a admin: a linha de `profiles` é da própria pessoa e da admin.
 - **Testes do banco:** `npm run test:db` aplica as migrações num Postgres local
   (PGlite) e confere o fluxo e o RLS. Rodar sempre que mudar uma migração.
   Para tornar a dona admin: `supabase/tornar-admin.sql` no SQL Editor.
@@ -145,8 +146,8 @@ Perfis: `cliente`, `diarista` e `admin`.
   bloqueado pelo navegador).
 - Vagas mostram bairro, cidade, observações e o ganho. Pedido com repasse 0
   aparece como "Valor a combinar com a Império" (`textoRepasse` em `planos.ts`).
-- "Meus serviços": pedidos aprovados para ela, com endereço completo e nome e
-  telefone do cliente (o banco libera só depois da aprovação).
+- "Meus serviços": pedidos aprovados para ela, com endereço completo e nome
+  do cliente (o banco libera só depois da aprovação; telefone, nunca).
 
 ## Painel admin (etapa 10)
 - Rotas: `/admin` (pedidos com filtros; a aba inicial é "Aprovar diarista")
@@ -158,6 +159,12 @@ Perfis: `cliente`, `diarista` e `admin`.
   iguais ao gatilho do banco. Ações perigosas pedem um 2º clique
   (`BotaoAcaoAdmin`), sem `confirm()` do navegador.
 - Telefones de cliente e diarista têm link de WhatsApp (`linkWhatsAppPara`).
+- Candidata aprovada ganha o botão "Enviar mensagem no WhatsApp"
+  (`mensagemAprovada` na página do pedido): data, plano, endereço, ponto de
+  referência, observações, nome completo do cliente, repasse, CPF e Pix dela.
+  **Sem o telefone do cliente** (decisão do usuário: a conversa fica entre a
+  Império e cada pessoa).
+  Envio automático exigiria a API paga da Meta; a admin toca em Enviar.
 - Na diarista, serviço "aprovada" ou "confirmada" mostra uma faixa de
   parabéns em "Meus serviços".
 

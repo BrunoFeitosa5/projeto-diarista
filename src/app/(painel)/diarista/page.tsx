@@ -23,7 +23,7 @@ type Pedido = {
   cliente_id: string;
 };
 type Endereco = { pedido_id: string; cep: string; rua: string; numero: string; complemento: string | null; referencia: string | null };
-type Contato = { id: string; nome: string; telefone: string | null };
+type Contato = { id: string; nome: string };
 
 export default async function DiaristaPage() {
   const { perfil, supabase } = await exigirPapel("diarista");
@@ -49,7 +49,7 @@ export default async function DiaristaPage() {
   );
   const servicos = (pedidos ?? []).filter((p) => p.diarista_id === perfil.id && STATUS_COM_DIARISTA.includes(p.status));
 
-  // Endereço completo e contato do cliente: o banco só libera depois da aprovação
+  // Endereço completo e nome do cliente: o banco só libera depois da aprovação
   let enderecos: Endereco[] = [];
   let clientes: Contato[] = [];
   if (servicos.length) {
@@ -60,8 +60,9 @@ export default async function DiaristaPage() {
         .in("pedido_id", servicos.map((s) => s.id))
         .overrideTypes<Endereco[], { merge: false }>(),
       supabase
-        .from("profiles")
-        .select("id, nome, telefone")
+        // Só o nome: o telefone do cliente fica com a Império
+        .from("nomes_visiveis")
+        .select("id, nome")
         .in("id", servicos.map((s) => s.cliente_id))
         .overrideTypes<Contato[], { merge: false }>(),
     ]);
@@ -104,7 +105,7 @@ export default async function DiaristaPage() {
                       <p className="font-medium">🎉 Parabéns! Você foi aprovada para este serviço.</p>
                       <p className="mt-1 text-pequeno text-texto-secundario">
                         {s.status === "aprovada"
-                          ? "A Império vai entrar em contato para confirmar os detalhes. Confira o endereço e o contato do cliente abaixo."
+                          ? "A Império vai entrar em contato para confirmar os detalhes. Confira o endereço e o nome do cliente abaixo."
                           : "Serviço confirmado! Chegue no horário combinado e bom trabalho."}
                       </p>
                     </div>
@@ -143,12 +144,6 @@ export default async function DiaristaPage() {
                       <dt className="text-pequeno text-texto-secundario">Cliente</dt>
                       <dd className="mt-1">
                         {cliente?.nome ?? "—"}
-                        {cliente?.telefone && (
-                          <>
-                            <br />
-                            {cliente.telefone}
-                          </>
-                        )}
                       </dd>
                     </div>
                     {s.observacoes && (

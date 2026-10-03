@@ -214,14 +214,23 @@ ok(vagas.length === 1, "diarista recusada ainda vê o pedido (para saber o resul
 await comoUsuario(cliente);
 enderecos = await linhas(`select * from pedido_enderecos`);
 ok(enderecos.length === 3, "cliente vê os endereços dos próprios pedidos");
-let perfis = await linhas(`select id, nome from profiles`);
+let perfis = await linhas(`select id, nome from nomes_visiveis`);
 ok(
   perfis.some((p) => p.id === d1) && !perfis.some((p) => p.id === d2),
-  "cliente vê o perfil da diarista aprovada, e não o da recusada",
+  "cliente vê o nome da diarista aprovada, e não o da recusada",
 );
-await comoUsuario(d1);
 perfis = await linhas(`select id from profiles`);
-ok(perfis.some((p) => p.id === cliente) && !perfis.some((p) => p.id === d2), "diarista aprovada vê o perfil do cliente");
+ok(perfis.length === 1 && perfis[0].id === cliente, "cliente NÃO vê o perfil (telefone) da diarista aprovada");
+erro = await erroDe(`select telefone from nomes_visiveis`);
+ok(erro !== null, "a view de nomes não tem a coluna telefone", erro);
+await comoUsuario(d1);
+perfis = await linhas(`select id from nomes_visiveis`);
+ok(perfis.some((p) => p.id === cliente) && !perfis.some((p) => p.id === d2), "diarista aprovada vê o nome do cliente");
+perfis = await linhas(`select id from profiles`);
+ok(perfis.length === 1 && perfis[0].id === d1, "diarista aprovada NÃO vê o perfil (telefone) do cliente");
+await comoUsuario(dona);
+perfis = await linhas(`select id, telefone from profiles`);
+ok(perfis.length === 4, "admin vê o perfil (telefone) de todos");
 
 secao("6. Status e histórico");
 await comoUsuario(dona);
@@ -264,7 +273,7 @@ ok((await linhas(`select * from pedidos where id = $1`, [p3.id])).length === 0, 
 
 secao("8. Visitante sem login");
 await comoAnonimo();
-for (const t of ["profiles", "pedidos", "pedido_enderecos", "diaristas_privado", "candidaturas", "pedido_historico"]) {
+for (const t of ["profiles", "nomes_visiveis", "pedidos", "pedido_enderecos", "diaristas_privado", "candidaturas", "pedido_historico"]) {
   const r = await erroDe(`select * from ${t}`);
   const vazio = r === null ? (await linhas(`select * from ${t}`)).length === 0 : true;
   ok(vazio, `visitante não lê ${t}`);

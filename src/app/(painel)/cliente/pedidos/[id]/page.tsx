@@ -26,7 +26,7 @@ type Pedido = {
 };
 type Endereco = { cep: string; rua: string; numero: string; complemento: string | null; referencia: string | null };
 type Historico = { id: number; status_novo: StatusPedido; created_at: string };
-type Diarista = { nome: string; telefone: string | null };
+type Diarista = { nome: string };
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -57,9 +57,9 @@ export default async function PedidoClientePage({ params, searchParams }: PagePr
       .eq("pedido_id", id)
       .order("created_at", { ascending: true })
       .overrideTypes<Historico[], { merge: false }>(),
-    // O banco só libera o perfil da diarista depois da aprovação
+    // O banco só libera o nome da diarista depois da aprovação (o telefone fica com a Império)
     temDiarista
-      ? supabase.from("profiles").select("nome, telefone").eq("id", pedido.diarista_id!).maybeSingle<Diarista>()
+      ? supabase.from("nomes_visiveis").select("nome").eq("id", pedido.diarista_id!).maybeSingle<Diarista>()
       : Promise.resolve({ data: null }),
   ]);
 
@@ -134,13 +134,12 @@ export default async function PedidoClientePage({ params, searchParams }: PagePr
             {diarista ? (
               <dl className="mt-4 grid gap-4">
                 <Dado rotulo="Nome">{diarista.nome}</Dado>
-                {diarista.telefone && <Dado rotulo="Telefone">{diarista.telefone}</Dado>}
               </dl>
             ) : (
               <p className="mt-4 text-texto-secundario">
                 {pedido.status === "cancelada"
                   ? "Nenhuma diarista neste pedido."
-                  : "Assim que a Império aprovar uma diarista, o nome e o telefone dela aparecem aqui."}
+                  : "Assim que a Império aprovar uma diarista, o nome dela aparece aqui."}
               </p>
             )}
           </div>

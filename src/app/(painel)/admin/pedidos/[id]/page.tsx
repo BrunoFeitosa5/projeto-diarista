@@ -3,11 +3,13 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { aprovarCandidatura, mudarStatus } from "@/actions/admin";
 import { BotaoAcaoAdmin } from "@/components/painel/admin/BotaoAcaoAdmin";
+import { botaoClasses } from "@/components/ui/Button";
 import { EtiquetaStatus } from "@/components/painel/EtiquetaStatus";
 import { formatarData, formatarHorario } from "@/config/agendamento";
 import { formatarReais, PLANOS, textoRepasse, type PlanoId } from "@/config/planos";
+import { SITE } from "@/config/site";
 import { exigirPapel } from "@/lib/auth";
-import { mascaraCnpj, mascaraCpf, mascaraTelefone } from "@/lib/mascaras";
+import { mascaraCep, mascaraCnpj, mascaraCpf, mascaraTelefone } from "@/lib/mascaras";
 import { PODE_CANCELAR, PROXIMO_STATUS, STATUS, type StatusPedido } from "@/lib/status";
 import { linkWhatsAppPara } from "@/lib/whatsapp";
 
@@ -50,6 +52,42 @@ const dataHora = (iso: string) =>
   new Date(iso).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", dateStyle: "short", timeStyle: "short" });
 
 const NOME_CANDIDATURA = { pendente: "Aguardando", aprovada: "Aprovada", recusada: "Não selecionada" };
+
+const NOME_PIX: Record<string, string> = { cpf: "CPF", cnpj: "CNPJ", telefone: "telefone", email: "e-mail", aleatoria: "chave aleatória" };
+
+function chavePixFormatada(chave: string, tipo: string | null) {
+  if (tipo === "cpf") return mascaraCpf(chave);
+  if (tipo === "cnpj") return mascaraCnpj(chave);
+  if (tipo === "telefone") return mascaraTelefone(chave);
+  return chave;
+}
+
+// Mensagem para a diarista aprovada. Leva o nome completo do cliente, mas não o
+// telefone: a conversa fica entre a Império e a diarista (decisão do usuário). Sem emojis, que o
+// link wa.me às vezes estraga; o *texto* sai em negrito no WhatsApp.
+function mensagemAprovada(nome: string, pedido: Pedido, endereco: Endereco | null, privado: Privado | undefined) {
+  const plano = PLANOS[pedido.plano];
+  const linhas = [
+    `Olá, ${nome.split(" ")[0]}! Você foi aprovada para o serviço *${pedido.codigo}* da ${SITE.nome}.`,
+    "",
+    `*Data:* ${formatarData(pedido.data)} às ${formatarHorario(pedido.horario)}`,
+    `*Plano:* ${plano.horas} horas (${plano.metragem})`,
+    pedido.cliente?.nome ? `*Cliente:* ${pedido.cliente.nome}` : null,
+    endereco
+      ? `*Endereço:* ${endereco.rua}, ${endereco.numero}${endereco.complemento ? ` - ${endereco.complemento}` : ""}, ${pedido.bairro}, ${pedido.cidade} - CEP ${mascaraCep(endereco.cep)}`
+      : `*Local:* ${pedido.bairro}, ${pedido.cidade}`,
+    endereco?.referencia ? `*Ponto de referência:* ${endereco.referencia}` : null,
+    pedido.observacoes ? `*Observações do cliente:* ${pedido.observacoes}` : null,
+    `*Você recebe:* ${textoRepasse(Number(pedido.valor_diarista))}`,
+    "",
+    "*Confira seus dados:*",
+    `CPF: ${privado?.cpf ? mascaraCpf(privado.cpf) : "não informado"}`,
+    `Chave Pix: ${privado?.chave_pix ? `${chavePixFormatada(privado.chave_pix, privado.tipo_chave_pix)} (${NOME_PIX[privado.tipo_chave_pix ?? ""] ?? privado.tipo_chave_pix})` : "não informada"}`,
+    "",
+    "Se algum dado estiver errado ou se tiver qualquer dúvida, fale com a gente por aqui. Por favor, confirme que recebeu esta mensagem.",
+  ];
+  return linhas.filter((l) => l !== null).join("\n");
+}
 
 export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedidos/[id]">) {
   const { supabase } = await exigirPapel("admin");
@@ -186,6 +224,22 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
                             variante="verde"
                             confirmacao={`Aprovar ${c.diarista?.nome ?? "esta diarista"}? As outras serão recusadas.`}
                           />
+                        ) : c.status === "aprovada" && c.diarista?.telefone && pedido.status !== "cancelada" ? (
+                          // Sem API paga: o link abre o WhatsApp com o texto pronto e a admin toca em Enviar
+                          <div className="flex flex-col items-start gap-2">
+                            <span className="text-pequeno font-medium">{NOME_CANDIDATURA.aprovada}</span>
+                            <a
+                              href={linkWhatsAppPara(c.diarista.telefone, mensagemAprovada(c.diarista.nome, pedido, endereco, privado))}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={botaoClasses("verde", "padrao", "py-3! text-pequeno!")}
+                            >
+                              Enviar mensagem no WhatsApp
+                            </a>
+                            <span className="text-pequeno text-texto-secundario">
+                              Abre a conversa com a diarista e os detalhes do serviço já escritos. É só tocar em Enviar.
+                            </span>
+                          </div>
                         ) : (
                           <span className="text-pequeno font-medium">{NOME_CANDIDATURA[c.status]}</span>
                         )}

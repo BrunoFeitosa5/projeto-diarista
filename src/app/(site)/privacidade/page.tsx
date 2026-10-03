@@ -7,7 +7,7 @@ export const metadata = { title: "Política de Privacidade | Império Diarista" 
 
 // RASCUNHO: o texto precisa ser revisado pela dona ou por um profissional antes do lançamento.
 // Ao mudar o texto, atualize a data abaixo.
-const ATUALIZADA_EM = "2 de outubro de 2026";
+const ATUALIZADA_EM = "3 de outubro de 2026";
 
 function Secao({ titulo, children }: { titulo: string; children: ReactNode }) {
   return (
@@ -108,9 +108,9 @@ export default function PrivacidadePage() {
                 observações.
               </>,
               <>
-                <strong>A diarista aprovada</strong> para o seu pedido passa a ver o endereço completo, o seu
-                nome e o seu telefone. Da mesma forma, o cliente passa a ver o nome e o telefone da
-                diarista aprovada.
+                <strong>A diarista aprovada</strong> para o seu pedido passa a ver o endereço completo e o seu
+                nome. Da mesma forma, o cliente passa a ver o nome da diarista aprovada. O telefone de cada
+                um fica só com a {SITE.nome}, que faz a comunicação entre os dois.
               </>,
               <>
                 <strong>A equipe da {SITE.nome}</strong> (administração) vê os dados necessários para

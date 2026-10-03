@@ -110,7 +110,7 @@ async function chamarAcao(nome, args, quem, origem = SITE) {
 const contar = async (sb, tabela, filtro = (q) => q) => (await filtro(sb.from(tabela).select("*"))).data?.length ?? 0;
 const erroRpc = async (sb, nome, args) => (await sb.rpc(nome, args)).error?.message ?? null;
 
-const TABELAS = ["profiles", "diaristas_privado", "pedidos", "pedido_enderecos", "candidaturas", "pedido_historico"];
+const TABELAS = ["profiles", "nomes_visiveis", "diaristas_privado", "pedidos", "pedido_enderecos", "candidaturas", "pedido_historico"];
 
 try {
   // ---- Montagem ---------------------------------------------------------------
@@ -239,6 +239,12 @@ try {
   ok(!(await erroRpc(admin.sb, "aprovar_candidatura", { p_candidatura_id: cand.id })), "aprova a candidatura");
   ok((await contar(diarista1.sb, "pedido_enderecos", doPedido)) === 1, "depois da aprovação a diarista vê o endereço");
   ok((await contar(diarista2.sb, "pedido_enderecos", doPedido)) === 0, "a outra diarista continua sem ver");
+  // Depois da aprovação: só o nome da outra parte, nunca o telefone
+  ok((await contar(diarista1.sb, "nomes_visiveis", (q) => q.eq("id", clienteA.id))) === 1, "a diarista aprovada vê o nome do cliente");
+  ok((await contar(diarista1.sb, "profiles", (q) => q.eq("id", clienteA.id))) === 0, "a diarista aprovada NÃO vê o telefone do cliente");
+  ok((await contar(clienteA.sb, "nomes_visiveis", (q) => q.eq("id", diarista1.id))) === 1, "o cliente vê o nome da diarista aprovada");
+  ok((await contar(clienteA.sb, "profiles", (q) => q.eq("id", diarista1.id))) === 0, "o cliente NÃO vê o telefone da diarista");
+  ok((await contar(admin.sb, "profiles", (q) => q.in("id", [clienteA.id, diarista1.id]))) === 2, "a admin vê o telefone dos dois");
   // Controle: prova que as chamadas diretas da seção 5 chegam mesmo ao servidor
   // (se a admin, do próprio site, também não conseguisse, aqueles testes não valeriam nada)
   if (idDaAcao("mudarStatus")) {
