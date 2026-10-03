@@ -46,7 +46,7 @@ export async function cadastrar(_estado: EstadoForm, formData: FormData): Promis
   // O banco também só aceita cliente/diarista; aqui é para dar uma mensagem clara
   if (papel !== "cliente" && papel !== "diarista") return { erro: "Escolha se você é cliente ou diarista." };
   if (nome.length < 3) return { erro: "Informe seu nome completo." };
-  if (!/^\(\d{2}\) \d{4,5}-\d{4}$/.test(telefone)) return { erro: "Informe o telefone no formato (11) 91234-5678." };
+  if (!/^\(\d{2}\) \d{4,5}-\d{4}$/.test(telefone)) return { erro: "Informe o WhatsApp no formato (11) 91234-5678." };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { erro: "Informe um e-mail válido." };
   if (senha.length < 8) return { erro: "A senha precisa ter pelo menos 8 caracteres." };
   if (senha !== confirmacao) return { erro: "As senhas não conferem." };

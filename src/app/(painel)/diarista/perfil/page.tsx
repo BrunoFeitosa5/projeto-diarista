@@ -42,7 +42,7 @@ export default async function PerfilDiaristaPage() {
           <dd className="inline">{perfil.nome}</dd>
         </div>
         <div>
-          <dt className="inline text-texto-secundario">Telefone: </dt>
+          <dt className="inline text-texto-secundario">WhatsApp: </dt>
           <dd className="inline">{perfil.telefone ?? "—"}</dd>
         </div>
       </dl>

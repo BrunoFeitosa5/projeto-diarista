@@ -23,7 +23,7 @@ const CAMPOS: {
 }[] = [
   { nome: "nome", rotulo: "Seu Nome", placeholder: "Nome Completo", obrigatorio: true, tipo: "text", autoComplete: "name" },
   { nome: "cnpj", rotulo: "CNPJ (MEI), se tiver", placeholder: "00.000.000/0001-00", obrigatorio: false, mascara: mascaraCnpj, tipo: "text", autoComplete: "off" },
-  { nome: "telefone", rotulo: "Seu Telefone", placeholder: "(XX) XXXXX-XXXX", obrigatorio: true, mascara: mascaraTelefone, tipo: "tel", autoComplete: "tel-national" },
+  { nome: "telefone", rotulo: "Seu WhatsApp", placeholder: "(XX) XXXXX-XXXX", obrigatorio: true, mascara: mascaraTelefone, tipo: "tel", autoComplete: "tel-national" },
   { nome: "nascimento", rotulo: "Data de Nascimento", placeholder: "00/00/0000", obrigatorio: false, mascara: mascaraData, tipo: "text", autoComplete: "bday" },
 ];
 

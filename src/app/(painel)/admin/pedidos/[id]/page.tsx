@@ -187,7 +187,7 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
                     <li key={c.id} className="flex flex-col rounded-botao-lg border border-borda">
                       <p className="border-b border-borda px-4 py-3 text-h4">{c.diarista?.nome ?? "—"}</p>
                       <dl className="grid gap-x-8 gap-y-4 p-4 sm:grid-cols-2">
-                        <Dado rotulo="Telefone">
+                        <Dado rotulo="WhatsApp">
                           <Telefone numero={c.diarista?.telefone} mensagem={`Olá! Sobre a vaga ${pedido.codigo} da Império Diarista.`} />
                         </Dado>
                         <Dado rotulo="CPF">{privado?.cpf ? mascaraCpf(privado.cpf) : "—"}</Dado>
@@ -286,7 +286,7 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
           <Cartao titulo="Cliente">
             <dl className="grid gap-3">
               <Dado rotulo="Nome">{pedido.cliente?.nome ?? "—"}</Dado>
-              <Dado rotulo="Telefone">
+              <Dado rotulo="WhatsApp">
                 <Telefone numero={pedido.cliente?.telefone} mensagem={`Olá! Aqui é da Império Diarista, sobre o seu pedido ${pedido.codigo}.`} />
               </Dado>
             </dl>

@@ -77,7 +77,7 @@ export function FormCadastro({ papelInicial }: { papelInicial: PapelCadastro }) 
         onChange={(e) => setContato((c) => ({ ...c, nome: e.target.value }))}
       />
       <Campo
-        rotulo="Telefone (WhatsApp)"
+        rotulo="WhatsApp"
         name="telefone"
         type="tel"
         inputMode="numeric"
