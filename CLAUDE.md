@@ -109,6 +109,8 @@ Perfis: `cliente`, `diarista` e `admin`.
 - Em páginas e Server Actions restritas, chamar `exigirPapel(...)` de
   `src/lib/auth.ts` (2ª camada; o proxy sozinho não basta).
 - No servidor, usar `getClaims()` (confere o token), nunca `getSession()`.
+- Senha mínima de 8 caracteres no site e no Supabase (Authentication >
+  Email, ajustado em 03/10/2026).
 - O item "Entrar" no menu é o único acréscimo ao header original.
 - CPF/CNPJ/Pix NÃO vão no cadastro (os metadados do usuário entram no token
   de login); a diarista preenche no perfil (etapa 9).
@@ -240,8 +242,6 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
   `next.config.ts` libera `192.168.*.*` (sem ele o Next bloqueia o JS no dev).
 
 ## Pendências
-- Supabase > Authentication: subir o tamanho mínimo de senha para 8 (o site
-  já exige 8, mas quem chama o Supabase direto passa com 6).
 - Plano grátis do Supabase não tem backup que dê para baixar. Antes de ter
   pedidos reais, decidir entre o plano Pro ou exportar os dados de tempos em
   tempos.
