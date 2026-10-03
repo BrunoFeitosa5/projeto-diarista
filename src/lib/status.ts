@@ -39,7 +39,7 @@ export const STATUS: Record<StatusPedido, { nome: string; descricao: string; cla
   concluida: {
     nome: "Concluída",
     descricao: "Serviço realizado.",
-    classe: "bg-marinho text-white",
+    classe: "bg-marinho text-sobre-marinho",
   },
   cancelada: {
     nome: "Cancelada",

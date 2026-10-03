@@ -17,11 +17,11 @@ export default function ServicosPage() {
           escurecer=""
         />
         <div className="mx-auto max-w-site md:px-20">
-          <p className="text-rosa-claro">Agendamento Expresso</p>
+          <p className="text-rosa-foto">Agendamento Expresso</p>
           <h1 className="mt-6 max-w-[1056px] text-h1 text-white md:mt-[42px]">
             Escolha o Serviço <strong>Ideal</strong> para Sua Casa ou Escritório
           </h1>
-          <p className="mt-6 max-w-[1056px] text-rosa-claro md:mt-[62px]">
+          <p className="mt-6 max-w-[1056px] text-rosa-foto md:mt-[62px]">
             Opções flexíveis para residências, escritórios e necessidades específicas. Agende com
             profissionais verificadas, preço fixo e total transparência.
           </p>

@@ -67,7 +67,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
             key={f}
             href={`/admin?filtro=${f}`}
             aria-current={f === filtro ? "page" : undefined}
-            className="rounded-full bg-white px-4 py-2 text-pequeno text-marinho transition-colors hover:bg-campo-hover aria-[current=page]:bg-marinho aria-[current=page]:text-white"
+            className="rounded-full bg-superficie px-4 py-2 text-pequeno text-marinho transition-colors hover:bg-campo-hover aria-[current=page]:bg-marinho aria-[current=page]:text-sobre-marinho"
           >
             {FILTROS[f].nome} ({doFiltro(f).length})
           </Link>
@@ -77,7 +77,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
       {error && <p className="mt-8 text-texto-secundario">Não foi possível carregar os pedidos agora.</p>}
 
       {!error && visiveis.length === 0 && (
-        <div className="mt-8 rounded-card bg-white p-8">
+        <div className="mt-8 rounded-card bg-superficie p-8">
           <p className="text-texto-secundario">Nenhum pedido aqui.</p>
         </div>
       )}
@@ -90,7 +90,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
               <li key={p.id}>
                 <Link
                   href={`/admin/pedidos/${p.id}`}
-                  className="flex flex-col gap-4 rounded-card bg-white p-6 transition-colors hover:bg-gelo md:flex-row md:items-center md:justify-between"
+                  className="flex flex-col gap-4 rounded-card bg-superficie p-6 transition-colors hover:bg-gelo md:flex-row md:items-center md:justify-between"
                 >
                   <div>
                     <p className="text-pequeno text-texto-secundario">

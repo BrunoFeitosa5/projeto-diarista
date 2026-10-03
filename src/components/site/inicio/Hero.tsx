@@ -13,7 +13,7 @@ export function Hero() {
         // Escurecimento medido no print do site original (parede: 247 → 128, fator ~0,52)
         escurecer="bg-black/48"
       />
-      <div className="mx-auto flex w-full max-w-[878px] flex-col items-center pt-24 pb-16 text-center text-gelo md:pt-[157px]">
+      <div className="mx-auto flex w-full max-w-[878px] flex-col items-center pt-24 pb-16 text-center text-texto-foto md:pt-[157px]">
         <h1 className="text-h1">
           Sua Casa <strong>Impecável</strong>, Sem Complicação
         </h1>

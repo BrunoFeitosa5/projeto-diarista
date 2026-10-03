@@ -17,7 +17,7 @@ export default async function PainelLayout({ children }: LayoutProps<"/">) {
     <>
       <TopBar />
       <Header />
-      <div className="border-b border-borda bg-white px-4">
+      <div className="border-b border-borda bg-superficie px-4">
         <div className="mx-auto flex max-w-site items-center justify-between gap-4 py-3 md:px-20">
           <p className="text-pequeno">
             Olá, <strong className="font-medium">{perfil.nome || "tudo bem?"}</strong>

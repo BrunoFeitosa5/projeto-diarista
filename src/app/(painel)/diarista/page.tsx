@@ -79,7 +79,7 @@ export default async function DiaristaPage() {
       </div>
 
       {!perfilCompleto && (
-        <div className="mt-8 rounded-card border-l-4 border-rosa-forte bg-white p-6">
+        <div className="mt-8 rounded-card border-l-4 border-rosa-forte bg-superficie p-6">
           <p className="font-medium">Complete seu perfil para se candidatar</p>
           <p className="mt-1 text-texto-secundario">
             Precisamos do seu CPF e da sua chave Pix.{" "}
@@ -98,7 +98,7 @@ export default async function DiaristaPage() {
               const end = enderecos.find((e) => e.pedido_id === s.id);
               const cliente = clientes.find((c) => c.id === s.cliente_id);
               return (
-                <li key={s.id} className="rounded-card bg-white p-6">
+                <li key={s.id} className="rounded-card bg-superficie p-6">
                   {(s.status === "aprovada" || s.status === "confirmada") && (
                     <div className="mb-5 rounded-botao-lg bg-menta px-4 py-3">
                       <p className="font-medium">🎉 Parabéns! Você foi aprovada para este serviço.</p>
@@ -168,7 +168,7 @@ export default async function DiaristaPage() {
       <div className="mt-10">
         {servicos.length > 0 && <h2 className="text-h3">Vagas</h2>}
         {vagas.length === 0 ? (
-          <div className="mt-6 rounded-card bg-white p-8">
+          <div className="mt-6 rounded-card bg-superficie p-8">
             <p className="font-medium">Nenhuma vaga aberta no momento</p>
             <p className="mt-1 text-texto-secundario">Volte mais tarde: novas vagas aparecem aqui assim que os clientes agendam.</p>
           </div>
@@ -177,7 +177,7 @@ export default async function DiaristaPage() {
             {vagas.map((v) => (
               <li
                 key={v.id}
-                className="flex flex-col gap-4 rounded-card bg-white p-6 md:flex-row md:items-center md:justify-between"
+                className="flex flex-col gap-4 rounded-card bg-superficie p-6 md:flex-row md:items-center md:justify-between"
               >
                 <div>
                   <p className="text-pequeno text-texto-secundario">{v.codigo}</p>

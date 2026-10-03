@@ -88,7 +88,7 @@ export default async function PedidoClientePage({ params, searchParams }: PagePr
 
       <div className="mt-10 grid gap-6 md:grid-cols-[1fr_360px]">
         <div className="flex flex-col gap-6">
-          <div className="rounded-card bg-white p-6 md:p-8">
+          <div className="rounded-card bg-superficie p-6 md:p-8">
             <h2 className="text-h4">Serviço</h2>
             <dl className="mt-4 grid gap-4 sm:grid-cols-2">
               <Dado rotulo="Plano">
@@ -105,7 +105,7 @@ export default async function PedidoClientePage({ params, searchParams }: PagePr
             )}
           </div>
 
-          <div className="rounded-card bg-white p-6 md:p-8">
+          <div className="rounded-card bg-superficie p-6 md:p-8">
             <h2 className="text-h4">Endereço</h2>
             {endereco ? (
               <address className="mt-4 not-italic">
@@ -129,7 +129,7 @@ export default async function PedidoClientePage({ params, searchParams }: PagePr
         </div>
 
         <div className="flex flex-col gap-6">
-          <div className="rounded-card bg-white p-6 md:p-8">
+          <div className="rounded-card bg-superficie p-6 md:p-8">
             <h2 className="text-h4">Diarista</h2>
             {diarista ? (
               <dl className="mt-4 grid gap-4">
@@ -145,7 +145,7 @@ export default async function PedidoClientePage({ params, searchParams }: PagePr
             )}
           </div>
 
-          <div className="rounded-card bg-white p-6 md:p-8">
+          <div className="rounded-card bg-superficie p-6 md:p-8">
             <h2 className="text-h4">Andamento</h2>
             <ol className="mt-4 flex flex-col gap-3 border-l-2 border-rosa-card pl-4">
               {historico?.map((h) => (
@@ -157,7 +157,7 @@ export default async function PedidoClientePage({ params, searchParams }: PagePr
             </ol>
           </div>
 
-          <div className="rounded-card bg-white p-6 md:p-8">
+          <div className="rounded-card bg-superficie p-6 md:p-8">
             <h2 className="text-h4">Precisa de ajuda?</h2>
             <p className="mt-2 text-texto-secundario">
               Para remarcar ou cancelar, fale com a Império pelo WhatsApp informando o código {pedido.codigo}.

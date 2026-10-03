@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { NAV_LINKS } from "@/config/site";
+import { BotaoTema } from "./BotaoTema";
 
 function ativo(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -20,7 +21,7 @@ export function NavMenu() {
       href={href}
       onClick={() => setAberto(false)}
       aria-current={ativo(pathname, href) ? "page" : undefined}
-      className="border-b border-transparent pb-0.5 font-nav text-corpo text-black aria-[current=page]:border-black hover:border-black"
+      className="border-b border-transparent pb-0.5 font-nav text-corpo text-texto-menu aria-[current=page]:border-texto-menu hover:border-texto-menu"
     >
       {label}
     </Link>
@@ -29,25 +30,32 @@ export function NavMenu() {
   return (
     <>
       {/* Desktop */}
-      <nav className="hidden items-center gap-10 md:flex">{links}</nav>
+      {/* O botão de tema (lua/sol) é acréscimo ao original */}
+      <nav className="hidden items-center gap-10 md:flex">
+        {links}
+        <BotaoTema />
+      </nav>
 
-      {/* Celular */}
-      <button
-        type="button"
-        onClick={() => setAberto((v) => !v)}
-        aria-expanded={aberto}
-        aria-controls="menu-celular"
-        aria-label={aberto ? "Fechar menu" : "Abrir menu"}
-        className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden"
-      >
-        <span className={`h-0.5 w-6 bg-black transition ${aberto ? "translate-y-2 rotate-45" : ""}`} />
-        <span className={`h-0.5 w-6 bg-black transition ${aberto ? "opacity-0" : ""}`} />
-        <span className={`h-0.5 w-6 bg-black transition ${aberto ? "-translate-y-2 -rotate-45" : ""}`} />
-      </button>
+      {/* Celular: tema fica sempre visível, ao lado do ☰ */}
+      <div className="flex items-center gap-2 md:hidden">
+        <BotaoTema />
+        <button
+          type="button"
+          onClick={() => setAberto((v) => !v)}
+          aria-expanded={aberto}
+          aria-controls="menu-celular"
+          aria-label={aberto ? "Fechar menu" : "Abrir menu"}
+          className="flex h-10 w-10 flex-col items-center justify-center gap-1.5"
+        >
+          <span className={`h-0.5 w-6 bg-texto-menu transition ${aberto ? "translate-y-2 rotate-45" : ""}`} />
+          <span className={`h-0.5 w-6 bg-texto-menu transition ${aberto ? "opacity-0" : ""}`} />
+          <span className={`h-0.5 w-6 bg-texto-menu transition ${aberto ? "-translate-y-2 -rotate-45" : ""}`} />
+        </button>
+      </div>
       {aberto && (
         <nav
           id="menu-celular"
-          className="absolute inset-x-0 top-full z-40 flex flex-col items-center gap-6 border-t border-borda bg-white py-8 shadow-md md:hidden"
+          className="absolute inset-x-0 top-full z-40 flex flex-col items-center gap-6 border-t border-borda bg-superficie py-8 shadow-md md:hidden"
         >
           {links}
         </nav>

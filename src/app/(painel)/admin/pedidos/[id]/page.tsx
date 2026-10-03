@@ -108,7 +108,7 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
       <p className="mt-2 text-pequeno text-texto-secundario">Criado em {dataHora(pedido.created_at)}</p>
 
       {(proximo || PODE_CANCELAR.includes(pedido.status)) && (
-        <div className="mt-6 flex flex-wrap items-start gap-6 rounded-card bg-white p-6">
+        <div className="mt-6 flex flex-wrap items-start gap-6 rounded-card bg-superficie p-6">
           {proximo && (
             <BotaoAcaoAdmin
               acao={mudarStatus.bind(null, pedido.id, proximo.status)}
@@ -241,7 +241,7 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
 
 function Cartao({ titulo, children }: { titulo: string; children: ReactNode }) {
   return (
-    <div className="rounded-card bg-white p-6 md:p-8">
+    <div className="rounded-card bg-superficie p-6 md:p-8">
       <h2 className="text-h4">{titulo}</h2>
       <div className="mt-4">{children}</div>
     </div>

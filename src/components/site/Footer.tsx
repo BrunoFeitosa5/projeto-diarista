@@ -37,7 +37,18 @@ export function Footer() {
           <div className="md:pt-[19px]">
             <p className={rotulo}>Atendimento</p>
             <div className="mt-3 space-y-1">
-              <p>{SITE.telefoneExibicao}</p>
+              <p>
+                {/* Acréscimo ao original: o telefone abre o WhatsApp da dona */}
+                <a
+                  href={linkWhatsApp("Olá! Vim pelo site da Império Diarista.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Falar no WhatsApp: ${SITE.telefoneExibicao}`}
+                  className="underline-offset-2 hover:text-rosa-forte hover:underline"
+                >
+                  {SITE.telefoneExibicao}
+                </a>
+              </p>
               <p>{SITE.horarioAtendimento}</p>
               <p>{SITE.regiao}</p>
             </div>

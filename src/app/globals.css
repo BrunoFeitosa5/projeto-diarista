@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Modo escuro: ativado pelo botão da lua (BotaoTema), que põe data-tema="escuro" no <html>.
+   Use `dark:` só em último caso; o normal é o token já mudar de cor sozinho (ver abaixo). */
+@custom-variant dark (&:where([data-tema="escuro"], [data-tema="escuro"] *));
+
 /*
  * Tema do Império Diarista.
  * Valores extraídos do site ao vivo (imperiodiarista.com.br, construtor Zyro).
@@ -33,6 +37,11 @@
   --color-gelo: #f4f8fb;
   --color-borda: #e0e0e0;
   --color-campo-hover: #e0e4e6; /* fundo dos campos de formulário ao passar o mouse */
+  --color-superficie: #ffffff; /* header, cards brancos e campos de formulário */
+  --color-texto-menu: #000000; /* links do menu do topo */
+  --color-sobre-marinho: #ffffff; /* texto em cima de fundo bg-marinho */
+  --color-texto-foto: #f4f8fb; /* texto em cima de foto escurecida (igual nos dois modos) */
+  --color-rosa-foto: #fbf0f2; /* texto rosado em cima de foto (topo de Serviços; igual nos dois modos) */
 
   /* Apoio */
   --color-menta: #bbded7; /* fundo dos ícones dos cards */
@@ -63,7 +72,33 @@
   --container-site: 1224px;
 }
 
+/* Cores do modo escuro. Os nomes continuam os mesmos (ex.: "marinho" é a cor do texto,
+   que no escuro fica clara), então os componentes não precisam mudar.
+   O rosa dos botões, das faixas e as fotos ficam iguais nos dois modos. */
+:root[data-tema="escuro"] {
+  color-scheme: dark; /* calendário, barras de rolagem e campos nativos no escuro */
+  --color-rosa-claro: #16121a;
+  --color-rosa-suave: #221a22;
+  --color-bege: #1d171f;
+  --color-rosa-card: #3a2531;
+  --color-rosa-card-ativo: #8f3d5c;
+  --color-marinho: #f3e8ed;
+  --color-texto-secundario: #bfaeb7;
+  --color-gelo: #2a222d;
+  --color-borda: #3b3240;
+  --color-campo-hover: #2c2430;
+  --color-menta: #2d4b46;
+  --color-superficie: #221b25;
+  --color-texto-menu: #f3e8ed;
+  --color-sobre-marinho: #16121a;
+}
+
 @layer base {
+  /* Card ampliado aberto (CardAmpliavel): a página atrás não rola até fechar */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
   body {
     background: var(--color-rosa-claro);
     color: var(--color-marinho);

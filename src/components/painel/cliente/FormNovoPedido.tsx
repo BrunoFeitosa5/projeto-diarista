@@ -58,7 +58,7 @@ export function FormNovoPedido({ planoInicial, dataMinima, dataMaxima }: Props) 
             return (
               <label
                 key={id}
-                className="cursor-pointer rounded-botao-lg border-2 border-white bg-white p-4 transition-colors hover:bg-campo-hover has-checked:border-rosa-forte has-focus-visible:outline-2 has-focus-visible:outline-rosa-forte"
+                className="cursor-pointer rounded-botao-lg border-2 border-superficie bg-superficie p-4 transition-colors hover:bg-campo-hover has-checked:border-rosa-forte has-focus-visible:outline-2 has-focus-visible:outline-rosa-forte"
               >
                 <input
                   type="radio"

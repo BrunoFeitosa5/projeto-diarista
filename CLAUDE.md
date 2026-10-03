@@ -92,7 +92,10 @@ Perfis: `cliente`, `diarista` e `admin`.
   (PGlite) e confere o fluxo e o RLS. Rodar sempre que mudar uma migração.
   Para tornar a dona admin: `supabase/tornar-admin.sql` no SQL Editor.
 - **WhatsApp:** link `wa.me` sem API paga. O número da dona fica em
-  `NEXT_PUBLIC_WHATSAPP_DONA`.
+  `NEXT_PUBLIC_WHATSAPP_DONA`. O número certo é **(11) 93501-2436**
+  (confirmado em 02/10/2026; o 2450 do rodapé original estava errado). O
+  texto exibido fica em `SITE.telefoneExibicao` (`src/config/site.ts`) e
+  precisa bater com a variável.
 - **Chaves e segredos** ficam só em `.env.local`, que nunca vai para o git.
   O `.env.example` fica no git, sem valores.
 
@@ -163,6 +166,20 @@ Perfis: `cliente`, `diarista` e `admin`.
   (X-Frame-Options DENY/frame-ancestors contra clickjacking, nosniff,
   Referrer-Policy, Permissions-Policy). Não há CSP completa: cuidado ao
   adicionar uma (o ViaCEP e o Supabase precisariam estar liberados).
+
+## Acréscimos visuais (02/10/2026)
+- **Modo escuro:** botão de lua/sol (`src/components/site/BotaoTema.tsx`) no
+  menu. Padrão é o claro (igual ao original); a escolha fica no
+  `localStorage` (`tema`) e um script em `src/app/layout.tsx` aplica
+  `data-tema="escuro"` no `<html>` antes de a página aparecer.
+  As cores escuras ficam em `:root[data-tema="escuro"]` no `globals.css`:
+  os tokens mudam sozinhos, então **não use `bg-white`/`text-black`**; use
+  `bg-superficie`, `text-texto-menu`, `text-sobre-marinho`. Texto em cima de
+  foto usa `text-texto-foto`/`text-rosa-foto`, que não mudam.
+- **Cards ampliáveis:** `src/components/ui/CardAmpliavel.tsx` (`<dialog>`)
+  nos cards de vantagens e de preço da Início. Enquanto aberto, a página não
+  rola (`html:has(dialog[open])` no `globals.css`).
+- Telefone do rodapé abre o WhatsApp.
 
 ## Tabelas
 `profiles`, `diaristas_privado`, `pedidos`, `pedido_enderecos`,
@@ -244,6 +261,3 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
 - Imagens em alta resolução: o site original tem versões maiores dos cards
   4h/6h/8h (1122x1402), da Segurança (1388x1133) e do topo de Serviços
   (1909x824). Aguardando o usuário decidir se troca.
-- Telefone: o rodapé do original mostra (11) 93501-2450, mas os links de
-  WhatsApp do original usam (11) 93501-2436. Confirmar qual é o certo.
-  Por enquanto o `.env.local` usa o final 2436.

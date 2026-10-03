@@ -43,7 +43,7 @@ export default async function ClientePage() {
       {error && <p className="mt-8 text-texto-secundario">Não foi possível carregar seus pedidos agora.</p>}
 
       {pedidos?.length === 0 && (
-        <div className="mt-10 rounded-card bg-white p-8 md:p-10">
+        <div className="mt-10 rounded-card bg-superficie p-8 md:p-10">
           <h2 className="text-h3">Você ainda não tem pedidos</h2>
           <p className="mt-3 max-w-[520px] text-texto-secundario">
             Escolha um plano de 4, 6 ou 8 horas, a data e o endereço. A Império cuida de encontrar a diarista.
@@ -57,7 +57,7 @@ export default async function ClientePage() {
             <li key={p.id}>
               <Link
                 href={`/cliente/pedidos/${p.id}`}
-                className="flex flex-col gap-4 rounded-card bg-white p-6 transition-colors hover:bg-gelo md:flex-row md:items-center md:justify-between"
+                className="flex flex-col gap-4 rounded-card bg-superficie p-6 transition-colors hover:bg-gelo md:flex-row md:items-center md:justify-between"
               >
                 <div>
                   <p className="text-pequeno text-texto-secundario">{p.codigo}</p>

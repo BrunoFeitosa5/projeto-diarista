@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ButtonLink } from "@/components/ui/Button";
+import { CardAmpliavel } from "@/components/ui/CardAmpliavel";
 import { PLANOS, formatarReais, type PlanoId } from "@/config/planos";
 
 type Props = { id: PlanoId; foto: string };
@@ -13,26 +14,43 @@ export function PlanoCard({ id, foto }: Props) {
     plano.metragem
   }, por ${formatarReais(plano.precoCliente)}`;
 
+  const botao = (
+    <ButtonLink
+      href={`/cliente/novo-pedido?plano=${id}`}
+      variante="rosa-card"
+      tamanho="card"
+      // z-20: fica acima do botão invisível de ampliar do CardAmpliavel
+      className="absolute bottom-[30px] z-20"
+    >
+      Agendar agora
+    </ButtonLink>
+  );
+
   return (
     // Destaque: cresce 4% com sombra ao passar o mouse, ao tocar (celular) ou com foco do teclado.
-    // Quem pediu "reduzir movimento" no sistema não vê a animação.
-    <article className="relative mx-auto flex h-[424px] w-full max-w-[400px] justify-center overflow-hidden transition-[transform,box-shadow] duration-300 ease-out hover:z-10 hover:scale-[1.04] hover:shadow-2xl focus-within:z-10 focus-within:scale-[1.04] focus-within:shadow-2xl active:z-10 active:scale-[1.04] active:shadow-2xl motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:focus-within:scale-100 motion-reduce:active:scale-100">
-      <Image
-        src={foto}
-        alt={descricao}
-        fill
-        sizes="(min-width: 768px) 400px, 100vw"
-        // No original a imagem é cortada por cima (fica alinhada pela base)
-        className="object-cover object-bottom"
-      />
-      <ButtonLink
-        href={`/cliente/novo-pedido?plano=${id}`}
-        variante="rosa-card"
-        tamanho="card"
-        className="absolute bottom-[30px]"
-      >
-        Agendar agora
-      </ButtonLink>
-    </article>
+    // Ao clicar, abre ampliado no centro da tela. Quem pediu "reduzir movimento" no sistema não vê a animação.
+    <CardAmpliavel
+      rotulo={`Plano de ${plano.horas} horas`}
+      className="mx-auto w-full max-w-[400px] transition-[transform,box-shadow] duration-300 ease-out hover:z-10 hover:scale-[1.04] hover:shadow-2xl focus-within:z-10 focus-within:scale-[1.04] focus-within:shadow-2xl active:z-10 active:scale-[1.04] active:shadow-2xl motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:focus-within:scale-100 motion-reduce:active:scale-100"
+      ampliado={
+        // Imagem inteira (375x469), sem o corte de cima que o card da página tem
+        <article className="relative flex aspect-[375/469] h-[min(600px,85dvh)] max-w-[90vw] justify-center overflow-hidden shadow-2xl">
+          <Image src={foto} alt={descricao} fill sizes="480px" className="object-cover" />
+          {botao}
+        </article>
+      }
+    >
+      <article className="relative flex h-[424px] w-full justify-center overflow-hidden">
+        <Image
+          src={foto}
+          alt={descricao}
+          fill
+          sizes="(min-width: 768px) 400px, 100vw"
+          // No original a imagem é cortada por cima (fica alinhada pela base)
+          className="object-cover object-bottom"
+        />
+        {botao}
+      </article>
+    </CardAmpliavel>
   );
 }

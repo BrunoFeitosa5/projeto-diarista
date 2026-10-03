@@ -111,7 +111,7 @@ export function FormPerfilDiarista({ inicial }: { inicial: DadosPerfil }) {
         </div>
       </div>
 
-      <fieldset className="grid gap-5 rounded-card bg-white p-5 sm:grid-cols-[200px_1fr]">
+      <fieldset className="grid gap-5 rounded-card bg-superficie p-5 sm:grid-cols-[200px_1fr]">
         <legend className="sr-only">Chave Pix</legend>
         <p className="text-pequeno text-texto-secundario sm:col-span-2">
           A chave Pix é para a Império pagar você pelos serviços.
