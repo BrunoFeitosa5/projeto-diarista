@@ -10,6 +10,9 @@ type Privado = {
   data_nascimento: string | null;
   chave_pix: string | null;
   tipo_chave_pix: DadosPerfil["tipo_chave_pix"] | null;
+  referencia_nome: string | null;
+  referencia_telefone: string | null;
+  experiencia: string | null;
 };
 
 export default async function PerfilDiaristaPage() {
@@ -17,7 +20,7 @@ export default async function PerfilDiaristaPage() {
 
   const { data } = await supabase
     .from("diaristas_privado")
-    .select("cpf, cnpj, data_nascimento, chave_pix, tipo_chave_pix")
+    .select("cpf, cnpj, data_nascimento, chave_pix, tipo_chave_pix, referencia_nome, referencia_telefone, experiencia")
     .eq("diarista_id", perfil.id)
     .maybeSingle<Privado>();
 
@@ -31,7 +34,7 @@ export default async function PerfilDiaristaPage() {
       </Link>
       <h1 className="mt-4 text-h2">Meu perfil</h1>
       <p className="mt-4 max-w-[611px] text-texto-secundario">
-        Para se candidatar às vagas, preencha seu CPF e sua chave Pix.
+        Para se candidatar às vagas, preencha seu CPF, sua chave Pix e um resumo da sua experiência.
       </p>
       <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-2 text-pequeno">
         <div>
@@ -51,6 +54,9 @@ export default async function PerfilDiaristaPage() {
             nascimento,
             tipo_chave_pix: data?.tipo_chave_pix ?? "",
             chave_pix: data?.chave_pix ?? "",
+            referencia_nome: data?.referencia_nome ?? "",
+            referencia_telefone: data?.referencia_telefone ?? "",
+            experiencia: data?.experiencia ?? "",
           }}
         />
       </div>

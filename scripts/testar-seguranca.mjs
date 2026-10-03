@@ -132,6 +132,9 @@ try {
     cpf: "52998224725",
     chave_pix: "52998224725",
     tipo_chave_pix: "cpf",
+    experiencia: "Conta de teste: faxina residencial há 3 anos.",
+    referencia_nome: "Referência Teste",
+    referencia_telefone: "11999990000",
   });
 
   const dataFutura = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(
@@ -196,7 +199,7 @@ try {
   ok((await contar(diarista1.sb, "profiles", (q) => q.eq("id", clienteA.id))) === 0, "NÃO vê o perfil da cliente antes da aprovação");
   ok((await contar(diarista1.sb, "diaristas_privado", (q) => q.neq("diarista_id", diarista1.id))) === 0, "não vê CPF/Pix de outras diaristas");
   const semPerfil = await erroRpc(diarista2.sb, "candidatar", { p_pedido_id: pedido.id });
-  ok(semPerfil?.startsWith("Complete seu perfil"), "sem CPF e Pix não consegue se candidatar", semPerfil ?? "candidatou!");
+  ok(semPerfil?.startsWith("Complete seu perfil"), "sem CPF, Pix e experiência não consegue se candidatar", semPerfil ?? "candidatou!");
   const { error: privAlheio } = await diarista1.sb
     .from("diaristas_privado")
     .upsert({ diarista_id: diarista2.id, cpf: "11144477735", chave_pix: "golpe@exemplo.test", tipo_chave_pix: "email" });

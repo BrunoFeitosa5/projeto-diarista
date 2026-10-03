@@ -24,7 +24,12 @@ export type DadosPerfil = {
   nascimento: string;
   tipo_chave_pix: TipoPix | "";
   chave_pix: string;
+  referencia_nome: string;
+  referencia_telefone: string;
+  experiencia: string;
 };
+
+const MAX_EXPERIENCIA = 500;
 
 // Converte o que veio do banco para o formato dos campos (com máscara)
 function paraCampos(d: DadosPerfil): DadosPerfil {
@@ -35,6 +40,7 @@ function paraCampos(d: DadosPerfil): DadosPerfil {
     cpf: mascaraCpf(d.cpf),
     cnpj: d.cnpj ? mascaraCnpj(d.cnpj) : "",
     chave_pix: tipo?.mascara ? tipo.mascara(chave) : chave,
+    referencia_telefone: d.referencia_telefone ? mascaraTelefone(d.referencia_telefone) : "",
   };
 }
 
@@ -67,7 +73,7 @@ export function FormPerfilDiarista({ inicial }: { inicial: DadosPerfil }) {
   }, [estado]);
 
   const tipoAtual = TIPOS_PIX.find((t) => t.valor === campos.tipo_chave_pix);
-  const mudar = (campo: keyof DadosPerfil, mascara?: (v: string) => string) => (e: React.ChangeEvent<HTMLInputElement>) =>
+  const mudar = (campo: keyof DadosPerfil, mascara?: (v: string) => string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setCampos((c) => ({ ...c, [campo]: mascara ? mascara(e.target.value) : e.target.value }));
 
   function mudarTipo(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -151,8 +157,69 @@ export function FormPerfilDiarista({ inicial }: { inicial: DadosPerfil }) {
         />
       </fieldset>
 
+      <div>
+        <label htmlFor="campo-experiencia" className={classeRotulo}>
+          Resumo da sua experiência*
+        </label>
+        <textarea
+          id="campo-experiencia"
+          name="experiencia"
+          rows={5}
+          required
+          minLength={20}
+          maxLength={MAX_EXPERIENCIA}
+          value={campos.experiencia}
+          onChange={mudar("experiencia")}
+          placeholder="Ex.: Trabalho com limpeza residencial há 5 anos, faço faxina completa e passadoria. Já atendi casas e escritórios."
+          className={`${classeCampo} h-auto py-3`}
+          aria-describedby="ajuda-experiencia"
+        />
+        <p id="ajuda-experiencia" className="mt-1 flex justify-between gap-4 text-pequeno text-texto-secundario">
+          <span>Há quanto tempo trabalha, que tipo de limpeza faz e onde já trabalhou.</span>
+          <span aria-live="polite">
+            {campos.experiencia.length}/{MAX_EXPERIENCIA}
+          </span>
+        </p>
+      </div>
+
+      <fieldset className="grid gap-5 rounded-card bg-superficie p-5 sm:grid-cols-2">
+        <legend className="sr-only">Referência (opcional)</legend>
+        <div className="sm:col-span-2">
+          <p className="font-medium">Referência (opcional)</p>
+          <p className="mt-1 text-pequeno text-texto-secundario">
+            Alguém que possa falar do seu trabalho, como uma ex-patroa. Avise a pessoa que a Império pode ligar.
+          </p>
+        </div>
+        <Campo
+          rotulo="Nome da referência"
+          name="referencia_nome"
+          autoComplete="off"
+          maxLength={100}
+          placeholder="Ex.: Maria Souza (ex-patroa)"
+          value={campos.referencia_nome}
+          onChange={mudar("referencia_nome")}
+          className="border-borda"
+        />
+        <Campo
+          rotulo="Telefone da referência"
+          name="referencia_telefone"
+          type="tel"
+          inputMode="numeric"
+          autoComplete="off"
+          // Preencheu o nome? Então o telefone passa a ser obrigatório (e vice-versa)
+          required={Boolean(campos.referencia_nome)}
+          pattern="\(\d{2}\) \d{4,5}-\d{4}"
+          title="Use o formato (11) 91234-5678"
+          placeholder="(XX) XXXXX-XXXX"
+          value={campos.referencia_telefone}
+          onChange={mudar("referencia_telefone", mascaraTelefone)}
+          className="border-borda"
+        />
+      </fieldset>
+
       <p className="text-pequeno text-texto-secundario">
-        Estes dados ficam protegidos: só você e a Império têm acesso. Clientes nunca veem seu CPF nem sua chave Pix.
+        Estes dados ficam protegidos: só você e a Império têm acesso. Clientes nunca veem seu CPF, sua chave Pix
+        nem sua referência.
       </p>
 
       <Button type="submit" variante="rosa-forte" disabled={enviando} className="self-start">

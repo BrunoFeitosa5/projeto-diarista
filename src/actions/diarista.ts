@@ -44,7 +44,8 @@ function nascimentoValido(valor: string): string | null {
   return `${ano}-${m[2]}-${m[1]}`;
 }
 
-// Dados sensíveis da diarista (tabela diaristas_privado: só ela e a admin leem)
+// Dados sensíveis da diarista (tabela diaristas_privado: só ela e a admin leem),
+// incluindo a referência (telefone de outra pessoa) e o resumo da experiência
 export async function salvarPerfilDiarista(_estado: EstadoPerfil, formData: FormData): Promise<EstadoPerfil> {
   const { perfil, supabase } = await exigirPapel("diarista");
 
@@ -53,8 +54,14 @@ export async function salvarPerfilDiarista(_estado: EstadoPerfil, formData: Form
   const nascimento = texto(formData, "nascimento");
   const tipoPix = texto(formData, "tipo_chave_pix");
   const chavePix = texto(formData, "chave_pix");
+  const referenciaNome = texto(formData, "referencia_nome").replace(/\s+/g, " ");
+  const referenciaTelefone = texto(formData, "referencia_telefone");
+  const experiencia = texto(formData, "experiencia");
 
-  const valores = { cpf, cnpj, nascimento, tipo_chave_pix: tipoPix, chave_pix: chavePix };
+  const valores = {
+    cpf, cnpj, nascimento, tipo_chave_pix: tipoPix, chave_pix: chavePix,
+    referencia_nome: referenciaNome, referencia_telefone: referenciaTelefone, experiencia,
+  };
   const falha = (erro: string): EstadoPerfil => ({ erro, valores });
 
   if (!cpfValido(cpf)) return falha("CPF inválido. Confira os números.");
@@ -65,6 +72,15 @@ export async function salvarPerfilDiarista(_estado: EstadoPerfil, formData: Form
   const pix = normalizarPix(tipoPix as TipoPix, chavePix);
   if (!pix) return falha("Chave Pix inválida para o tipo escolhido.");
 
+  // Referência é opcional, mas nome e telefone andam juntos (regra também no banco)
+  const telRef = soDigitos(referenciaTelefone);
+  if (referenciaNome || referenciaTelefone) {
+    if (referenciaNome.length < 2 || referenciaNome.length > 100) return falha("Escreva o nome da referência.");
+    if (telRef.length !== 10 && telRef.length !== 11) return falha("Telefone da referência inválido. Use (11) 91234-5678.");
+  }
+  if (experiencia.length < 20) return falha("Conte um pouco da sua experiência (pelo menos 20 letras).");
+  if (experiencia.length > 500) return falha("O resumo da experiência pode ter no máximo 500 letras.");
+
   // Pelo cliente do usuário: o RLS garante que ela só grava a própria linha
   const { error } = await supabase.from("diaristas_privado").upsert({
     diarista_id: perfil.id,
@@ -73,6 +89,9 @@ export async function salvarPerfilDiarista(_estado: EstadoPerfil, formData: Form
     data_nascimento: dataNascimento,
     chave_pix: pix,
     tipo_chave_pix: tipoPix,
+    referencia_nome: referenciaNome || null,
+    referencia_telefone: referenciaNome ? telRef : null,
+    experiencia,
     updated_at: new Date().toISOString(),
   });
 

@@ -30,7 +30,7 @@ export default async function DiaristaPage() {
 
   // O RLS devolve à diarista: vagas abertas, pedidos em que ela se candidatou e os aprovados para ela
   const [{ data: privado }, { data: pedidos }, { data: candidaturas }] = await Promise.all([
-    supabase.from("diaristas_privado").select("cpf, chave_pix").eq("diarista_id", perfil.id).maybeSingle(),
+    supabase.from("diaristas_privado").select("cpf, chave_pix, experiencia").eq("diarista_id", perfil.id).maybeSingle(),
     supabase
       .from("pedidos")
       .select("id, codigo, plano, valor_diarista, data, horario, bairro, cidade, observacoes, status, diarista_id, cliente_id")
@@ -40,7 +40,7 @@ export default async function DiaristaPage() {
     supabase.from("candidaturas").select("pedido_id").eq("diarista_id", perfil.id),
   ]);
 
-  const perfilCompleto = Boolean(privado?.cpf && privado?.chave_pix);
+  const perfilCompleto = Boolean(privado?.cpf && privado?.chave_pix && privado?.experiencia);
   const candidatou = new Set(candidaturas?.map((c) => c.pedido_id));
   const hoje = dataDaquiA(0);
 
@@ -82,7 +82,7 @@ export default async function DiaristaPage() {
         <div className="mt-8 rounded-card border-l-4 border-rosa-forte bg-superficie p-6">
           <p className="font-medium">Complete seu perfil para se candidatar</p>
           <p className="mt-1 text-texto-secundario">
-            Precisamos do seu CPF e da sua chave Pix.{" "}
+            Precisamos do seu CPF, da sua chave Pix e de um resumo da sua experiência.{" "}
             <Link href="/diarista/perfil" className="text-rosa-forte underline underline-offset-2">
               Completar agora
             </Link>

@@ -68,8 +68,11 @@ export default function PrivacidadePage() {
             bairro, cidade e ponto de referência), data, horário, plano escolhido e observações.
           </p>
           <p>
-            <strong>De diaristas, no perfil:</strong> CPF, chave Pix (e o tipo da chave) e, se informados,
-            CNPJ (MEI) e data de nascimento. Também registramos as vagas às quais a diarista se candidatou.
+            <strong>De diaristas, no perfil:</strong> CPF, chave Pix (e o tipo da chave), um resumo da
+            experiência profissional e, se informados, CNPJ (MEI), data de nascimento e o nome e o telefone de
+            uma pessoa de referência. Também registramos as vagas às quais a diarista se candidatou. A
+            diarista só deve indicar uma referência que concordou em ser procurada pela {SITE.nome}, e
+            usamos esse contato apenas para pedir informações sobre o trabalho dela.
           </p>
           <p>
             <strong>Automaticamente:</strong> o histórico de cada pedido (mudanças de status, com data e
@@ -83,7 +86,7 @@ export default function PrivacidadePage() {
             itens={[
               "Criar e proteger sua conta e permitir o login.",
               "Receber o pedido de limpeza, mostrar a vaga às diaristas e organizar o atendimento.",
-              "Avaliar as candidaturas e verificar a identidade das diaristas (CPF e, se houver, CNPJ), para a segurança dos clientes.",
+              "Avaliar as candidaturas, verificar a identidade das diaristas (CPF e, se houver, CNPJ) e, se for o caso, conversar com a referência indicada, para a segurança dos clientes.",
               "Pagar o repasse à diarista pela chave Pix.",
               "Falar com você pelo WhatsApp ou e-mail sobre o seu pedido ou a sua conta.",
               "Cumprir obrigações legais e nos defender em caso de reclamação ou processo.",
@@ -114,8 +117,9 @@ export default function PrivacidadePage() {
                 aprovar diaristas, acompanhar os pedidos e fazer os pagamentos.
               </>,
               <>
-                <strong>CPF, CNPJ, data de nascimento e chave Pix</strong> das diaristas ficam visíveis só
-                para a própria diarista e para a administração. Clientes não têm acesso a eles.
+                <strong>CPF, CNPJ, data de nascimento, chave Pix, experiência e referência</strong> das
+                diaristas ficam visíveis só para a própria diarista e para a administração. Clientes não têm
+                acesso a eles.
               </>,
             ]}
           />

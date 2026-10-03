@@ -133,6 +133,9 @@ Perfis: `cliente`, `diarista` e `admin`.
 - Rotas: `/diarista` (vagas abertas + "Meus serviços") e `/diarista/perfil`.
 - Perfil: CPF e chave Pix obrigatórios (com o tipo), CNPJ e nascimento
   opcionais; CPF/CNPJ conferidos pelos dígitos (`src/lib/documentos.ts`).
+  Resumo da experiência obrigatório (20 a 500 letras, a RPC `candidatar`
+  também exige) e referência opcional (nome + telefone, os dois juntos),
+  ambos em `diaristas_privado`; a admin vê no cartão da candidata.
   Grava em `diaristas_privado` pelo cliente do usuário (RLS). CNPJ e
   nascimento do Trabalhe Conosco vêm do `sessionStorage`.
 - "Me candidatar" chama a RPC `candidatar` e depois mostra o botão

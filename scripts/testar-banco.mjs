@@ -130,9 +130,25 @@ let enderecos = await linhas(`select * from pedido_enderecos`);
 ok(enderecos.length === 0, "diarista NÃO vê endereço de vaga aberta");
 
 erro = await erroDe(`select candidatar($1)`, [p1.id]);
-ok(erro?.includes("CPF e chave Pix"), "candidatura exige CPF e Pix no perfil", erro);
+ok(erro?.includes("CPF, chave Pix e experiência"), "candidatura exige CPF e Pix no perfil", erro);
 await db.query(
   `insert into diaristas_privado (diarista_id, cpf, chave_pix, tipo_chave_pix) values ($1, '111.111.111-11', 'maria@pix.com', 'email')`,
+  [d1],
+);
+erro = await erroDe(`select candidatar($1)`, [p1.id]);
+ok(erro?.includes("experiência"), "candidatura exige também a experiência", erro);
+erro = await erroDe(`update diaristas_privado set experiencia = 'curta' where diarista_id = $1`, [d1]);
+ok(erro?.includes("check"), "experiência muito curta é recusada pelo banco", erro);
+erro = await erroDe(`update diaristas_privado set referencia_nome = 'Ana Lima' where diarista_id = $1`, [d1]);
+ok(erro?.includes("referencia_completa"), "referência sem telefone é recusada (nome e telefone andam juntos)", erro);
+erro = await erroDe(
+  `update diaristas_privado set referencia_nome = 'Ana Lima', referencia_telefone = '(11) 9999' where diarista_id = $1`,
+  [d1],
+);
+ok(erro?.includes("check"), "telefone da referência fora do formato é recusado", erro);
+// Referência é opcional: só a experiência já libera a candidatura
+await db.query(
+  `update diaristas_privado set experiencia = 'Trabalho com limpeza residencial há 5 anos.' where diarista_id = $1`,
   [d1],
 );
 const [c1] = await linhas(`select candidatar($1) as codigo`, [p1.id]);
@@ -143,7 +159,8 @@ await linhas(`select candidatar($1)`, [p2.id]);
 
 await comoUsuario(d2);
 await db.query(
-  `insert into diaristas_privado (diarista_id, cpf, chave_pix, tipo_chave_pix) values ($1, '222.222.222-22', 'joana@pix.com', 'email')`,
+  `insert into diaristas_privado (diarista_id, cpf, chave_pix, tipo_chave_pix, experiencia, referencia_nome, referencia_telefone)
+   values ($1, '222.222.222-22', 'joana@pix.com', 'email', 'Faxinas e passadoria em apartamentos desde 2019.', 'Carla Dias', '11988887777')`,
   [d2],
 );
 await linhas(`select candidatar($1)`, [p1.id]);

@@ -7,7 +7,7 @@ import { EtiquetaStatus } from "@/components/painel/EtiquetaStatus";
 import { formatarData, formatarHorario } from "@/config/agendamento";
 import { formatarReais, PLANOS, textoRepasse, type PlanoId } from "@/config/planos";
 import { exigirPapel } from "@/lib/auth";
-import { mascaraCnpj, mascaraCpf } from "@/lib/mascaras";
+import { mascaraCnpj, mascaraCpf, mascaraTelefone } from "@/lib/mascaras";
 import { PODE_CANCELAR, PROXIMO_STATUS, STATUS, type StatusPedido } from "@/lib/status";
 import { linkWhatsAppPara } from "@/lib/whatsapp";
 
@@ -32,7 +32,16 @@ type Pedido = {
 };
 type Endereco = { cep: string; rua: string; numero: string; complemento: string | null; referencia: string | null };
 type Candidatura = { id: string; status: "pendente" | "aprovada" | "recusada"; created_at: string; diarista: Pessoa | null };
-type Privado = { diarista_id: string; cpf: string | null; cnpj: string | null; chave_pix: string | null; tipo_chave_pix: string | null };
+type Privado = {
+  diarista_id: string;
+  cpf: string | null;
+  cnpj: string | null;
+  chave_pix: string | null;
+  tipo_chave_pix: string | null;
+  referencia_nome: string | null;
+  referencia_telefone: string | null;
+  experiencia: string | null;
+};
 type Historico = { id: number; status_anterior: StatusPedido | null; status_novo: StatusPedido; alterado_por: string | null; created_at: string };
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -73,14 +82,14 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
       .overrideTypes<Historico[], { merge: false }>(),
   ]);
 
-  // CPF, CNPJ e Pix das candidatas (só a admin e a própria diarista leem)
+  // CPF, CNPJ, Pix, experiência e referência das candidatas (só a admin e a própria diarista leem)
   const idsDiaristas = (candidaturas ?? []).flatMap((c) => (c.diarista ? [c.diarista.id] : []));
   const idsAutores = [...new Set((historico ?? []).flatMap((h) => (h.alterado_por ? [h.alterado_por] : [])))];
   const [{ data: privados }, { data: autores }] = await Promise.all([
     idsDiaristas.length
       ? supabase
           .from("diaristas_privado")
-          .select("diarista_id, cpf, cnpj, chave_pix, tipo_chave_pix")
+          .select("diarista_id, cpf, cnpj, chave_pix, tipo_chave_pix, referencia_nome, referencia_telefone, experiencia")
           .in("diarista_id", idsDiaristas)
           .overrideTypes<Privado[], { merge: false }>()
       : Promise.resolve({ data: [] as Privado[] }),
@@ -136,9 +145,10 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
                 {candidaturas.map((c) => {
                   const privado = privados?.find((p) => p.diarista_id === c.diarista?.id);
                   return (
-                    <li key={c.id} className="flex flex-col gap-4 rounded-botao-lg border border-borda p-4 md:flex-row md:justify-between">
-                      <dl className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
-                        <Dado rotulo="Nome">{c.diarista?.nome ?? "—"}</Dado>
+                    // Dados em cima e ação embaixo: lado a lado, a confirmação espremia os dados
+                    <li key={c.id} className="flex flex-col rounded-botao-lg border border-borda">
+                      <p className="border-b border-borda px-4 py-3 text-h4">{c.diarista?.nome ?? "—"}</p>
+                      <dl className="grid gap-x-8 gap-y-4 p-4 sm:grid-cols-2">
                         <Dado rotulo="Telefone">
                           <Telefone numero={c.diarista?.telefone} mensagem={`Olá! Sobre a vaga ${pedido.codigo} da Império Diarista.`} />
                         </Dado>
@@ -148,8 +158,27 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
                           {privado?.chave_pix ? `${privado.chave_pix} (${privado.tipo_chave_pix})` : "—"}
                         </Dado>
                         <Dado rotulo="Candidatou-se em">{dataHora(c.created_at)}</Dado>
+                        <Dado rotulo="Referência">
+                          {privado?.referencia_nome ? (
+                            <>
+                              {privado.referencia_nome}
+                              <br />
+                              <Telefone
+                                numero={privado.referencia_telefone && mascaraTelefone(privado.referencia_telefone)}
+                                mensagem={`Olá! Aqui é da Império Diarista. ${c.diarista?.nome ?? "Uma diarista"} indicou você como referência. Pode falar um minuto?`}
+                              />
+                            </>
+                          ) : (
+                            "Não informou"
+                          )}
+                        </Dado>
+                        <div className="sm:col-span-2">
+                          <Dado rotulo="Experiência">
+                            <span className="whitespace-pre-line">{privado?.experiencia ?? "—"}</span>
+                          </Dado>
+                        </div>
                       </dl>
-                      <div className="shrink-0">
+                      <div className="border-t border-borda px-4 py-3">
                         {podeAprovar && c.status === "pendente" ? (
                           <BotaoAcaoAdmin
                             acao={aprovarCandidatura.bind(null, c.id)}

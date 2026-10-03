@@ -95,7 +95,7 @@ export function FormCadastro({ papelInicial }: { papelInicial: PapelCadastro }) 
 
       {papel === "diarista" && (
         <p className="text-pequeno text-texto-secundario">
-          Depois de entrar, complete seu perfil com CPF e chave Pix para poder se candidatar às vagas.
+          Depois de entrar, complete seu perfil com CPF, chave Pix e sua experiência para poder se candidatar às vagas.
         </p>
       )}
 
