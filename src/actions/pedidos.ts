@@ -9,6 +9,8 @@ import type { EstadoForm } from "./auth";
 
 const texto = (formData: FormData, campo: string) => String(formData.get(campo) ?? "").trim();
 
+const LIMITE_LIMPEZA_EXTRA = 200;
+
 // Os valores voltam junto com o erro para o formulário não perder o que foi digitado
 export type EstadoPedido = (EstadoForm & { valores?: Record<string, string> }) | null;
 
@@ -28,10 +30,12 @@ export async function criarPedido(_estado: EstadoPedido, formData: FormData): Pr
   const referencia = texto(formData, "referencia");
   const bairro = texto(formData, "bairro");
   const cidade = texto(formData, "cidade");
-  const observacoes = texto(formData, "observacoes");
+  const limpezaExtra = texto(formData, "limpeza_extra");
+  const observacoesDigitadas = texto(formData, "observacoes");
 
   const valores = {
-    plano, data, horario, cep: texto(formData, "cep"), rua, numero, complemento, referencia, bairro, cidade, observacoes,
+    plano, data, horario, cep: texto(formData, "cep"), rua, numero, complemento, referencia, bairro, cidade,
+    limpezaExtra, observacoes: observacoesDigitadas,
   };
   const falha = (erro: string): EstadoPedido => ({ erro, valores });
 
@@ -46,10 +50,20 @@ export async function criarPedido(_estado: EstadoPedido, formData: FormData): Pr
   if (
     [rua, bairro, cidade, complemento, referencia].some((v) => v.length > 120) ||
     numero.length > 20 ||
-    observacoes.length > 500
+    limpezaExtra.length > LIMITE_LIMPEZA_EXTRA ||
+    observacoesDigitadas.length > 500
   ) {
     return falha("Algum campo passou do tamanho permitido. Encurte o texto e tente de novo.");
   }
+
+  // A limpeza à parte (eletrodomésticos etc.) tem valor extra combinado pela Império.
+  // Vai junto das observações, que diaristas e admin já leem.
+  const observacoes = [
+    limpezaExtra && `Limpeza à parte (valor a combinar): ${limpezaExtra}`,
+    observacoesDigitadas,
+  ]
+    .filter(Boolean)
+    .join(" | ");
 
   const { precoCliente, repasseDiarista } = PLANOS[plano as PlanoId];
 

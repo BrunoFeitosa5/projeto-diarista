@@ -142,8 +142,28 @@ export function FormNovoPedido({ planoInicial, dataMinima, dataMaxima }: Props) 
       </fieldset>
 
       <div>
+        <label htmlFor="campo-limpeza-extra" className={`${classeRotulo} text-h4!`}>
+          4. Limpeza à parte (opcional)
+        </label>
+        <textarea
+          id="campo-limpeza-extra"
+          name="limpeza_extra"
+          rows={2}
+          maxLength={200}
+          defaultValue={v?.limpezaExtra}
+          placeholder="Ex.: interior da geladeira, forno, micro-ondas, fogão..."
+          className={`${classeCampo} h-auto py-3`}
+          aria-describedby="ajuda-limpeza-extra"
+        />
+        <p id="ajuda-limpeza-extra" className="mt-1 text-pequeno text-texto-secundario">
+          Limpeza de eletrodomésticos ou algo fora da diária tem um valor à parte, que a Império combina com você pelo
+          WhatsApp. Deixe em branco se não precisar.
+        </p>
+      </div>
+
+      <div>
         <label htmlFor="campo-observacoes" className={`${classeRotulo} text-h4!`}>
-          4. Observações
+          5. Observações
         </label>
         <textarea
           id="campo-observacoes"
