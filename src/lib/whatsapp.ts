@@ -20,7 +20,8 @@ export function linkWhatsAppDiaristas(mensagem?: string): string {
 // não deixa o site adicionar ninguém ao grupo: a diarista aprovada entra pelo convite.
 // Sem a variável, os botões do grupo não aparecem.
 export function linkGrupoDiaristas(): string | null {
-  const link = (process.env.NEXT_PUBLIC_WHATSAPP_GRUPO_DIARISTAS ?? "").trim();
+  // Sem NEXT_PUBLIC_: quem tem o link entra no grupo, então só páginas de servidor leem
+  const link = (process.env.WHATSAPP_GRUPO_DIARISTAS ?? "").trim();
   return link.startsWith("https://chat.whatsapp.com/") ? link : null;
 }
 
