@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
-import { aprovarCandidatura, marcarPublicadoGrupo, mudarStatus } from "@/actions/admin";
+import { aprovarCandidatura, escolherDiarista, marcarPublicadoGrupo, mudarStatus } from "@/actions/admin";
 import { BotaoAcaoAdmin } from "@/components/painel/admin/BotaoAcaoAdmin";
 import { PublicarNoGrupo } from "@/components/painel/admin/PublicarNoGrupo";
 import { botaoClasses } from "@/components/ui/Button";
@@ -181,6 +181,29 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
   const valorDiarista = Number(pedido.valor_diarista);
   const proximo = PROXIMO_STATUS[pedido.status];
   const podeAprovar = pedido.status === "candidatura_recebida";
+  const aceitaDiarista = pedido.status === "aberta" || pedido.status === "candidatura_recebida";
+
+  // Diaristas verificadas que a dona pode escolher direto (sem candidatura pelo site)
+  let opcoes: { id: string; nome: string; telefone: string | null; privado: Privado | undefined; chamou: boolean }[] = [];
+  if (aceitaDiarista) {
+    const { data: verificadas } = await supabase.from("diaristas_verificadas").select("diarista_id");
+    const ids = (verificadas ?? []).map((v) => v.diarista_id as string);
+    if (ids.length) {
+      const [{ data: perfis }, { data: priv }] = await Promise.all([
+        supabase.from("profiles").select("id, nome, telefone").in("id", ids).order("nome").overrideTypes<Pessoa[], { merge: false }>(),
+        supabase
+          .from("diaristas_privado")
+          .select("diarista_id, cpf, cnpj, chave_pix, tipo_chave_pix, referencia_nome, referencia_telefone, experiencia")
+          .in("diarista_id", ids)
+          .overrideTypes<Privado[], { merge: false }>(),
+      ]);
+      const chamaram = new Set((candidaturas ?? []).flatMap((c) => (c.diarista ? [c.diarista.id] : [])));
+      opcoes = (perfis ?? [])
+        .map((d) => ({ ...d, privado: priv?.find((p) => p.diarista_id === d.id), chamou: chamaram.has(d.id) }))
+        // Quem já se candidatou pelo site aparece primeiro
+        .sort((x, y) => Number(y.chamou) - Number(x.chamou));
+    }
+  }
 
   return (
     <section className="mx-auto max-w-site px-4 py-14 md:px-20 md:py-20">
@@ -320,6 +343,79 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
               </ul>
             )}
           </Cartao>
+
+          {aceitaDiarista && (
+            <Cartao titulo="Escolher uma diarista verificada">
+              <p className="text-texto-secundario">
+                Use quando a diarista chamou a Império no WhatsApp (S.O.S Diaristas) pedindo este serviço. Só aparecem
+                diaristas verificadas. Quem se candidatou pelo site fica no topo.
+              </p>
+              {opcoes.length === 0 ? (
+                <p className="mt-4 text-texto-secundario">
+                  Nenhuma diarista verificada ainda.{" "}
+                  <Link href="/admin/diaristas" className="text-rosa-forte underline underline-offset-2">
+                    Verificar diaristas
+                  </Link>
+                </p>
+              ) : (
+                <ul className="mt-4 flex flex-col gap-4">
+                  {opcoes.map((d) => {
+                    const completa = Boolean(d.privado?.cpf && d.privado?.chave_pix);
+                    return (
+                      <li key={d.id} className="flex flex-col rounded-botao-lg border border-borda">
+                        <p className="flex flex-wrap items-center gap-3 border-b border-borda px-4 py-3 text-h4">
+                          {d.nome || "—"}
+                          {d.chamou && (
+                            <span className="rounded-full bg-menta px-3 py-1 text-pequeno font-normal">
+                              Candidatou-se pelo site
+                            </span>
+                          )}
+                        </p>
+                        <dl className="grid gap-x-8 gap-y-4 p-4 sm:grid-cols-2">
+                          <Dado rotulo="WhatsApp">
+                            <Telefone numero={d.telefone} mensagem={`Olá! Sobre o serviço ${pedido.codigo} da Império Diarista.`} />
+                          </Dado>
+                          <Dado rotulo="Referência">
+                            {d.privado?.referencia_nome ? (
+                              <>
+                                {d.privado.referencia_nome}
+                                <br />
+                                <Telefone
+                                  numero={d.privado.referencia_telefone && mascaraTelefone(d.privado.referencia_telefone)}
+                                  mensagem={`Olá! Aqui é da Império Diarista. ${d.nome || "Uma diarista"} indicou você como referência. Pode falar um minuto?`}
+                                />
+                              </>
+                            ) : (
+                              "Não informou"
+                            )}
+                          </Dado>
+                          <div className="sm:col-span-2">
+                            <Dado rotulo="Experiência">
+                              <span className="whitespace-pre-line">{d.privado?.experiencia ?? "—"}</span>
+                            </Dado>
+                          </div>
+                        </dl>
+                        <div className="border-t border-borda px-4 py-3">
+                          {completa ? (
+                            <BotaoAcaoAdmin
+                              acao={escolherDiarista.bind(null, pedido.id, d.id)}
+                              rotulo="Escolher esta diarista"
+                              variante="verde"
+                              confirmacao={`Escolher ${d.nome || "esta diarista"} para ${pedido.codigo}? As outras candidatas serão recusadas.`}
+                            />
+                          ) : (
+                            <span className="text-pequeno text-texto-secundario">
+                              Ainda não preencheu CPF e chave Pix no perfil: não dá para escolher.
+                            </span>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </Cartao>
+          )}
 
           <Cartao titulo="Serviço">
             <dl className="grid gap-4 sm:grid-cols-2">

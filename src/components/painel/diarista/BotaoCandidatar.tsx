@@ -6,11 +6,11 @@ import { candidatar } from "@/actions/diarista";
 import { Button, botaoClasses } from "@/components/ui/Button";
 import { linkWhatsAppDiaristas } from "@/lib/whatsapp";
 
-type Props = { pedidoId: string; codigo: string; nomeDiarista: string; jaCandidatou: boolean; perfilCompleto: boolean };
+type Props = { pedidoId: string; codigo: string; nomeDiarista: string; jaCandidatou: boolean; perfilCompleto: boolean; verificada: boolean };
 
 // Candidata a diarista e mostra o botão para avisar a dona no WhatsApp.
 // O WhatsApp abre por um clique da própria diarista (abrir sozinho seria bloqueado pelo navegador).
-export function BotaoCandidatar({ pedidoId, codigo, nomeDiarista, jaCandidatou, perfilCompleto }: Props) {
+export function BotaoCandidatar({ pedidoId, codigo, nomeDiarista, jaCandidatou, perfilCompleto, verificada }: Props) {
   const [enviando, iniciar] = useTransition();
   const [erro, setErro] = useState<string | null>(null);
 
@@ -19,6 +19,15 @@ export function BotaoCandidatar({ pedidoId, codigo, nomeDiarista, jaCandidatou, 
       <Link href="/diarista/perfil" className="text-pequeno text-rosa-forte underline underline-offset-2">
         Complete seu perfil para se candidatar
       </Link>
+    );
+  }
+
+  if (!verificada && !jaCandidatou) {
+    return (
+      <span className="text-pequeno text-texto-secundario md:text-right">
+        Disponível depois que a Império
+        <br className="hidden md:inline" /> verificar seu cadastro
+      </span>
     );
   }
 

@@ -220,6 +220,7 @@ export default async function DiaristaPage() {
                   nomeDiarista={perfil.nome}
                   jaCandidatou={candidatou.has(v.id)}
                   perfilCompleto={perfilCompleto}
+                  verificada={verificada}
                 />
               </li>
             ))}

@@ -16,6 +16,10 @@ function mensagemDoBanco(mensagem: string | undefined): string {
   if (mensagem?.startsWith("Mudança de status inválida")) {
     return "Essa mudança de status não é permitida agora. Recarregue a página.";
   }
+  // Mensagens do banco já escritas em português para a admin
+  if (mensagem?.startsWith("Esta diarista") || mensagem?.startsWith("Este pedido não está aguardando diarista")) {
+    return mensagem.replace(/ \(status: .*\)\.$/, ".");
+  }
   if (mensagem?.startsWith("Este pedido não está mais aberto")) {
     return "Este pedido não está mais aberto para vagas. Recarregue a página.";
   }
@@ -50,6 +54,17 @@ export async function marcarPublicadoGrupo(pedidoId: string): Promise<ResultadoA
   if (!UUID.test(pedidoId)) return { erro: "Pedido inválido." };
 
   const { error } = await supabase.rpc("marcar_publicado_grupo", { p_pedido_id: pedidoId });
+  if (error) return { erro: mensagemDoBanco(error.message) };
+
+  refresh();
+  return { ok: true };
+}
+
+export async function escolherDiarista(pedidoId: string, diaristaId: string): Promise<ResultadoAdmin> {
+  const { supabase } = await exigirPapel("admin");
+  if (!UUID.test(pedidoId) || !UUID.test(diaristaId)) return { erro: "Pedido ou diarista inválidos." };
+
+  const { error } = await supabase.rpc("escolher_diarista", { p_pedido_id: pedidoId, p_diarista_id: diaristaId });
   if (error) return { erro: mensagemDoBanco(error.message) };
 
   refresh();

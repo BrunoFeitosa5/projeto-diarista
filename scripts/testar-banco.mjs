@@ -151,6 +151,11 @@ await db.query(
   `update diaristas_privado set experiencia = 'Trabalho com limpeza residencial há 5 anos.' where diarista_id = $1`,
   [d1],
 );
+erro = await erroDe(`select candidatar($1)`, [p1.id]);
+ok(erro?.includes("não foi verificado"), "candidatura exige cadastro verificado pela admin", erro);
+await comoUsuario(dona);
+await linhas(`select verificar_diarista($1, true)`, [d1]);
+await comoUsuario(d1);
 const [c1] = await linhas(`select candidatar($1) as codigo`, [p1.id]);
 ok(c1.codigo === "IMP-000001", "candidatar devolve o código para a mensagem do WhatsApp");
 await linhas(`select candidatar($1)`, [p1.id]);
@@ -163,6 +168,9 @@ await db.query(
    values ($1, '222.222.222-22', 'joana@pix.com', 'email', 'Faxinas e passadoria em apartamentos desde 2019.', 'Carla Dias', '11988887777')`,
   [d2],
 );
+await comoUsuario(dona);
+await linhas(`select verificar_diarista($1, true)`, [d2]);
+await comoUsuario(d2);
 await linhas(`select candidatar($1)`, [p1.id]);
 await linhas(`select candidatar($1)`, [p3.id]);
 let pix = await linhas(`select * from diaristas_privado`);
@@ -285,16 +293,16 @@ erro = await erroDe(`select verificar_diarista($1, true)`, [cliente]);
 ok(erro?.includes("não encontrada"), "não verifica quem não é diarista", erro);
 await linhas(`select verificar_diarista($1, true)`, [d1]);
 await linhas(`select verificar_diarista($1, true)`, [d1]);
-ok((await linhas(`select * from diaristas_verificadas`)).length === 1, "verificar duas vezes não duplica");
+ok((await linhas(`select * from diaristas_verificadas where diarista_id = $1`, [d1])).length === 1, "verificar duas vezes não duplica");
 await comoUsuario(d1);
 ok((await linhas(`select * from diaristas_verificadas`)).length === 1, "Maria vê a própria verificação");
 await comoUsuario(d2);
-ok((await linhas(`select * from diaristas_verificadas`)).length === 0, "Joana não vê a verificação da Maria");
+ok(!(await linhas(`select * from diaristas_verificadas`)).some((v) => v.diarista_id === d1), "Joana não vê a verificação da Maria");
 await comoUsuario(cliente);
 ok((await linhas(`select * from diaristas_verificadas`)).length === 0, "cliente não vê verificações");
 await comoUsuario(dona);
 await linhas(`select verificar_diarista($1, false)`, [d1]);
-ok((await linhas(`select * from diaristas_verificadas`)).length === 0, "admin remove a verificação");
+ok((await linhas(`select * from diaristas_verificadas where diarista_id = $1`, [d1])).length === 0, "admin remove a verificação");
 
 secao("7c. Pedido publicado no grupo");
 await comoUsuario(d1);
@@ -313,6 +321,62 @@ await linhas(`select marcar_publicado_grupo($1)`, [p2.id]);
 ok(ped.publicado_grupo_em !== null, "admin marca o pedido como publicado");
 await linhas(`select marcar_publicado_grupo($1)`, [p2.id]);
 ok(true, "publicar de novo não dá erro");
+
+secao("7d. Escolher a diarista direto no pedido");
+// Cenário: Maria (d1) está sem verificação; Joana (d2) verificada e com perfil completo
+await comoServidor();
+const [p4] = await linhas(sqlCriar, argsPedido(amanha));
+const d3 = await cadastrar("d3@teste.com", { nome: "Rita", papel: "diarista" });
+await comoUsuario(dona);
+await linhas(`select verificar_diarista($1, true)`, [d3]);
+
+await comoUsuario(d2);
+erro = await erroDe(`select escolher_diarista($1, $2)`, [p4.id, d2]);
+ok(erro?.includes("Somente a admin"), "diarista não se escolhe sozinha", erro);
+await comoUsuario(cliente);
+erro = await erroDe(`select escolher_diarista($1, $2)`, [p4.id, d2]);
+ok(erro?.includes("Somente a admin"), "cliente não escolhe diarista", erro);
+await comoUsuario(d1);
+erro = await erroDe(`select candidatar($1)`, [p4.id]);
+ok(erro?.includes("não foi verificado"), "sem verificação, Maria não se candidata", erro);
+
+await comoUsuario(dona);
+erro = await erroDe(`select escolher_diarista($1, $2)`, [p4.id, d1]);
+ok(erro?.includes("não foi verificada"), "admin não escolhe diarista sem verificação", erro);
+erro = await erroDe(`select escolher_diarista($1, $2)`, [p4.id, d3]);
+ok(erro?.includes("completou o perfil"), "admin não escolhe diarista sem CPF e Pix", erro);
+erro = await erroDe(`select escolher_diarista($1, $2)`, [p4.id, cliente]);
+ok(erro?.includes("não encontrada"), "admin não escolhe quem não é diarista", erro);
+
+await linhas(`select escolher_diarista($1, $2)`, [p4.id, d2]);
+[ped] = await linhas(`select status, diarista_id from pedidos where id = $1`, [p4.id]);
+ok(ped.status === "aprovada" && ped.diarista_id === d2, "pedido aberto vai direto para aprovada com a Joana");
+const histP4 = await linhas(`select status_novo from pedido_historico where pedido_id = $1 order by id`, [p4.id]);
+ok(
+  histP4.map((h) => h.status_novo).join(",") === "aberta,candidatura_recebida,aprovada",
+  "histórico registra as etapas",
+  histP4.map((h) => h.status_novo).join(","),
+);
+erro = await erroDe(`select escolher_diarista($1, $2)`, [p4.id, d2]);
+ok(erro?.includes("não está aguardando"), "pedido já aprovado não aceita nova escolha", erro);
+await comoUsuario(d2);
+ok((await linhas(`select * from pedido_enderecos where pedido_id = $1`, [p4.id])).length === 1, "Joana escolhida vê o endereço do pedido");
+
+// Pedido com candidatura pendente de outra diarista: a escolha direta recusa a candidata
+await comoServidor();
+const [p5] = await linhas(sqlCriar, argsPedido(amanha));
+await comoUsuario(dona);
+await linhas(`select verificar_diarista($1, true)`, [d1]);
+await comoUsuario(d1);
+await linhas(`select candidatar($1)`, [p5.id]);
+await comoUsuario(dona);
+await linhas(`select escolher_diarista($1, $2)`, [p5.id, d2]);
+const candsP5 = await linhas(`select diarista_id, status from candidaturas where pedido_id = $1`, [p5.id]);
+ok(
+  candsP5.find((c) => c.diarista_id === d2)?.status === "aprovada" &&
+    candsP5.find((c) => c.diarista_id === d1)?.status === "recusada",
+  "escolha direta aprova a Joana e recusa a candidata do site",
+);
 
 secao("8. Visitante sem login");
 await comoAnonimo();
