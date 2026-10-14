@@ -2,9 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Aviso } from "@/components/auth/Aviso";
 import { EtiquetaStatus } from "@/components/painel/EtiquetaStatus";
+import { EnviarPedidoWhatsApp } from "@/components/painel/cliente/EnviarPedidoWhatsApp";
 import { botaoClasses } from "@/components/ui/Button";
 import { formatarData, formatarHorario } from "@/config/agendamento";
 import { formatarReais, PLANOS, type PlanoId } from "@/config/planos";
+import { SITE } from "@/config/site";
 import { exigirPapel } from "@/lib/auth";
 import { STATUS, STATUS_COM_DIARISTA, type StatusPedido } from "@/lib/status";
 import { linkWhatsApp } from "@/lib/whatsapp";
@@ -66,6 +68,26 @@ export default async function PedidoClientePage({ params, searchParams }: PagePr
   const plano = PLANOS[pedido.plano];
   const whatsapp = linkWhatsApp(`Olá! Sou cliente da Império Diarista e quero falar sobre o pedido ${pedido.codigo}.`);
 
+  // Pedido completo para a Império (sem emojis, que o link wa.me às vezes estraga)
+  const whatsappPedido = linkWhatsApp(
+    [
+      `Olá! Acabei de agendar uma diária no site da ${SITE.nome}.`,
+      "",
+      `*Pedido:* ${pedido.codigo}`,
+      `*Cliente:* ${perfil.nome}`,
+      `*Plano:* ${plano.horas} horas (${plano.metragem})`,
+      `*Valor:* ${formatarReais(Number(pedido.valor_cliente))}`,
+      `*Data:* ${formatarData(pedido.data)} às ${formatarHorario(pedido.horario)}`,
+      endereco
+        ? `*Endereço:* ${endereco.rua}, ${endereco.numero}${endereco.complemento ? ` - ${endereco.complemento}` : ""}, ${pedido.bairro}, ${pedido.cidade} - CEP ${endereco.cep}`
+        : `*Local:* ${pedido.bairro}, ${pedido.cidade}`,
+      endereco?.referencia ? `*Ponto de referência:* ${endereco.referencia}` : null,
+      pedido.observacoes ? `*Observações:* ${pedido.observacoes}` : null,
+    ]
+      .filter((linha) => linha !== null)
+      .join("\n"),
+  );
+
   return (
     <section className="mx-auto max-w-site px-4 py-14 md:px-20 md:py-20">
       <Link href="/cliente" className="text-pequeno text-rosa-forte underline underline-offset-2">
@@ -73,10 +95,11 @@ export default async function PedidoClientePage({ params, searchParams }: PagePr
       </Link>
 
       {novo && (
-        <div className="mt-6">
+        <div className="mt-6 flex flex-col gap-4">
           <Aviso tipo="sucesso">
             Pedido {pedido.codigo} criado! Avisaremos as diaristas e você acompanha tudo por aqui.
           </Aviso>
+          <EnviarPedidoWhatsApp href={whatsappPedido} codigo={pedido.codigo} abrirSozinho />
         </div>
       )}
 

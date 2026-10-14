@@ -11,7 +11,7 @@ import { SITE } from "@/config/site";
 import { exigirPapel } from "@/lib/auth";
 import { mascaraCep, mascaraCnpj, mascaraCpf, mascaraTelefone } from "@/lib/mascaras";
 import { PODE_CANCELAR, PROXIMO_STATUS, STATUS, type StatusPedido } from "@/lib/status";
-import { linkWhatsAppPara } from "@/lib/whatsapp";
+import { linkGrupoDiaristas, linkWhatsAppEscolherConversa, linkWhatsAppPara } from "@/lib/whatsapp";
 
 export const metadata = { title: "Pedido | Administração | Império Diarista" };
 
@@ -85,8 +85,24 @@ function mensagemAprovada(nome: string, pedido: Pedido, endereco: Endereco | nul
     `Chave Pix: ${privado?.chave_pix ? `${chavePixFormatada(privado.chave_pix, privado.tipo_chave_pix)} (${NOME_PIX[privado.tipo_chave_pix ?? ""] ?? privado.tipo_chave_pix})` : "não informada"}`,
     "",
     "Se algum dado estiver errado ou se tiver qualquer dúvida, fale com a gente por aqui. Por favor, confirme que recebeu esta mensagem.",
+    linkGrupoDiaristas() ? "" : null,
+    linkGrupoDiaristas() ? `Entre no grupo das diaristas da ${SITE.nome} para receber os avisos: ${linkGrupoDiaristas()}` : null,
   ];
   return linhas.filter((l) => l !== null).join("\n");
+}
+
+// Aviso para o grupo das diaristas. Todas as diaristas do grupo leem, então leva só o
+// que as vagas já mostram (data, plano, bairro e cidade): nunca endereço, nome do
+// cliente, CPF ou Pix, que ficam só com a diarista aprovada.
+function mensagemGrupo(nome: string, pedido: Pedido) {
+  const plano = PLANOS[pedido.plano];
+  return [
+    `*Serviço ${pedido.codigo} preenchido!*`,
+    `*Diarista aprovada:* ${nome}`,
+    `*Data:* ${formatarData(pedido.data)} às ${formatarHorario(pedido.horario)}`,
+    `*Plano:* ${plano.horas} horas (${plano.metragem})`,
+    `*Local:* ${pedido.bairro}, ${pedido.cidade}`,
+  ].join("\n");
 }
 
 export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedidos/[id]">) {
@@ -239,6 +255,21 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
                             <span className="text-pequeno text-texto-secundario">
                               Abre a conversa com a diarista e os detalhes do serviço já escritos. É só tocar em Enviar.
                             </span>
+                            {linkGrupoDiaristas() && (
+                              <>
+                                <a
+                                  href={linkWhatsAppEscolherConversa(mensagemGrupo(c.diarista.nome, pedido))}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className={botaoClasses("verde", "padrao", "mt-2 py-3! text-pequeno!")}
+                                >
+                                  Avisar o grupo das diaristas
+                                </a>
+                                <span className="text-pequeno text-texto-secundario">
+                                  Escolha o grupo na lista do WhatsApp. O aviso leva só data, plano e bairro.
+                                </span>
+                              </>
+                            )}
                           </div>
                         ) : (
                           <span className="text-pequeno font-medium">{NOME_CANDIDATURA[c.status]}</span>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useTransition } from "react";
 import { candidatar } from "@/actions/diarista";
 import { Button, botaoClasses } from "@/components/ui/Button";
-import { linkWhatsApp } from "@/lib/whatsapp";
+import { linkWhatsAppDiaristas } from "@/lib/whatsapp";
 
 type Props = { pedidoId: string; codigo: string; nomeDiarista: string; jaCandidatou: boolean; perfilCompleto: boolean };
 
@@ -28,7 +28,7 @@ export function BotaoCandidatar({ pedidoId, codigo, nomeDiarista, jaCandidatou, 
       <div className="flex flex-col items-start gap-2 md:items-end">
         <span className="text-pequeno font-medium text-marinho">✓ Candidatura enviada</span>
         <a
-          href={linkWhatsApp(mensagem)}
+          href={linkWhatsAppDiaristas(mensagem)}
           target="_blank"
           rel="noopener noreferrer"
           className={botaoClasses("verde", "padrao", "py-3! text-pequeno!")}
