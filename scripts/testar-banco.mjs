@@ -296,6 +296,24 @@ await comoUsuario(dona);
 await linhas(`select verificar_diarista($1, false)`, [d1]);
 ok((await linhas(`select * from diaristas_verificadas`)).length === 0, "admin remove a verificação");
 
+secao("7c. Pedido publicado no grupo");
+await comoUsuario(d1);
+erro = await erroDe(`select marcar_publicado_grupo($1)`, [p2.id]);
+ok(erro?.includes("Somente a admin"), "diarista não marca pedido como publicado", erro);
+await comoUsuario(cliente);
+erro = await erroDe(`select marcar_publicado_grupo($1)`, [p2.id]);
+ok(erro?.includes("Somente a admin"), "cliente não marca pedido como publicado", erro);
+erro = await erroDe(`update pedidos set publicado_grupo_em = now() where id = $1`, [p2.id]);
+ok(erro !== null, "ninguém do app grava a coluna direto", erro);
+await comoUsuario(dona);
+erro = await erroDe(`select marcar_publicado_grupo($1)`, [p1.id]);
+ok(erro?.includes("não está mais aberto"), "não publica pedido concluído", erro);
+await linhas(`select marcar_publicado_grupo($1)`, [p2.id]);
+[ped] = await linhas(`select publicado_grupo_em from pedidos where id = $1`, [p2.id]);
+ok(ped.publicado_grupo_em !== null, "admin marca o pedido como publicado");
+await linhas(`select marcar_publicado_grupo($1)`, [p2.id]);
+ok(true, "publicar de novo não dá erro");
+
 secao("8. Visitante sem login");
 await comoAnonimo();
 for (const t of ["profiles", "nomes_visiveis", "pedidos", "pedido_enderecos", "diaristas_privado", "candidaturas", "pedido_historico", "diaristas_verificadas"]) {

@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
-import { aprovarCandidatura, mudarStatus } from "@/actions/admin";
+import { aprovarCandidatura, marcarPublicadoGrupo, mudarStatus } from "@/actions/admin";
 import { BotaoAcaoAdmin } from "@/components/painel/admin/BotaoAcaoAdmin";
+import { PublicarNoGrupo } from "@/components/painel/admin/PublicarNoGrupo";
 import { botaoClasses } from "@/components/ui/Button";
 import { EtiquetaStatus } from "@/components/painel/EtiquetaStatus";
 import { formatarData, formatarHorario } from "@/config/agendamento";
@@ -11,7 +12,12 @@ import { SITE } from "@/config/site";
 import { exigirPapel } from "@/lib/auth";
 import { mascaraCep, mascaraCnpj, mascaraCpf, mascaraTelefone } from "@/lib/mascaras";
 import { PODE_CANCELAR, PROXIMO_STATUS, STATUS, type StatusPedido } from "@/lib/status";
-import { linkGrupoDiaristas, linkWhatsAppEscolherConversa, linkWhatsAppPara } from "@/lib/whatsapp";
+import {
+  linkGrupoDiaristas,
+  linkWhatsAppDiaristas,
+  linkWhatsAppEscolherConversa,
+  linkWhatsAppPara,
+} from "@/lib/whatsapp";
 
 export const metadata = { title: "Pedido | Administração | Império Diarista" };
 
@@ -29,6 +35,7 @@ type Pedido = {
   observacoes: string | null;
   status: StatusPedido;
   created_at: string;
+  publicado_grupo_em: string | null;
   cliente: Pessoa | null;
   diarista: Pessoa | null;
 };
@@ -105,6 +112,23 @@ function mensagemGrupo(nome: string, pedido: Pedido) {
   ].join("\n");
 }
 
+// Vaga nova para o grupo. Leva só o que as diaristas já veem na lista de vagas (sem
+// endereço, nome do cliente nem valor: o valor a dona combina no privado). O link
+// leva ao WhatsApp do S.O.S Diaristas com o código do pedido já escrito.
+function mensagemVaga(pedido: Pedido) {
+  const plano = PLANOS[pedido.plano];
+  const interesse = linkWhatsAppDiaristas(`Olá! Tenho interesse no serviço ${pedido.codigo}.`);
+  return [
+    `*Novo serviço: ${pedido.codigo}*`,
+    `*Data:* ${formatarData(pedido.data)} às ${formatarHorario(pedido.horario)}`,
+    `*Plano:* ${plano.horas} horas (${plano.metragem})`,
+    `*Local:* ${pedido.bairro}, ${pedido.cidade}`,
+    "",
+    "Quer pegar este serviço? Toque no link e fale com a S.O.S Diaristas, já com o número do pedido:",
+    interesse,
+  ].join("\n");
+}
+
 export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedidos/[id]">) {
   const { supabase } = await exigirPapel("admin");
   const { id } = await params;
@@ -113,7 +137,7 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
   const { data: pedido } = await supabase
     .from("pedidos")
     .select(
-      "id, codigo, plano, valor_cliente, valor_diarista, data, horario, bairro, cidade, observacoes, status, created_at, " +
+      "id, codigo, plano, valor_cliente, valor_diarista, data, horario, bairro, cidade, observacoes, status, created_at, publicado_grupo_em, " +
         "cliente:profiles!pedidos_cliente_id_fkey(id, nome, telefone), diarista:profiles!pedidos_diarista_id_fkey(id, nome, telefone)",
     )
     .eq("id", id)
@@ -186,6 +210,21 @@ export default async function PedidoAdminPage({ params }: PageProps<"/admin/pedi
               confirmacao="Cancelar este pedido? Não dá para desfazer."
             />
           )}
+        </div>
+      )}
+
+      {(pedido.status === "aberta" || pedido.status === "candidatura_recebida") && (
+        <div className="mt-6 rounded-card border-l-4 border-rosa-forte bg-superficie p-6">
+          <p className="font-medium">Publicar a vaga no grupo das diaristas</p>
+          <p className="mt-1 mb-4 text-texto-secundario">
+            O aviso leva só data, plano e bairro, com o link para a diarista chamar o S.O.S Diaristas já com o número do
+            pedido.
+          </p>
+          <PublicarNoGrupo
+            href={linkWhatsAppEscolherConversa(mensagemVaga(pedido))}
+            marcar={marcarPublicadoGrupo.bind(null, pedido.id)}
+            publicadoEm={pedido.publicado_grupo_em ? dataHora(pedido.publicado_grupo_em) : null}
+          />
         </div>
       )}
 

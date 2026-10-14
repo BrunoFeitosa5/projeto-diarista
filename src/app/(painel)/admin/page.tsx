@@ -17,13 +17,16 @@ type PedidoAdmin = {
   bairro: string;
   cidade: string;
   status: StatusPedido;
+  publicado_grupo_em: string | null;
   cliente: { nome: string } | null;
   diarista: { nome: string } | null;
   candidaturas: { count: number }[];
 };
 
-// Abas da lista. "acao" vem primeiro: são os pedidos esperando a dona aprovar uma diarista.
+// Abas da lista. "publicar" vem primeiro: vagas novas que a dona ainda não avisou no grupo.
+// "acao" são os pedidos esperando a dona aprovar uma diarista.
 const FILTROS = {
+  publicar: { nome: "Publicar no grupo", status: ["aberta", "candidatura_recebida"] },
   acao: { nome: "Aprovar diarista", status: ["candidatura_recebida"] },
   abertos: { nome: "Abertos", status: ["aberta"] },
   andamento: { nome: "Em andamento", status: ["aprovada", "confirmada", "paga"] },
@@ -31,6 +34,8 @@ const FILTROS = {
   cancelados: { nome: "Cancelados", status: ["cancelada"] },
   todos: { nome: "Todos", status: null },
 } as const satisfies Record<string, { nome: string; status: readonly StatusPedido[] | null }>;
+
+const precisaPublicar = (p: PedidoAdmin) => p.publicado_grupo_em === null;
 
 type Filtro = keyof typeof FILTROS;
 
@@ -43,7 +48,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
   const { data: pedidos, error } = await supabase
     .from("pedidos")
     .select(
-      "id, codigo, plano, valor_cliente, data, horario, bairro, cidade, status, " +
+      "id, codigo, plano, valor_cliente, data, horario, bairro, cidade, status, publicado_grupo_em, " +
         "cliente:profiles!pedidos_cliente_id_fkey(nome), diarista:profiles!pedidos_diarista_id_fkey(nome), candidaturas(count)",
     )
     .order("data", { ascending: true })
@@ -53,7 +58,8 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
   const todos = pedidos ?? [];
   const doFiltro = (f: Filtro) => {
     const lista: readonly StatusPedido[] | null = FILTROS[f].status;
-    return lista ? todos.filter((p) => lista.includes(p.status)) : todos;
+    const doStatus = lista ? todos.filter((p) => lista.includes(p.status)) : todos;
+    return f === "publicar" ? doStatus.filter(precisaPublicar) : doStatus;
   };
   const visiveis = doFiltro(filtro);
 
@@ -107,6 +113,9 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                     <p className="mt-1 text-texto-secundario">
                       {p.bairro}, {p.cidade} · {formatarReais(Number(p.valor_cliente))}
                     </p>
+                    {p.publicado_grupo_em && (p.status === "aberta" || p.status === "candidatura_recebida") && (
+                      <p className="mt-1 text-pequeno text-texto-secundario">Já publicado no grupo</p>
+                    )}
                     <p className="mt-1 text-pequeno">
                       {p.diarista
                         ? `Diarista: ${p.diarista.nome}`

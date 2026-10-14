@@ -16,6 +16,9 @@ function mensagemDoBanco(mensagem: string | undefined): string {
   if (mensagem?.startsWith("Mudança de status inválida")) {
     return "Essa mudança de status não é permitida agora. Recarregue a página.";
   }
+  if (mensagem?.startsWith("Este pedido não está mais aberto")) {
+    return "Este pedido não está mais aberto para vagas. Recarregue a página.";
+  }
   console.error("ação da admin falhou:", mensagem);
   return "Não foi possível concluir agora. Tente novamente em instantes.";
 }
@@ -36,6 +39,17 @@ export async function verificarDiarista(diaristaId: string, verificada: boolean)
   if (!UUID.test(diaristaId)) return { erro: "Diarista inválida." };
 
   const { error } = await supabase.rpc("verificar_diarista", { p_diarista_id: diaristaId, p_verificada: verificada });
+  if (error) return { erro: mensagemDoBanco(error.message) };
+
+  refresh();
+  return { ok: true };
+}
+
+export async function marcarPublicadoGrupo(pedidoId: string): Promise<ResultadoAdmin> {
+  const { supabase } = await exigirPapel("admin");
+  if (!UUID.test(pedidoId)) return { erro: "Pedido inválido." };
+
+  const { error } = await supabase.rpc("marcar_publicado_grupo", { p_pedido_id: pedidoId });
   if (error) return { erro: mensagemDoBanco(error.message) };
 
   refresh();

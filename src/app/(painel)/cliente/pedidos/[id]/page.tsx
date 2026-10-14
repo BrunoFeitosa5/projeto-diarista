@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Aviso } from "@/components/auth/Aviso";
@@ -65,8 +66,15 @@ export default async function PedidoClientePage({ params, searchParams }: PagePr
       : Promise.resolve({ data: null }),
   ]);
 
+  // Endereço do site vindo da própria requisição (vale em localhost e na Vercel, sem variável).
+  // O link leva a dona direto ao pedido no painel, onde fica o botão "Publicar no grupo".
+  const cabecalhos = await headers();
+  const host = cabecalhos.get("x-forwarded-host") ?? cabecalhos.get("host");
+  const protocolo = cabecalhos.get("x-forwarded-proto") ?? (host?.startsWith("localhost") ? "http" : "https");
+  const linkPainel = host ? `${protocolo}://${host}/admin/pedidos/${pedido.id}` : null;
+
   const plano = PLANOS[pedido.plano];
-  const whatsapp = linkWhatsApp(`Olá! Sou cliente da Império Diarista e quero falar sobre o pedido ${pedido.codigo}.`);
+  const whatsapp =linkWhatsApp(`Olá! Sou cliente da Império Diarista e quero falar sobre o pedido ${pedido.codigo}.`);
 
   // Pedido completo para a Império (sem emojis, que o link wa.me às vezes estraga)
   const whatsappPedido = linkWhatsApp(
@@ -83,6 +91,8 @@ export default async function PedidoClientePage({ params, searchParams }: PagePr
         : `*Local:* ${pedido.bairro}, ${pedido.cidade}`,
       endereco?.referencia ? `*Ponto de referência:* ${endereco.referencia}` : null,
       pedido.observacoes ? `*Observações:* ${pedido.observacoes}` : null,
+      linkPainel ? "" : null,
+      linkPainel ? `*Abrir no painel (Império):* ${linkPainel}` : null,
     ]
       .filter((linha) => linha !== null)
       .join("\n"),
