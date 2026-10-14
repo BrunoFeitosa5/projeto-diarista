@@ -59,7 +59,12 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
 
   return (
     <section className="mx-auto max-w-site px-4 py-14 md:px-20 md:py-20">
-      <h1 className="text-h2">Pedidos</h1>
+      <div className="flex flex-wrap items-end justify-between gap-6">
+        <h1 className="text-h2">Pedidos</h1>
+        <Link href="/admin/diaristas" className="text-pequeno text-rosa-forte underline underline-offset-2">
+          Diaristas
+        </Link>
+      </div>
 
       <nav aria-label="Filtrar pedidos" className="mt-8 flex flex-wrap gap-2">
         {(Object.keys(FILTROS) as Filtro[]).map((f) => (

@@ -31,6 +31,17 @@ export async function aprovarCandidatura(candidaturaId: string): Promise<Resulta
   return { ok: true };
 }
 
+export async function verificarDiarista(diaristaId: string, verificada: boolean): Promise<ResultadoAdmin> {
+  const { supabase } = await exigirPapel("admin");
+  if (!UUID.test(diaristaId)) return { erro: "Diarista inválida." };
+
+  const { error } = await supabase.rpc("verificar_diarista", { p_diarista_id: diaristaId, p_verificada: verificada });
+  if (error) return { erro: mensagemDoBanco(error.message) };
+
+  refresh();
+  return { ok: true };
+}
+
 export async function mudarStatus(pedidoId: string, novoStatus: StatusPedido): Promise<ResultadoAdmin> {
   const { supabase } = await exigirPapel("admin");
   if (!UUID.test(pedidoId)) return { erro: "Pedido inválido." };

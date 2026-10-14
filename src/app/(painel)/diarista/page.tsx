@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { EtiquetaStatus } from "@/components/painel/EtiquetaStatus";
 import { BotaoCandidatar } from "@/components/painel/diarista/BotaoCandidatar";
+import { botaoClasses } from "@/components/ui/Button";
 import { dataDaquiA, formatarData, formatarHorario } from "@/config/agendamento";
 import { PLANOS, textoRepasse, type PlanoId } from "@/config/planos";
 import { exigirPapel } from "@/lib/auth";
 import { STATUS_COM_DIARISTA, type StatusPedido } from "@/lib/status";
+import { linkGrupoDiaristas } from "@/lib/whatsapp";
 
 export const metadata = { title: "Vagas | Império Diarista" };
 
@@ -29,7 +31,7 @@ export default async function DiaristaPage() {
   const { perfil, supabase } = await exigirPapel("diarista");
 
   // O RLS devolve à diarista: vagas abertas, pedidos em que ela se candidatou e os aprovados para ela
-  const [{ data: privado }, { data: pedidos }, { data: candidaturas }] = await Promise.all([
+  const [{ data: privado }, { data: pedidos }, { data: candidaturas }, { data: verificacao }] = await Promise.all([
     supabase.from("diaristas_privado").select("cpf, chave_pix, experiencia").eq("diarista_id", perfil.id).maybeSingle(),
     supabase
       .from("pedidos")
@@ -38,8 +40,11 @@ export default async function DiaristaPage() {
       .order("horario", { ascending: true })
       .overrideTypes<Pedido[], { merge: false }>(),
     supabase.from("candidaturas").select("pedido_id").eq("diarista_id", perfil.id),
+    supabase.from("diaristas_verificadas").select("diarista_id").eq("diarista_id", perfil.id).maybeSingle(),
   ]);
 
+  const grupo = linkGrupoDiaristas();
+  const verificada = Boolean(verificacao);
   const perfilCompleto = Boolean(privado?.cpf && privado?.chave_pix && privado?.experiencia);
   const candidatou = new Set(candidaturas?.map((c) => c.pedido_id));
   const hoje = dataDaquiA(0);
@@ -89,6 +94,30 @@ export default async function DiaristaPage() {
             </Link>
           </p>
         </div>
+      )}
+
+      {verificada ? (
+        grupo && (
+          <div className="mt-8 rounded-card border-l-4 border-rosa-forte bg-superficie p-6">
+            <p className="font-medium">Grupo das diaristas da Império</p>
+            <p className="mt-1 text-texto-secundario">
+              Seu cadastro foi verificado. Entre no grupo do WhatsApp para receber os avisos dos serviços.
+            </p>
+            <a href={grupo} target="_blank" rel="noopener noreferrer" className={botaoClasses("verde", "padrao", "mt-4")}>
+              Entrar no grupo
+            </a>
+          </div>
+        )
+      ) : (
+        perfilCompleto && (
+          <div className="mt-8 rounded-card border-l-4 border-rosa-forte bg-superficie p-6">
+            <p className="font-medium">Seu cadastro está em análise</p>
+            <p className="mt-1 text-texto-secundario">
+              A Império confere sua referência e sua experiência. Quando estiver tudo certo, o link do grupo das
+              diaristas aparece aqui.
+            </p>
+          </div>
+        )
       )}
 
       {servicos.length > 0 && (

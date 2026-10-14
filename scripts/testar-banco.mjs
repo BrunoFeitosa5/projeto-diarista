@@ -271,9 +271,34 @@ ok((await linhas(`select * from pedido_enderecos where pedido_id = $1`, [p3.id])
 await comoUsuario(d1);
 ok((await linhas(`select * from pedidos where id = $1`, [p3.id])).length === 0, "Maria não vê pedido aprovado para outra diarista");
 
+secao("7b. Diarista verificada");
+await comoUsuario(d1);
+erro = await erroDe(`select verificar_diarista($1, true)`, [d1]);
+ok(erro?.includes("Somente a admin"), "diarista não se verifica sozinha", erro);
+erro = await erroDe(`insert into diaristas_verificadas (diarista_id) values ($1)`, [d1]);
+ok(erro !== null, "diarista não grava direto na tabela de verificadas", erro);
+await comoUsuario(cliente);
+erro = await erroDe(`select verificar_diarista($1, true)`, [d1]);
+ok(erro?.includes("Somente a admin"), "cliente não verifica diarista", erro);
+await comoUsuario(dona);
+erro = await erroDe(`select verificar_diarista($1, true)`, [cliente]);
+ok(erro?.includes("não encontrada"), "não verifica quem não é diarista", erro);
+await linhas(`select verificar_diarista($1, true)`, [d1]);
+await linhas(`select verificar_diarista($1, true)`, [d1]);
+ok((await linhas(`select * from diaristas_verificadas`)).length === 1, "verificar duas vezes não duplica");
+await comoUsuario(d1);
+ok((await linhas(`select * from diaristas_verificadas`)).length === 1, "Maria vê a própria verificação");
+await comoUsuario(d2);
+ok((await linhas(`select * from diaristas_verificadas`)).length === 0, "Joana não vê a verificação da Maria");
+await comoUsuario(cliente);
+ok((await linhas(`select * from diaristas_verificadas`)).length === 0, "cliente não vê verificações");
+await comoUsuario(dona);
+await linhas(`select verificar_diarista($1, false)`, [d1]);
+ok((await linhas(`select * from diaristas_verificadas`)).length === 0, "admin remove a verificação");
+
 secao("8. Visitante sem login");
 await comoAnonimo();
-for (const t of ["profiles", "nomes_visiveis", "pedidos", "pedido_enderecos", "diaristas_privado", "candidaturas", "pedido_historico"]) {
+for (const t of ["profiles", "nomes_visiveis", "pedidos", "pedido_enderecos", "diaristas_privado", "candidaturas", "pedido_historico", "diaristas_verificadas"]) {
   const r = await erroDe(`select * from ${t}`);
   const vazio = r === null ? (await linhas(`select * from ${t}`)).length === 0 : true;
   ok(vazio, `visitante não lê ${t}`);
