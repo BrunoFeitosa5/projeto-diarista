@@ -23,7 +23,9 @@ delete from public.pedidos;
 -- Contas: o perfil e os dados privados da diarista vão junto (cascade).
 delete from auth.users
 where email not in (
-  'EMAIL-PARA-MANTER@exemplo.com'  -- troque ou acrescente e-mails, separados por vírgula
+  'dayteck33@gmail.com',                      -- admin: a filha da dona
+  'brunodasilvafeitosa2588+admin@gmail.com'   -- admin de teste do Bruno
+  -- acrescente aqui o e-mail da dona quando ela se cadastrar (separe por vírgula)
 );
 
 -- O próximo pedido volta a ser IMP-000001.
