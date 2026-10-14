@@ -290,9 +290,12 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
   `next.config.ts` libera `192.168.*.*` (sem ele o Next bloqueia o JS no dev).
 
 ## Pendências
-- Plano grátis do Supabase não tem backup que dê para baixar. Antes de ter
-  pedidos reais, decidir entre o plano Pro ou exportar os dados de tempos em
-  tempos.
+- Plano grátis do Supabase não tem backup que dê para baixar. Enquanto isso,
+  `npm run backup` (`scripts/backup.mjs`) exporta todas as tabelas e a lista
+  de contas para `backups/AAAA-MM-DD_HHMM/` (JSON; a pasta fica fora do git
+  porque tem CPF, Pix e endereços). É manual: rodar toda semana e antes de
+  limpar dados ou rodar migração. Antes de ter pedidos reais, decidir também
+  pelo plano Pro (backup automático).
 - Política de Privacidade (LGPD): rascunho em `/privacidade`
   (`src/app/(site)/privacidade/page.tsx`), com link no rodapé e no cadastro.
   Falta a dona ou um profissional revisar: CNPJ/razão social da Império,

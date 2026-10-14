@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test:db": "node scripts/testar-banco.mjs",
-    "test:seguranca": "node scripts/testar-seguranca.mjs"
+    "test:seguranca": "node scripts/testar-seguranca.mjs",
+    "backup": "node scripts/backup.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

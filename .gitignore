@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# backups dos dados (CPF, Pix, endereços): nunca no git
+/backups/
