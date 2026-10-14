@@ -110,7 +110,7 @@ async function chamarAcao(nome, args, quem, origem = SITE) {
 const contar = async (sb, tabela, filtro = (q) => q) => (await filtro(sb.from(tabela).select("*"))).data?.length ?? 0;
 const erroRpc = async (sb, nome, args) => (await sb.rpc(nome, args)).error?.message ?? null;
 
-const TABELAS = ["profiles", "nomes_visiveis", "diaristas_privado", "pedidos", "pedido_enderecos", "candidaturas", "pedido_historico"];
+const TABELAS = ["profiles", "nomes_visiveis", "diaristas_privado", "pedidos", "pedido_enderecos", "candidaturas", "pedido_historico", "diaristas_verificadas"];
 
 try {
   // ---- Montagem ---------------------------------------------------------------
@@ -204,7 +204,21 @@ try {
     .from("diaristas_privado")
     .upsert({ diarista_id: diarista2.id, cpf: "11144477735", chave_pix: "golpe@exemplo.test", tipo_chave_pix: "email" });
   ok(!!privAlheio, "não troca a chave Pix de outra diarista");
-  ok(!(await erroRpc(diarista1.sb, "candidatar", { p_pedido_id: pedido.id })), "com perfil completo se candidata");
+  // Perfil completo não basta: a admin precisa ter verificado a diarista
+  const naoVerificada = await erroRpc(diarista1.sb, "candidatar", { p_pedido_id: pedido.id });
+  ok(naoVerificada?.startsWith("Seu cadastro ainda não foi verificado"), "perfil completo mas sem verificação não se candidata", naoVerificada ?? "candidatou!");
+  ok(!!(await erroRpc(diarista1.sb, "verificar_diarista", { p_diarista_id: diarista1.id, p_verificada: true })), "diarista não se verifica sozinha");
+  const { error: verifDireto } = await diarista1.sb.from("diaristas_verificadas").insert({ diarista_id: diarista1.id });
+  ok(!!verifDireto, "diarista não grava direto na tabela de verificadas");
+  ok(!!(await erroRpc(clienteA.sb, "verificar_diarista", { p_diarista_id: diarista1.id, p_verificada: true })), "cliente não verifica diarista");
+  ok(!!(await erroRpc(diarista1.sb, "escolher_diarista", { p_pedido_id: pedido.id, p_diarista_id: diarista1.id })), "diarista não se escolhe para o pedido");
+  ok(!!(await erroRpc(clienteA.sb, "escolher_diarista", { p_pedido_id: pedido.id, p_diarista_id: diarista1.id })), "cliente não escolhe diarista");
+  ok(!!(await erroRpc(diarista1.sb, "marcar_publicado_grupo", { p_pedido_id: pedido.id })), "diarista não marca pedido como publicado no grupo");
+  ok(!!(await erroRpc(clienteA.sb, "marcar_publicado_grupo", { p_pedido_id: pedido.id })), "cliente não marca pedido como publicado no grupo");
+  // A verificação é da admin: aqui simulamos o clique dela com a chave service_role
+  await admSb.from("diaristas_verificadas").insert({ diarista_id: diarista1.id });
+  ok(!(await erroRpc(diarista1.sb, "candidatar", { p_pedido_id: pedido.id })), "verificada e com perfil completo se candidata");
+  ok((await contar(diarista2.sb, "diaristas_verificadas")) === 0, "uma diarista não vê a verificação da outra");
   const { data: cand } = await admSb.from("candidaturas").select("id").eq("pedido_id", pedido.id).single();
   ok(!!(await erroRpc(diarista1.sb, "aprovar_candidatura", { p_candidatura_id: cand.id })), "não se autoaprova");
   const { error: upd } = await diarista1.sb.from("pedidos").update({ diarista_id: diarista1.id }).eq("id", pedido.id);
@@ -236,6 +250,8 @@ try {
   secao("6. Admin (deve conseguir)");
   ok((await contar(admin.sb, "pedido_enderecos", doPedido)) === 1, "vê o endereço");
   ok((await contar(admin.sb, "diaristas_privado", (q) => q.eq("diarista_id", diarista1.id))) === 1, "vê CPF/Pix das candidatas");
+  ok(!(await erroRpc(admin.sb, "marcar_publicado_grupo", { p_pedido_id: pedido.id })), "marca a vaga como publicada no grupo");
+  ok((await contar(admin.sb, "diaristas_verificadas")) >= 1, "vê as diaristas verificadas");
   ok(!(await erroRpc(admin.sb, "aprovar_candidatura", { p_candidatura_id: cand.id })), "aprova a candidatura");
   ok((await contar(diarista1.sb, "pedido_enderecos", doPedido)) === 1, "depois da aprovação a diarista vê o endereço");
   ok((await contar(diarista2.sb, "pedido_enderecos", doPedido)) === 0, "a outra diarista continua sem ver");
