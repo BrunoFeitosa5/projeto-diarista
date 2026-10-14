@@ -168,6 +168,42 @@ Perfis: `cliente`, `diarista` e `admin`.
 - Na diarista, serviço "aprovada" ou "confirmada" mostra uma faixa de
   parabéns em "Meus serviços".
 
+## Grupo das diaristas e S.O.S (13 a 15/10/2026)
+Fluxo combinado com a dona: a diarista se cadastra, a dona **verifica**,
+a verificada entra no grupo do WhatsApp; o pedido do cliente vai para o
+grupo por um toque da dona; a diarista interessada chama o **S.O.S
+Diaristas** no privado com o código do pedido.
+- **Dois números de WhatsApp:** clientes = `NEXT_PUBLIC_WHATSAPP_DONA`
+  (final 2436); diaristas/S.O.S = `NEXT_PUBLIC_WHATSAPP_DIARISTAS`
+  (11 91159-3485, `linkWhatsAppDiaristas`; sem a variável cai no da dona).
+  O link do grupo é `WHATSAPP_GRUPO_DIARISTAS` (**sem** `NEXT_PUBLIC_`:
+  quem tem o link entra no grupo; só páginas de servidor leem). Na Vercel,
+  o número vai como "Config" e o link do grupo como "Secret".
+- **Verificada:** tabela `diaristas_verificadas` (linha = verificada), só a
+  função `verificar_diarista` escreve, só a admin chama. Tela
+  `/admin/diaristas` (candidatas, referência e experiência). Fica fora de
+  `diaristas_privado` porque a diarista edita a própria linha de lá.
+- Só a verificada vê "Entrar no grupo" (`/diarista`) e **só a verificada
+  se candidata** (`candidatar` confere). A não verificada vê "em análise".
+- **Publicar no grupo:** coluna `pedidos.publicado_grupo_em`, função
+  `marcar_publicado_grupo`. Aba "Publicar no grupo" (a 1ª) em `/admin` e
+  botão no pedido (`PublicarNoGrupo`): um toque abre o WhatsApp com o aviso
+  e marca como publicado. O aviso leva só código, data, plano, bairro e
+  cidade (**sem endereço, nome do cliente nem valor**; o valor a dona passa
+  no privado) e o link "Tenho interesse" para o S.O.S com o código escrito.
+  O site não sabe se a dona enviou de verdade: marca ao tocar.
+- **Postar no grupo sozinho não dá** sem a API paga da Meta ou bot não
+  oficial (risco de banir o número). Por isso é sempre um toque da dona.
+- **Escolher diarista direto:** função `escolher_diarista` (admin; só
+  verificada e com CPF e Pix; recusa as outras candidatas; passa por
+  "candidatura_recebida" por causa do gatilho de status). Cartão
+  "Escolher uma diarista verificada" no pedido.
+- A mensagem do cliente para a Império (abre sozinha ao criar o pedido,
+  `EnviarPedidoWhatsApp`) termina com o link do pedido no painel admin, para
+  a dona cair direto no botão "Publicar no grupo". O endereço do site vem
+  dos cabeçalhos da requisição.
+- "Avisar a Império no WhatsApp" depois de candidatar vai para o S.O.S.
+
 ## Revisão de segurança (etapa 11)
 - `npm run test:seguranca` (com o `npm run dev` ligado) testa o Supabase de
   verdade e o site: visitante, cliente curiosa, diaristas, Server Actions
@@ -194,8 +230,9 @@ Perfis: `cliente`, `diarista` e `admin`.
 - Telefone do rodapé abre o WhatsApp.
 
 ## Tabelas
-`profiles`, `diaristas_privado`, `pedidos`, `pedido_enderecos`,
-`candidaturas` (única por pedido + diarista) e `pedido_historico`.
+`profiles`, `diaristas_privado`, `diaristas_verificadas`, `pedidos`,
+`pedido_enderecos`, `candidaturas` (única por pedido + diarista) e
+`pedido_historico`.
 As migrações ficam em `supabase/migrations/`.
 
 ## Status do pedido
@@ -240,6 +277,10 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
   numeração para IMP-000001). Fazer **antes** de cadastrar as admins.
 - Admins: a dona **e a filha dela** se cadastram pelo site e o usuário roda
   `supabase/tornar-admin.sql` no SQL Editor, uma vez com cada e-mail.
+- Dona: trocar `WHATSAPP_GRUPO_DIARISTAS` (hoje é um grupo de teste) pelo
+  link do grupo real, na Vercel e no `.env.local`, e fazer um Redeploy.
+- Cadastrar e verificar as diaristas (referências) antes de convidá-las
+  para o grupo; depois a dona passa a publicar os pedidos.
 - Rodar **um só** `npm run dev` por vez. Neste PC o Next roda em WASM, sem
   trava na pasta `.next`, e dois servidores juntos corrompem o cache (o site
   aparece sem CSS). Para resolver: parar todos, apagar `.next` e subir um só.
