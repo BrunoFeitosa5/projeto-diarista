@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useActionState } from "react";
 import { entrar, type EstadoForm } from "@/actions/auth";
 import { Button } from "@/components/ui/Button";
@@ -19,12 +18,6 @@ export function FormEntrar({ proximo }: { proximo?: string }) {
       <Button type="submit" variante="rosa-forte" disabled={enviando} className="self-start">
         {enviando ? "Entrando..." : "Entrar"}
       </Button>
-      <p className="text-pequeno">
-        Ainda não tem conta?{" "}
-        <Link href="/cadastro" className="text-rosa-forte underline underline-offset-2">
-          Cadastre-se
-        </Link>
-      </p>
     </form>
   );
 }

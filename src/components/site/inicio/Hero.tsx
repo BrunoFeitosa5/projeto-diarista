@@ -1,6 +1,8 @@
 import { FotoFundo } from "@/components/site/FotoFundo";
 import { ButtonLink } from "@/components/ui/Button";
 import { IMAGENS } from "@/config/imagens";
+import { MENSAGEM_AGENDAR } from "@/config/site";
+import { linkWhatsApp } from "@/lib/whatsapp";
 
 // Posições do original (grid de 1224px): título a 157px do topo, subtítulo a 346px, botão a 451px.
 export function Hero() {
@@ -15,14 +17,14 @@ export function Hero() {
       />
       <div className="mx-auto flex w-full max-w-[878px] flex-col items-center pt-24 pb-16 text-center text-texto-foto md:pt-[157px]">
         <h1 className="text-h1">
-          Sua Casa <strong>Impecável</strong>, Sem Complicação
+          Agende uma faxina em <strong>poucos minutos</strong>!
         </h1>
         <p className="mt-8 md:mt-[42px]">
-          Profissionais qualificadas, atendimento de confiança e limpeza impecável para transformar sua
-          rotina.
+          Profissionais qualificadas, experientes e verificadas para deixar a sua casa impecável, sem
+          complicação.
         </p>
-        <ButtonLink href="/servicos" variante="verde" className="mt-10 md:mt-[79px]">
-          Ver Serviços e Preços
+        <ButtonLink href={linkWhatsApp(MENSAGEM_AGENDAR)} variante="verde" className="mt-10 md:mt-[79px]">
+          Agende agora
         </ButtonLink>
       </div>
     </section>

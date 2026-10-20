@@ -1,16 +1,15 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { classeCampo, classeRotulo } from "@/components/ui/Campo";
-import { mascaraCnpj, mascaraData, mascaraTelefone } from "@/lib/mascaras";
+import { mascaraData, mascaraTelefone } from "@/lib/mascaras";
+import { linkWhatsAppDiaristas } from "@/lib/whatsapp";
 
-// Chave usada para levar os dados até o cadastro de diarista (etapa 7), que preenche o formulário.
-// Fica só nesta aba do navegador (sessionStorage) — nunca na URL, que vai para histórico e logs.
+// Chave do sessionStorage que o perfil da diarista (painel antigo, sem link no site) ainda lê.
 export const CHAVE_PRE_CADASTRO = "pre-cadastro-diarista";
 
-type Campos = { nome: string; cnpj: string; telefone: string; nascimento: string };
+type Campos = { nome: string; telefone: string; nascimento: string };
 
 const CAMPOS: {
   nome: keyof Campos;
@@ -22,21 +21,18 @@ const CAMPOS: {
   autoComplete: string;
 }[] = [
   { nome: "nome", rotulo: "Seu Nome", placeholder: "Nome Completo", obrigatorio: true, tipo: "text", autoComplete: "name" },
-  { nome: "cnpj", rotulo: "CNPJ (MEI), se tiver", placeholder: "00.000.000/0001-00", obrigatorio: false, mascara: mascaraCnpj, tipo: "text", autoComplete: "off" },
   { nome: "telefone", rotulo: "Seu WhatsApp", placeholder: "(XX) XXXXX-XXXX", obrigatorio: true, mascara: mascaraTelefone, tipo: "tel", autoComplete: "tel-national" },
   { nome: "nascimento", rotulo: "Data de Nascimento", placeholder: "00/00/0000", obrigatorio: false, mascara: mascaraData, tipo: "text", autoComplete: "bday" },
 ];
 
 // Formatos completos exigidos em cada campo com máscara
 const PADROES: Partial<Record<keyof Campos, string>> = {
-  cnpj: "\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}",
   telefone: "\\(\\d{2}\\) \\d{4,5}-\\d{4}",
   nascimento: "\\d{2}/\\d{2}/\\d{4}",
 };
 
 export function FormTrabalheConosco() {
-  const router = useRouter();
-  const [valores, setValores] = useState<Campos>({ nome: "", cnpj: "", telefone: "", nascimento: "" });
+  const [valores, setValores] = useState<Campos>({ nome: "", telefone: "", nascimento: "" });
 
   function alterar(campo: (typeof CAMPOS)[number]) {
     return (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,14 +41,16 @@ export function FormTrabalheConosco() {
     };
   }
 
+  // Sem conta no site: os dados (nome, WhatsApp e nascimento) vão escritos na mensagem para o WhatsApp S.O.S Diaristas.
   function enviar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    try {
-      sessionStorage.setItem(CHAVE_PRE_CADASTRO, JSON.stringify(valores));
-    } catch {
-      // Sem sessionStorage (modo privado restrito): o cadastro abre em branco, sem prejuízo.
-    }
-    router.push("/cadastro?perfil=diarista");
+    const linhas = [
+      "Olá! Vim pelo site e quero ser diarista da Império.",
+      `Nome: ${valores.nome.trim()}`,
+      `WhatsApp: ${valores.telefone}`,
+      valores.nascimento && `Nascimento: ${valores.nascimento}`,
+    ].filter(Boolean);
+    window.open(linkWhatsAppDiaristas(linhas.join("\n")), "_blank", "noopener,noreferrer");
   }
 
   return (
@@ -80,7 +78,7 @@ export function FormTrabalheConosco() {
         </div>
       ))}
       <Button type="submit" variante="verde-form" className="mt-0.5 self-start">
-        Quero ser diarista
+        Quero ser diarista pelo WhatsApp
       </Button>
     </form>
   );

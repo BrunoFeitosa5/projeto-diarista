@@ -3,6 +3,8 @@
 export const SITE = {
   nome: "Império Diarista",
   regiao: "São Paulo, SP e Região Metropolitana",
+  // Frase da barra rosa no topo de todas as páginas
+  faixaTopo: "Sua casa limpa, sua rotina leve: agende em minutos!",
   slogan: "Sua casa impecável sem complicação nem burocracia.",
   // Telefone exibido no rodapé e na Política de Privacidade. O link do WhatsApp usa
   // NEXT_PUBLIC_WHATSAPP_DONA: os dois precisam ser o mesmo número (confirmado: final 2436).
@@ -10,11 +12,16 @@ export const SITE = {
   horarioAtendimento: "Atendimento no WhatsApp: Seg a dom, das 6h às 22h",
   rodapeResumo: "Profissionais verificadas, preço fixo e garantia de satisfação.",
   rodapeServicos: "Agendamento de Limpeza Residencial e Comercial",
+  // Endereço do perfil (ex.: https://www.instagram.com/usuario). Sem valor, o link não aparece.
+  instagram: null as string | null,
 } as const;
 
+// Menu igual ao do S.O.S Diaristas. Valores e Agende agora são seções da página inicial (âncoras).
 export const NAV_LINKS = [
   { href: "/", label: "Início" },
-  { href: "/servicos", label: "Serviços" },
-  { href: "/seguranca", label: "Segurança" },
+  { href: "/#valores", label: "Valores" },
+  { href: "/#agendar", label: "Agende agora" },
   { href: "/trabalhe-conosco", label: "Trabalhe Conosco" },
 ] as const;
+
+export const MENSAGEM_AGENDAR = "Olá! Vim pelo site e gostaria de agendar uma limpeza.";

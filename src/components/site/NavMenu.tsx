@@ -6,7 +6,9 @@ import { useState } from "react";
 import { NAV_LINKS } from "@/config/site";
 import { BotaoTema } from "./BotaoTema";
 
+// Links com # (seções da página inicial) nunca ficam marcados como página atual
 function ativo(pathname: string, href: string) {
+  if (href.includes("#")) return false;
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
 }
 
@@ -14,8 +16,7 @@ export function NavMenu() {
   const pathname = usePathname();
   const [aberto, setAberto] = useState(false);
 
-  // "Entrar" não existe no site original: é a porta de entrada da plataforma de pedidos
-  const links = [...NAV_LINKS, { href: "/entrar", label: "Entrar" }].map(({ href, label }) => (
+  const links = NAV_LINKS.map(({ href, label }) => (
     <Link
       key={href}
       href={href}

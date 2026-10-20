@@ -19,9 +19,9 @@ const VANTAGENS: Vantagem[] = [
   },
   {
     icone: CircleDollarSign,
-    titulo: "Preço Fixo e Transparente",
+    titulo: "Sem Pagamento Antecipado",
     texto:
-      "Saiba exatamente quanto vai pagar antes de confirmar. Sem surpresas, sem taxas escondidas.",
+      "Preço fixo e sem taxas escondidas. Você só paga quando a diarista chega e começa o serviço.",
   },
 ];
 
@@ -62,10 +62,9 @@ export function SecaoAgende() {
   return (
     <section className="bg-rosa-claro px-4 py-16 md:min-h-[953px] md:pt-[128px] md:pb-0">
       <div className="mx-auto max-w-site md:px-20">
-        <h2 className="text-h2">Agende de forma simples e segura.</h2>
+        <h2 className="text-h2">Vantagens Império Diarista</h2>
         <p className="mt-6 md:mt-[93px]">
-          Nossa plataforma foi pensada para tornar sua experiência simples, segura e transparente, do
-          primeiro clique até a realização do serviço.
+          Atendimento humano pelo WhatsApp, do primeiro contato até a realização do serviço.
         </p>
 
         <div className="mt-10 grid gap-3 md:mt-[49px] md:w-[1056px] md:grid-cols-3">

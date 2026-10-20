@@ -42,7 +42,7 @@ Perfis: `cliente`, `diarista` e `admin`.
   e fica sem camada.
 - Trabalhe Conosco é **só para diaristas** (decisão do usuário): os textos
   mudaram em relação ao original ("Trabalhe Conosco", texto sobre vagas, botão
-  "Quero ser diarista") e o CNPJ é opcional até a dona decidir se exige MEI.
+  "Quero ser diarista") e o formulário não pede mais CNPJ (tirado em 19/10/2026).
   O cliente com dúvida usa o WhatsApp.
 - Os cards de preço da Início usam as imagens prontas da dona, que já trazem o
   preço desenhado (decisão do usuário, para ficar igual ao original). **Se um
@@ -58,8 +58,8 @@ Perfis: `cliente`, `diarista` e `admin`.
     lista de vagas.
 - **Preços e repasse ficam num único arquivo: `src/config/planos.ts`.**
   - O cliente paga 4h = R$160, 6h = R$199 e 8h = R$230.
-  - Repasse provisório: a diarista recebe 80% (`PERCENTUAL_REPASSE`) e a
-    Império fica com 20%: 4h = R$128, 6h = R$159,20 e 8h = R$184.
+  - Repasse fixo por plano (valores da dona, 19/10/2026): a diarista recebe
+    4h = R$100, 6h = R$120 e 8h = R$160 (`repasseDiarista` em `planos.ts`).
   - O servidor calcula `valor_cliente` e `valor_diarista` a partir desse arquivo
     e grava os dois no pedido na hora em que ele é criado. Esses valores nunca
     vêm do formulário.
@@ -112,7 +112,29 @@ Perfis: `cliente`, `diarista` e `admin`.
 - No servidor, usar `getClaims()` (confere o token), nunca `getSession()`.
 - Senha mínima de 8 caracteres no site e no Supabase (Authentication >
   Email, ajustado em 03/10/2026).
-- O item "Entrar" no menu é o único acréscimo ao header original.
+- **Site igual ao S.O.S Diaristas (19/10/2026, decisão do usuário):** o
+  cliente **não tem conta**: todo botão de agendar abre o WhatsApp da dona
+  (`linkWhatsApp(MENSAGEM_AGENDAR)`; os cards levam o plano na mensagem).
+  Menu do topo: Início, Valores, Agende agora, Trabalhe Conosco (`NAV_LINKS`
+  em `site.ts`; Valores e Agende agora são âncoras da Início). Ordem da Início:
+  Hero, Valores, Vantagens, Como funciona, Avaliações, Ficou com dúvidas?
+  (FAQ), formulário Nome + Telefone (`FormAgendar`, abre o WhatsApp com os
+  dados; nada é gravado) e chamada final. "Serviços", "Segurança" e
+  "Termos de Uso" ficam no **rodapé**. Não há link de "Entrar" no site: a
+  admin acessa digitando `/entrar`. Sem desconto de 10% (decisão do usuário).
+- **Diarista também não cria conta (19/10/2026, decisão do usuário):**
+  "Trabalhe Conosco" abre o WhatsApp **S.O.S Diaristas**
+  (`linkWhatsAppDiaristas`) com nome, telefone e, se preenchido, o
+  nascimento (sem CNPJ: a dona tirou o campo em 19/10/2026). `/cadastro` só redireciona para `/trabalhe-conosco`; o formulário
+  e a Server Action `cadastrar` foram apagados. `/entrar` serve só para a
+  dona/admin. Os painéis `/cliente` e `/diarista` continuam no código
+  e nos testes, sem link no site; contas antigas ainda entram.
+- Avaliações: `src/config/avaliacoes.ts` começa **vazia** e a seção só
+  aparece com avaliações reais da Império (não copiar as do S.O.S).
+- `/termos-de-uso`: rascunho a ser revisado pela dona (CNPJ, cancelamento,
+  pagamento). O FAQ e os termos dizem "Pix ou cartão por link, sem pagamento
+  antecipado, paga na chegada da diarista" (copiado do fluxo do S.O.S):
+  **confirmar com a dona**. Instagram: preencher `SITE.instagram`.
 - CPF/CNPJ/Pix NÃO vão no cadastro (os metadados do usuário entram no token
   de login); a diarista preenche no perfil (etapa 9).
 - Configuração no painel do Supabase (Authentication > URL Configuration):
@@ -289,6 +311,14 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
 - Teste no celular: `http://<IP do PC>:3000`. O `allowedDevOrigins` do
   `next.config.ts` libera `192.168.*.*` (sem ele o Next bloqueia o JS no dev).
 
+## Próxima sessão (20/10/2026)
+- **Mensagens automáticas para clientes, como no S.O.S Diaristas.** Hoje o
+  cliente só abre o WhatsApp com um texto pronto e a dona responde à mão.
+  Bolar as mensagens (boas-vindas, confirmação de data, lembrete, nome da
+  diarista, pós-serviço). Envio automático de verdade exige a API paga da Meta
+  (WhatsApp Business); sem ela, dá para ter respostas rápidas/mensagens
+  prontas no WhatsApp Business da dona. Decidir o caminho com o usuário.
+
 ## Pendências
 - Plano grátis do Supabase não tem backup que dê para baixar. Enquanto isso,
   `npm run backup` (`scripts/backup.mjs`) exporta todas as tabelas e a lista
@@ -306,12 +336,13 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
 - Domínio próprio (`imperiodiarista.com.br`): trocar o DNS tira o site
   original do ar. Só com o acordo da dona; depois atualizar as URLs no
   Supabase.
-- Repasse: 80/20 é provisório até a dona confirmar (`PERCENTUAL_REPASSE`
-  em `planos.ts`). Cada pedido guarda o valor do momento em que foi criado:
-  o IMP-000001, feito com repasse 0, continua "a combinar".
+- Repasse: valores fixos em `planos.ts` (R$100/120/160). Cada pedido guarda
+  o valor do momento em que foi criado: pedidos antigos mantêm o repasse
+  da época (80% ou 0 = "a combinar").
 - O Trabalhe Conosco guarda nome, CNPJ, telefone e nascimento em
   `sessionStorage` (`pre-cadastro-diarista`). O cadastro já usa nome e
   telefone; o perfil da diarista (etapa 9) usa CNPJ e nascimento.
-- Imagens em alta resolução: o site original tem versões maiores dos cards
-  4h/6h/8h (1122x1402), da Segurança (1388x1133) e do topo de Serviços
+- Imagens em alta resolução: os cards 4h/6h/8h já usam as versões de
+  1122x1402 (`card-plano-*-hd.png`, qualidade 90 em `next.config.ts`, 19/10/2026).
+  Ainda em baixa: Segurança (original tem 1388x1133) e topo de Serviços
   (1909x824). Aguardando o usuário decidir se troca.

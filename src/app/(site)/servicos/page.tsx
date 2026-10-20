@@ -1,6 +1,7 @@
 import { FotoFundo } from "@/components/site/FotoFundo";
 import { ButtonLink } from "@/components/ui/Button";
 import { IMAGENS } from "@/config/imagens";
+import { MENSAGEM_AGENDAR } from "@/config/site";
 import { linkWhatsApp } from "@/lib/whatsapp";
 
 export const metadata = { title: "Serviços | Império Diarista" };
@@ -25,7 +26,7 @@ export default function ServicosPage() {
             Opções flexíveis para residências, escritórios e necessidades específicas. Agende com
             profissionais verificadas, preço fixo e total transparência.
           </p>
-          <ButtonLink href="/cliente/novo-pedido" variante="rosa-reservar" className="mt-8 md:mt-[42px]">
+          <ButtonLink href={linkWhatsApp(MENSAGEM_AGENDAR)} variante="rosa-reservar" className="mt-8 md:mt-[42px]">
             Reservar Horário
           </ButtonLink>
         </div>

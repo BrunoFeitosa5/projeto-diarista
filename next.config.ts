@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Qualidade 90 nos cards de preço, que têm texto desenhado na imagem (o padrão, 75, deixa borrado)
+  images: { qualities: [75, 90] },
+
   // Só vale no "npm run dev": deixa abrir o site pelo celular na rede de casa
   // (ex.: http://192.168.15.14:3000). Sem isso o Next bloqueia o JavaScript
   // e nada que dependa de clique funciona (menu, busca de CEP...).

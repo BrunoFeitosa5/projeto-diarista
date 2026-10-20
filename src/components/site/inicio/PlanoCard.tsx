@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ButtonLink } from "@/components/ui/Button";
 import { CardAmpliavel } from "@/components/ui/CardAmpliavel";
 import { PLANOS, formatarReais, type PlanoId } from "@/config/planos";
+import { linkWhatsApp } from "@/lib/whatsapp";
 
 type Props = { id: PlanoId; foto: string };
 
@@ -16,7 +17,7 @@ export function PlanoCard({ id, foto }: Props) {
 
   const botao = (
     <ButtonLink
-      href={`/cliente/novo-pedido?plano=${id}`}
+      href={linkWhatsApp(`Olá! Vim pelo site e gostaria de agendar o plano de ${plano.horas} horas.`)}
       variante="rosa-card"
       tamanho="card"
       // z-20: fica acima do botão invisível de ampliar do CardAmpliavel
@@ -35,7 +36,7 @@ export function PlanoCard({ id, foto }: Props) {
       ampliado={
         // Imagem inteira (375x469), sem o corte de cima que o card da página tem
         <article className="relative flex aspect-[375/469] h-[min(600px,85dvh)] max-w-[90vw] justify-center overflow-hidden shadow-2xl">
-          <Image src={foto} alt={descricao} fill sizes="480px" className="object-cover" />
+          <Image src={foto} alt={descricao} fill sizes="480px" quality={90} className="object-cover" />
           {botao}
         </article>
       }
@@ -45,6 +46,7 @@ export function PlanoCard({ id, foto }: Props) {
           src={foto}
           alt={descricao}
           fill
+          quality={90}
           sizes="(min-width: 768px) 400px, 100vw"
           // No original a imagem é cortada por cima (fica alinhada pela base)
           className="object-cover object-bottom"

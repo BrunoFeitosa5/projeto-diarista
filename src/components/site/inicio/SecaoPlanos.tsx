@@ -3,7 +3,7 @@ import { PlanoCard } from "./PlanoCard";
 
 export function SecaoPlanos() {
   return (
-    <section className="bg-rosa-claro px-4 py-12 md:min-h-[703px] md:pt-[63px]">
+    <section id="valores" className="scroll-mt-24 bg-rosa-claro px-4 py-12 md:min-h-[703px] md:pt-[63px]">
       <div className="mx-auto max-w-site">
         <h2 className="text-center font-destaque text-[32px] leading-[1.3] font-bold text-rosa-destaque italic">
           FAXINA E PASSADORIA

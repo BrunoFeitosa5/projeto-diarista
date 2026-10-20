@@ -1,19 +1,14 @@
 // ⭐ Arquivo único de preços e repasse.
 // - precoCliente: quanto o cliente paga.
-// - PERCENTUAL_REPASSE: parte do preço que vai para a diarista (o resto fica com a Império).
-//   Provisório: 80% para a diarista e 20% para a Império, até a dona confirmar.
+// - repasseDiarista: valor fixo que vai para a diarista (o resto fica com a Império).
+//   Valores passados pela dona (out/2026): 4h = R$ 100, 6h = R$ 120 e 8h = R$ 160.
 // O servidor copia esses valores para o pedido no momento em que ele é criado,
 // então mudar aqui não altera pedidos antigos.
 
-export const PERCENTUAL_REPASSE = 0.8;
-
-// Arredonda para centavos (ex.: 199 × 0,8 = 159,20)
-const repasse = (preco: number) => Math.round(preco * PERCENTUAL_REPASSE * 100) / 100;
-
 export const PLANOS = {
-  "4h": { horas: 4, precoCliente: 160, repasseDiarista: repasse(160), metragem: "30 a 55 m²" },
-  "6h": { horas: 6, precoCliente: 199, repasseDiarista: repasse(199), metragem: "55 a 80 m²" },
-  "8h": { horas: 8, precoCliente: 230, repasseDiarista: repasse(230), metragem: "80 a 100 m²" },
+  "4h": { horas: 4, precoCliente: 160, repasseDiarista: 100, metragem: "30 a 55 m²" },
+  "6h": { horas: 6, precoCliente: 199, repasseDiarista: 120, metragem: "55 a 80 m²" },
+  "8h": { horas: 8, precoCliente: 230, repasseDiarista: 160, metragem: "80 a 100 m²" },
 } as const;
 
 export type PlanoId = keyof typeof PLANOS;

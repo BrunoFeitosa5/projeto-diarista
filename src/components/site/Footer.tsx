@@ -1,11 +1,14 @@
 import Link from "next/link";
-import { NAV_LINKS, SITE } from "@/config/site";
+import { MENSAGEM_AGENDAR, NAV_LINKS, SITE } from "@/config/site";
 import { linkWhatsApp } from "@/lib/whatsapp";
 
-// No site original o rodapé mostra Início, Serviços, Segurança e Contato.
+// O rodapé repete o menu do topo e acrescenta Serviços, Segurança e Contato (WhatsApp).
+// Não há link de login no site: a admin entra direto por /entrar.
 const LINKS_RODAPE = [
-  ...NAV_LINKS.filter((l) => l.href !== "/trabalhe-conosco"),
-  { href: linkWhatsApp("Olá, gostaria de realizar um agendamento."), label: "Contato" },
+  ...NAV_LINKS,
+  { href: "/servicos", label: "Serviços" },
+  { href: "/seguranca", label: "Segurança" },
+  { href: linkWhatsApp(MENSAGEM_AGENDAR), label: "Contato" },
 ];
 
 const rotulo = "text-pequeno tracking-[0.16em] text-rosa-forte";
@@ -51,6 +54,18 @@ export function Footer() {
               </p>
               <p>{SITE.horarioAtendimento}</p>
               <p>{SITE.regiao}</p>
+              {SITE.instagram && (
+                <p>
+                  <a
+                    href={SITE.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline-offset-2 hover:text-rosa-forte hover:underline"
+                  >
+                    Instagram
+                  </a>
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -63,6 +78,10 @@ export function Footer() {
             <span className="text-rosa-botao-hover"> - </span>
             <Link href="/privacidade" className="underline underline-offset-2 hover:text-rosa-forte">
               Política de Privacidade
+            </Link>
+            <span className="text-rosa-botao-hover"> - </span>
+            <Link href="/termos-de-uso" className="underline underline-offset-2 hover:text-rosa-forte">
+              Termos de Uso
             </Link>
           </p>
           <p className={rotulo}>{SITE.rodapeServicos}</p>

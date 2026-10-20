@@ -14,9 +14,9 @@ export const IMAGENS: Record<
 > = {
   logo: "/img/logo-imperio-diarista.avif", // 375x484
   hero: "/img/hero-inicio.avif", // 1440x960
-  plano4h: "/img/card-plano-4h.avif", // 375x469, com texto e preço desenhados
-  plano6h: "/img/card-plano-6h.avif",
-  plano8h: "/img/card-plano-8h.avif",
+  plano4h: "/img/card-plano-4h-hd.png", // 1122x1402, com texto e preço desenhados
+  plano6h: "/img/card-plano-6h-hd.png",
+  plano8h: "/img/card-plano-8h-hd.png",
   chamadaFinal: "/img/chamada-final-passadoria-hd.png", // 2115x743, clara (escurecida no componente)
   servicosHero: "/img/servicos-hero-escritorio.avif", // 1440x621, já vem escurecida
   // Ao trocar uma foto, use um NOME NOVO de arquivo: o otimizador do Next e a CDN
