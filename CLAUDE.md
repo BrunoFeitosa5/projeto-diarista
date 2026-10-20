@@ -324,6 +324,14 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
   (WhatsApp Business); sem ela, dá para ter respostas rápidas/mensagens
   prontas no WhatsApp Business da dona. Decidir o caminho com o usuário.
 
+## Mensagens do WhatsApp Business (20/10/2026)
+As mensagens para clientes (saudação, ausência e respostas rápidas
+`/valores`, `/dados`, `/endereco`, `/garantia`, `/confirmado`, `/diarista`,
+`/lembrete`, `/obrigado`, `/foraarea`) estão em `docs/mensagens-whatsapp.md`.
+São configuradas no app, não no site. Regras: Pix apenas, garantia de R$ 10
+paga antes e descontada do total (só no WhatsApp), cancelamento até 8h antes
+sem perder a garantia (a dona deve confirmar), materiais por conta da cliente.
+
 ## Pendências
 - Plano grátis do Supabase não tem backup que dê para baixar. Enquanto isso,
   `npm run backup` (`scripts/backup.mjs`) exporta todas as tabelas e a lista

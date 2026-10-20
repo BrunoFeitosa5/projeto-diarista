@@ -67,8 +67,10 @@ export default function TermosDeUsoPage() {
 
         <Secao titulo="5. Cancelamento e reagendamento">
           <p>
-            Para cancelar ou mudar a data, avise a Império pelo WhatsApp o quanto antes, para que a diarista
-            possa organizar a agenda dela.
+            Para cancelar ou mudar a data, avise a Império pelo WhatsApp com pelo menos 8 horas de
+            antecedência do horário marcado. Nesse caso, a garantia de reserva é devolvida ou usada na nova
+            data. Sem aviso dentro do prazo, a garantia não é devolvida. Se o cancelamento for feito pela
+            Império, devolvemos o valor integral.
           </p>
         </Secao>
 
