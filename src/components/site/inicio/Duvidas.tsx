@@ -23,11 +23,7 @@ const PERGUNTAS: { pergunta: string; resposta: React.ReactNode }[] = [
   },
   {
     pergunta: "Quais são as formas de pagamento?",
-    resposta: "Pix ou cartão de crédito, por link de pagamento enviado pelo WhatsApp.",
-  },
-  {
-    pergunta: "Preciso pagar antes do serviço?",
-    resposta: "Não há pagamento antecipado. O pagamento é feito quando a diarista chega e começa o serviço.",
+    resposta: "Pix. Os dados para o pagamento são enviados pela nossa equipe no WhatsApp.",
   },
   {
     pergunta: "O que está incluso na limpeza?",
@@ -65,11 +61,15 @@ const PERGUNTAS: { pergunta: string; resposta: React.ReactNode }[] = [
   },
   {
     pergunta: "Quais regiões vocês atendem?",
-    resposta: `${SITE.regiao}. Se o seu bairro não estiver na lista, pergunte pelo WhatsApp.`,
+    resposta: `${SITE.regiao}. Em dúvida sobre o seu bairro, pergunte pelo WhatsApp.`,
   },
   {
     pergunta: "Qual é o horário de atendimento?",
     resposta: `${SITE.horarioAtendimento.replace("Atendimento no WhatsApp: ", "")}, pelo WhatsApp.`,
+  },
+  {
+    pergunta: "Em que horários as diaristas trabalham?",
+    resposta: `As diaristas trabalham de ${SITE.horarioDiaristas.replace("Seg a dom, das", "segunda a domingo, das")}.`,
   },
   {
     pergunta: "A Império é uma empresa de limpeza?",

@@ -19,9 +19,9 @@ const VANTAGENS: Vantagem[] = [
   },
   {
     icone: CircleDollarSign,
-    titulo: "Sem Pagamento Antecipado",
+    titulo: "Atendimento Humano",
     texto:
-      "Preço fixo e sem taxas escondidas. Você só paga quando a diarista chega e começa o serviço.",
+      "Fale com uma pessoa de verdade pelo WhatsApp, do agendamento até depois do serviço. Preço fixo e sem taxas escondidas.",
   },
 ];
 

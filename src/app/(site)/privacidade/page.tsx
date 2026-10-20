@@ -7,7 +7,7 @@ export const metadata = { title: "Política de Privacidade | Império Diarista" 
 
 // RASCUNHO: o texto precisa ser revisado pela dona ou por um profissional antes do lançamento.
 // Ao mudar o texto, atualize a data abaixo.
-const ATUALIZADA_EM = "3 de outubro de 2026";
+const ATUALIZADA_EM = "20 de outubro de 2026";
 
 function Secao({ titulo, children }: { titulo: string; children: ReactNode }) {
   return (
@@ -60,41 +60,47 @@ export default function PrivacidadePage() {
 
         <Secao titulo="2. Quais dados coletamos">
           <p>
-            <strong>De todos que criam conta:</strong> nome, telefone (WhatsApp), e-mail e senha. A senha é
-            guardada de forma criptografada e nem a equipe da {SITE.nome} consegue vê-la.
+            O site não tem cadastro, login nem senha para clientes ou diaristas. Os dados chegam pela
+            conversa no WhatsApp, quando você mesmo os envia.
           </p>
           <p>
-            <strong>De clientes, ao agendar:</strong> endereço do serviço (CEP, rua, número, complemento,
-            bairro, cidade e ponto de referência), data, horário, plano escolhido e observações.
+            <strong>De clientes:</strong> nome, telefone (WhatsApp), endereço do serviço (rua, número,
+            complemento, bairro, cidade e ponto de referência), data, horário, plano escolhido e
+            observações. Se você preencher o formulário &quot;Nome e Telefone&quot; do site, esses dados
+            vão escritos na mensagem que abre no seu WhatsApp. O site não guarda o que você digitou ali.
           </p>
           <p>
-            <strong>De diaristas, no perfil:</strong> CPF, chave Pix (e o tipo da chave), um resumo da
-            experiência profissional e, se informados, CNPJ (MEI), data de nascimento e o nome e o telefone de
-            uma pessoa de referência. Também registramos as vagas às quais a diarista se candidatou. A
-            diarista só deve indicar uma referência que concordou em ser procurada pela {SITE.nome}, e
-            usamos esse contato apenas para pedir informações sobre o trabalho dela.
+            <strong>De diaristas:</strong> nome, telefone (WhatsApp) e, se informada, a data de nascimento,
+            enviados pelo formulário &quot;Trabalhe Conosco&quot; (que também só abre o WhatsApp). Para
+            conferir a experiência e liberar a diarista para as vagas, a {SITE.nome} pode pedir pela
+            conversa um resumo da experiência, CPF, chave Pix (para o repasse) e o nome e o telefone de uma
+            pessoa de referência. A diarista só deve indicar uma referência que concordou em ser procurada,
+            e usamos esse contato apenas para pedir informações sobre o trabalho dela.
           </p>
           <p>
-            <strong>Automaticamente:</strong> o histórico de cada pedido (mudanças de status, com data e
-            quem fez a mudança) e registros técnicos de acesso, como endereço IP e data e hora, guardados
-            pelos serviços que hospedam o site.
+            <strong>Automaticamente:</strong> registros técnicos de acesso ao site, como endereço IP e data
+            e hora, guardados pelo serviço que hospeda o site.
+          </p>
+          <p>
+            <strong>Equipe:</strong> a administração da {SITE.nome} tem uma área restrita, com e-mail e
+            senha, usada só por quem trabalha na empresa.
           </p>
         </Secao>
 
         <Secao titulo="3. Para que usamos">
           <Lista
             itens={[
-              "Criar e proteger sua conta e permitir o login.",
-              "Receber o pedido de limpeza, mostrar a vaga às diaristas e organizar o atendimento.",
-              "Avaliar as candidaturas, verificar a identidade das diaristas (CPF e, se houver, CNPJ) e, se for o caso, conversar com a referência indicada, para a segurança dos clientes.",
+              "Receber o pedido de limpeza e organizar o atendimento.",
+              "Avisar as diaristas verificadas sobre as vagas e escolher quem vai atender.",
+              "Verificar as diaristas (experiência, CPF e referências), para a segurança dos clientes.",
               "Pagar o repasse à diarista pela chave Pix.",
-              "Falar com você pelo WhatsApp ou e-mail sobre o seu pedido ou a sua conta.",
+              "Falar com você pelo WhatsApp sobre o seu pedido ou o seu cadastro como diarista.",
               "Cumprir obrigações legais e nos defender em caso de reclamação ou processo.",
             ]}
           />
           <p>
             Usamos esses dados com base na execução do serviço que você pediu, no cumprimento de obrigações
-            legais e no nosso legítimo interesse em manter a plataforma segura (artigo 7º da LGPD). Não
+            legais e no nosso legítimo interesse em manter o serviço seguro (artigo 7º da LGPD). Não
             vendemos seus dados e não os usamos para propaganda de terceiros.
           </p>
         </Secao>
@@ -103,36 +109,35 @@ export default function PrivacidadePage() {
           <Lista
             itens={[
               <>
-                <strong>Diaristas cadastradas</strong> veem, na lista de vagas, apenas o bairro, a cidade, a
-                data, o horário e as observações do pedido. Por isso, não escreva dados pessoais nas
-                observações.
+                <strong>A equipe da {SITE.nome}</strong> vê os dados necessários para atender o pedido,
+                verificar diaristas e fazer os pagamentos.
               </>,
               <>
-                <strong>A diarista aprovada</strong> para o seu pedido passa a ver o endereço completo e o seu
-                nome. Da mesma forma, o cliente passa a ver o nome da diarista aprovada. O telefone de cada
-                um fica só com a {SITE.nome}, que faz a comunicação entre os dois.
+                <strong>O grupo de diaristas no WhatsApp</strong> recebe o aviso da vaga com apenas o
+                código, a data, o plano, o bairro e a cidade. Nunca o endereço completo, o seu nome ou o
+                seu telefone.
               </>,
               <>
-                <strong>A equipe da {SITE.nome}</strong> (administração) vê os dados necessários para
-                aprovar diaristas, acompanhar os pedidos e fazer os pagamentos.
+                <strong>A diarista escolhida</strong> para o seu serviço recebe da {SITE.nome} os dados
+                para chegar até você: endereço completo, ponto de referência, observações e o seu nome. Da
+                mesma forma, você recebe o nome da diarista que vai atender. O telefone de cada um fica só
+                com a {SITE.nome}, que faz a comunicação entre os dois.
               </>,
               <>
-                <strong>CPF, CNPJ, data de nascimento, chave Pix, experiência e referência</strong> das
-                diaristas ficam visíveis só para a própria diarista e para a administração. Clientes não têm
-                acesso a eles.
+                <strong>CPF, chave Pix, experiência e referência</strong> das diaristas ficam só com a{" "}
+                {SITE.nome}. Clientes não têm acesso a eles.
               </>,
             ]}
           />
         </Secao>
 
         <Secao titulo="5. Serviços de terceiros">
-          <p>Para funcionar, o site usa alguns serviços externos:</p>
+          <p>Para funcionar, usamos alguns serviços externos:</p>
           <Lista
             itens={[
-              "Supabase: guarda o banco de dados e faz o login. Os dados ficam em servidores em São Paulo.",
+              "WhatsApp: o atendimento acontece no aplicativo, que segue a política de privacidade dele. Ao clicar nos botões de WhatsApp do site, você sai do nosso site e vai para o aplicativo.",
               "Vercel: hospeda o site. Os registros técnicos de acesso podem ser processados em servidores fora do Brasil, inclusive nos Estados Unidos, com as proteções exigidas pela LGPD.",
-              "ViaCEP: quando você digita o CEP, só o CEP é enviado para buscar a rua, o bairro e a cidade.",
-              "WhatsApp: ao clicar nos botões de WhatsApp, a conversa acontece no aplicativo, que segue a política de privacidade dele.",
+              "Supabase: guarda o banco de dados da área restrita da equipe e faz o login dela. Os dados ficam em servidores em São Paulo.",
             ]}
           />
           <p>Também podemos compartilhar dados quando a lei ou uma autoridade exigir.</p>
@@ -140,31 +145,27 @@ export default function PrivacidadePage() {
 
         <Secao titulo="6. Cookies e armazenamento no navegador">
           <p>
-            Usamos apenas cookies necessários para manter você conectado à sua conta. Não usamos cookies de
-            propaganda nem de rastreamento.
-          </p>
-          <p>
-            Quem preenche o formulário Trabalhe Conosco tem os dados (nome, CNPJ, telefone e nascimento)
-            guardados temporariamente no próprio navegador, só para preencher o cadastro. Eles somem ao fechar
-            a aba.
+            O site não usa cookies de propaganda nem de rastreamento. O navegador guarda apenas a sua
+            escolha de tema claro ou escuro, e a área restrita da equipe usa cookies necessários para
+            manter o login.
           </p>
         </Secao>
 
         <Secao titulo="7. Por quanto tempo guardamos">
           <p>
-            Guardamos os dados da conta enquanto ela estiver ativa. Depois que você pedir a exclusão,
-            apagamos ou tornamos anônimos os dados, exceto os que a lei nos obriga a manter (por exemplo,
-            registros de pedidos e pagamentos, pelo prazo legal) ou que sejam necessários para nos defender
-            em uma reclamação.
+            Guardamos os dados enquanto forem necessários para o atendimento. Depois que você pedir a
+            exclusão, apagamos ou tornamos anônimos os dados, exceto os que a lei nos obriga a manter (por
+            exemplo, registros de pedidos e pagamentos, pelo prazo legal) ou que sejam necessários para nos
+            defender em uma reclamação. Você também pode apagar a conversa do seu lado no WhatsApp.
           </p>
         </Secao>
 
         <Secao titulo="8. Como protegemos">
           <p>
-            O acesso aos dados é controlado por perfil (cliente, diarista ou administração) diretamente no
-            banco de dados, a conexão com o site é sempre criptografada (HTTPS) e os dados mais sensíveis
-            ficam separados dos demais. Nenhum sistema é 100% seguro: se acontecer um incidente que possa
-            trazer risco a você, avisaremos você e a Autoridade Nacional de Proteção de Dados (ANPD).
+            A conexão com o site é sempre criptografada (HTTPS), o acesso à área restrita é limitado à
+            equipe e os dados mais sensíveis ficam separados dos demais. Nenhum sistema é 100% seguro: se
+            acontecer um incidente que possa trazer risco a você, avisaremos você e a Autoridade Nacional
+            de Proteção de Dados (ANPD).
           </p>
         </Secao>
 
@@ -174,7 +175,7 @@ export default function PrivacidadePage() {
             itens={[
               "Confirmação de que tratamos seus dados e uma cópia deles.",
               "Correção de dados incompletos ou errados.",
-              "Exclusão da conta e dos dados que não precisamos manter por lei.",
+              "Exclusão dos dados que não precisamos manter por lei.",
               "Informação sobre com quem compartilhamos seus dados.",
               "Revisão ou oposição a um uso que você considere indevido.",
             ]}
@@ -190,14 +191,13 @@ export default function PrivacidadePage() {
         </Secao>
 
         <Secao titulo="10. Menores de idade">
-          <p>O site é destinado a maiores de 18 anos. Não criamos contas para menores de idade.</p>
+          <p>
+            Os serviços são destinados a maiores de 18 anos. Não cadastramos diaristas menores de idade.
+          </p>
         </Secao>
 
         <Secao titulo="11. Mudanças nesta política">
-          <p>
-            Podemos atualizar esta política. A data da última atualização fica no topo da página e, se a
-            mudança for importante, avisaremos quem tem conta.
-          </p>
+          <p>Podemos atualizar esta política. A data da última atualização fica no topo da página.</p>
         </Secao>
 
         <p className="mt-12">

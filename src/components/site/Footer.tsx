@@ -53,6 +53,7 @@ export function Footer() {
                 </a>
               </p>
               <p>{SITE.horarioAtendimento}</p>
+              <p>Diaristas: {SITE.horarioDiaristas}</p>
               <p>{SITE.regiao}</p>
               {SITE.instagram && (
                 <p>

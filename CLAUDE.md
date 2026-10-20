@@ -132,9 +132,14 @@ Perfis: `cliente`, `diarista` e `admin`.
 - Avaliações: `src/config/avaliacoes.ts` começa **vazia** e a seção só
   aparece com avaliações reais da Império (não copiar as do S.O.S).
 - `/termos-de-uso`: rascunho a ser revisado pela dona (CNPJ, cancelamento,
-  pagamento). O FAQ e os termos dizem "Pix ou cartão por link, sem pagamento
-  antecipado, paga na chegada da diarista" (copiado do fluxo do S.O.S):
-  **confirmar com a dona**. Instagram: preencher `SITE.instagram`.
+  pagamento). Pagamento: **só Pix**, com uma garantia de R$ 10,00 que a dona
+  manda pelo WhatsApp (ela pediu para **não** aparecer no FAQ; os termos só
+  dizem que valor e garantia são combinados no WhatsApp). Instagram: preencher
+  `SITE.instagram`.
+- **Horários e região (20/10/2026, ditos pela dona):** atendimento no WhatsApp
+  seg a dom, 8h às 22h (`SITE.horarioAtendimento`); diaristas trabalham seg a
+  dom, 6h às 19h (`SITE.horarioDiaristas`, no rodapé e no FAQ); região: "Toda
+  a região de São Paulo" (`SITE.regiao`).
 - CPF/CNPJ/Pix NÃO vão no cadastro (os metadados do usuário entram no token
   de login); a diarista preenche no perfil (etapa 9).
 - Configuração no painel do Supabase (Authentication > URL Configuration):
@@ -327,8 +332,9 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
   limpar dados ou rodar migração. Antes de ter pedidos reais, decidir também
   pelo plano Pro (backup automático).
 - Política de Privacidade (LGPD): rascunho em `/privacidade`
-  (`src/app/(site)/privacidade/page.tsx`), com link no rodapé e no cadastro.
-  Falta a dona ou um profissional revisar: CNPJ/razão social da Império,
+  (`src/app/(site)/privacidade/page.tsx`), com link no rodapé. Reescrita em
+  20/10/2026 para o fluxo sem conta (dados pelo WhatsApp; Supabase só para a
+  área da equipe). Falta a dona ou um profissional revisar: CNPJ/razão social da Império,
   e-mail de contato para privacidade, prazo de guarda dos dados e a regra de
   18 anos. Ao mudar o texto, atualizar `ATUALIZADA_EM`.
 - Confirmar com a dona os horários de início (hoje 07:00 às 14:00) e a

@@ -50,8 +50,8 @@ export default function TermosDeUsoPage() {
 
         <Secao titulo="3. Pagamento">
           <p>
-            O pagamento é feito por Pix ou cartão de crédito, por link de pagamento enviado pela Império.
-            Não há pagamento antecipado: o valor é pago quando a diarista chega e começa o serviço.
+            O pagamento é feito por Pix. O valor, a forma de pagamento e qualquer garantia de reserva do
+            horário são combinados e enviados pela Império no WhatsApp, antes da confirmação do serviço.
           </p>
         </Secao>
 
