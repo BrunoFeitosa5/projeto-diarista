@@ -155,7 +155,7 @@ Se algo não ficou como esperado, responda por aqui que a gente resolve.
 - (feito) Titular da chave Pix: Debora Manoel.
 - (feito) A garantia de R$ 10,00 é descontada do valor total; o `/confirmado`
   mostra o restante a pagar (4h = R$ 150, 6h = R$ 189, 8h = R$ 220).
-- Cancelamento (regra aplicada em 20/10/2026, a dona deve confirmar): avisar
+- (feito) Cancelamento (regra aplicada e confirmada pela dona em 20/10/2026): avisar
   até 8h antes do horário marcado; no prazo, devolve a garantia ou usa o valor
   na nova data; sem aviso, a Império fica com os R$ 10,00. Se quem cancela é a
   Império, devolve tudo. Está em `/valores`, `/garantia`, `/confirmado` e nos
