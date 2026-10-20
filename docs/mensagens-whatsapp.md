@@ -1,4 +1,4 @@
-# Mensagens do WhatsApp Business (clientes)
+Eu# Mensagens do WhatsApp Business (clientes)
 
 Número dos clientes: (11) 93501-2436. Elas **não** ficam no site: são
 configuradas no app WhatsApp Business (Ferramentas para a empresa).
@@ -151,6 +151,21 @@ Como foi o atendimento da [diarista]? Se puder, conte para a gente por aqui como
 Se algo não ficou como esperado, responda por aqui que a gente resolve.
 ```
 
+## Etiquetas e ordem de uso
+
+As mensagens são atalhos (a dona envia cada uma). Só a saudação e a ausência
+são automáticas. Etiquetas em Ferramentas para a empresa > Etiquetas.
+
+| Etapa | Etiqueta | Atalho a enviar |
+|---|---|---|
+| Cliente chama | Novo | (saudação automática) |
+| Pergunta preço | Novo | `/valores` |
+| Quer reservar | Aguardando dados | `/dados`, depois `/endereco` |
+| Pede a garantia | Aguardando garantia | `/garantia` |
+| Pix caiu | Garantia paga | `/confirmado` |
+| Véspera | Confirmado | `/diarista` e `/lembrete` |
+| Depois do serviço | Concluído | `/obrigado` |
+
 ## Pendências
 - (feito) Titular da chave Pix: Debora Manoel.
 - (feito) A garantia de R$ 10,00 é descontada do valor total; o `/confirmado`
@@ -162,5 +177,3 @@ Se algo não ficou como esperado, responda por aqui que a gente resolve.
   Termos de Uso.
 - Quando existir o link de avaliação do Google, voltar a pedir a avaliação no
   `/obrigado`.
-- Sugestão de etiquetas: Novo, Aguardando dados, Garantia paga, Confirmado,
-  Concluído.
