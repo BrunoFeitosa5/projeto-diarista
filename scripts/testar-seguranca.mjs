@@ -4,7 +4,7 @@
 // Cria contas temporárias (2 clientes, 2 diaristas e 1 admin) e um pedido,
 // tenta o que um invasor tentaria (ler dados alheios, pular etapas, chamar
 // Server Actions direto, achar a chave secreta no navegador) e apaga tudo no
-// final. Cada execução gasta 1 número de pedido (IMP-...).
+// final. Cada execução gasta 2 números (IMP-...): 1 do pedido e 1 da solicitação.
 // Sai com código 1 se algum teste falhar.
 
 import { execSync } from "node:child_process";
@@ -42,6 +42,7 @@ const secao = (titulo) => console.log(`\n${titulo}`);
 // ---- Contas temporárias ----------------------------------------------------
 const criados = [];
 const pedidosCriados = [];
+const IP_TESTE = `teste-seguranca-${randomUUID()}`;
 
 async function sessao(email, senha) {
   const jar = new Map();
@@ -293,11 +294,31 @@ try {
     ignorado = true;
   } catch {}
   ok(ignorado, "o .env.local é ignorado pelo git");
+
+  // ---- 8. Solicitações (número do pedido gerado pelo site) -----------------------------
+  secao("8. Solicitações (número do pedido gerado no clique)");
+  const argsSolicitar = { p_plano: "6h", p_data: dataFutura, p_horario: "09:00", p_bairro_cidade: "TESTE seguranca", p_tipo: null, p_ip_hash: IP_TESTE };
+  for (const [nome, quem] of [["visitante", anonimo], ["cliente", clienteA], ["diarista", diarista1], ["admin", admin]]) {
+    ok(!!(await erroRpc(quem.sb, "solicitar_codigo", argsSolicitar)), `${nome} não chama solicitar_codigo (só o servidor)`);
+  }
+  const { data: codigo, error: erroServidor } = await admSb.rpc("solicitar_codigo", argsSolicitar);
+  ok(/^IMP-\d{6}$/.test(codigo ?? ""), "o servidor (service_role) recebe um código IMP-000000", erroServidor?.message ?? String(codigo));
+  ok(!!(await erroRpc(admSb, "solicitar_codigo", { ...argsSolicitar, p_bairro_cidade: " " })), "bairro vazio é recusado");
+  for (const [nome, quem] of [["visitante", anonimo], ["cliente", clienteA], ["diarista", diarista1]]) {
+    ok((await contar(quem.sb, "solicitacoes")) === 0, `${nome} não lê solicitacoes`);
+  }
+  const { error: escrita } = await clienteA.sb.from("solicitacoes").insert({ bairro_cidade: "x" });
+  ok(!!escrita, "cliente não grava direto em solicitacoes");
+  const doTeste = (q) => q.eq("ip_hash", IP_TESTE);
+  ok((await contar(admin.sb, "solicitacoes", doTeste)) === 1, "a admin lê a solicitação");
+  const { data: linhaSol } = await admSb.from("solicitacoes").select("*").eq("ip_hash", IP_TESTE).single();
+  ok(linhaSol && !Object.keys(linhaSol).some((c) => /nome|telefone|endereco|cpf|pix/i.test(c)), "a tabela não tem coluna de nome, telefone, endereço, CPF nem Pix");
 } catch (e) {
   falhas++;
   console.error(`\nErro inesperado: ${e.message}`);
 } finally {
   // ---- Limpeza -----------------------------------------------------------------------
+  await admSb.from("solicitacoes").delete().eq("ip_hash", IP_TESTE);
   for (const id of pedidosCriados) await admSb.from("pedidos").delete().eq("id", id);
   for (const id of criados) await admSb.auth.admin.deleteUser(id);
   console.log(`\nLimpeza: ${criados.length} contas e ${pedidosCriados.length} pedido de teste apagados.`);
