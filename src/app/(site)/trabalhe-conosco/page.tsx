@@ -15,7 +15,7 @@ export default function TrabalheConoscoPage() {
           <h1 className="mt-6 text-h2 md:mt-[42px] md:max-w-[370px]">Venha fazer parte do nosso time</h1>
           <p className="mt-6 md:mt-[42px] md:max-w-[404px]">
             Receba vagas de limpeza perto de você, com valor fixo e pagamento por Pix. Preencha seus
-            dados e continue a conversa com a nossa equipe no WhatsApp. Não precisa criar conta.
+            dados e continue a conversa com a nossa equipe no WhatsApp.
           </p>
         </div>
         <FormTrabalheConosco />

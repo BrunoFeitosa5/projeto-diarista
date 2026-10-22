@@ -9,7 +9,13 @@ import { linkWhatsAppDiaristas } from "@/lib/whatsapp";
 // Chave do sessionStorage que o perfil da diarista (painel antigo, sem link no site) ainda lê.
 export const CHAVE_PRE_CADASTRO = "pre-cadastro-diarista";
 
-type Campos = { nome: string; telefone: string; nascimento: string };
+type Campos = {
+  nome: string;
+  telefone: string;
+  nascimento: string;
+  refNome: string;
+  refTelefone: string;
+};
 
 const CAMPOS: {
   nome: keyof Campos;
@@ -23,16 +29,32 @@ const CAMPOS: {
   { nome: "nome", rotulo: "Seu Nome", placeholder: "Nome Completo", obrigatorio: true, tipo: "text", autoComplete: "name" },
   { nome: "telefone", rotulo: "Seu WhatsApp", placeholder: "(XX) XXXXX-XXXX", obrigatorio: true, mascara: mascaraTelefone, tipo: "tel", autoComplete: "tel-national" },
   { nome: "nascimento", rotulo: "Data de Nascimento", placeholder: "00/00/0000", obrigatorio: false, mascara: mascaraData, tipo: "text", autoComplete: "bday" },
+  { nome: "refNome", rotulo: "Nome de uma referência", placeholder: "Ex.: ex-patroa ou colega", obrigatorio: false, tipo: "text", autoComplete: "off" },
+  { nome: "refTelefone", rotulo: "Telefone da referência", placeholder: "(XX) XXXXX-XXXX", obrigatorio: false, mascara: mascaraTelefone, tipo: "tel", autoComplete: "off" },
 ];
 
 // Formatos completos exigidos em cada campo com máscara
 const PADROES: Partial<Record<keyof Campos, string>> = {
   telefone: "\\(\\d{2}\\) \\d{4,5}-\\d{4}",
   nascimento: "\\d{2}/\\d{2}/\\d{4}",
+  refTelefone: "\\(\\d{2}\\) \\d{4,5}-\\d{4}",
 };
 
 export function FormTrabalheConosco() {
-  const [valores, setValores] = useState<Campos>({ nome: "", telefone: "", nascimento: "" });
+  const [valores, setValores] = useState<Campos>({
+    nome: "",
+    telefone: "",
+    nascimento: "",
+    refNome: "",
+    refTelefone: "",
+  });
+
+  // A referência é opcional, mas nome e telefone vão juntos
+  function exigido(campo: (typeof CAMPOS)[number]) {
+    if (campo.nome === "refNome") return valores.refTelefone !== "";
+    if (campo.nome === "refTelefone") return valores.refNome.trim() !== "";
+    return campo.obrigatorio;
+  }
 
   function alterar(campo: (typeof CAMPOS)[number]) {
     return (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +63,7 @@ export function FormTrabalheConosco() {
     };
   }
 
-  // Sem conta no site: os dados (nome, WhatsApp e nascimento) vão escritos na mensagem para o WhatsApp S.O.S Diaristas.
+  // Sem conta no site: os dados (nome, WhatsApp, nascimento e referência) vão escritos na mensagem para o WhatsApp S.O.S Diaristas.
   function enviar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const linhas = [
@@ -49,6 +71,7 @@ export function FormTrabalheConosco() {
       `Nome: ${valores.nome.trim()}`,
       `WhatsApp: ${valores.telefone}`,
       valores.nascimento && `Nascimento: ${valores.nascimento}`,
+      valores.refNome.trim() && `Referência: ${valores.refNome.trim()} - ${valores.refTelefone}`,
     ].filter(Boolean);
     window.open(linkWhatsAppDiaristas(linhas.join("\n")), "_blank", "noopener,noreferrer");
   }
@@ -67,7 +90,7 @@ export function FormTrabalheConosco() {
             type={campo.tipo}
             inputMode={campo.mascara ? "numeric" : undefined}
             autoComplete={campo.autoComplete}
-            required={campo.obrigatorio}
+            required={exigido(campo)}
             pattern={PADROES[campo.nome]}
             title={PADROES[campo.nome] ? `Use o formato ${campo.placeholder}` : undefined}
             placeholder={campo.placeholder}
