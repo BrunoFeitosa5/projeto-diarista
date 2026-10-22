@@ -1,4 +1,4 @@
-Eu# Mensagens do WhatsApp Business (clientes)
+# Mensagens do WhatsApp Business (clientes)
 
 Número dos clientes: (11) 93501-2436. Elas **não** ficam no site: são
 configuradas no app WhatsApp Business (Ferramentas para a empresa).
