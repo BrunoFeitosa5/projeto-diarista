@@ -330,6 +330,27 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
 - Teste no celular: `http://<IP do PC>:3000`. O `allowedDevOrigins` do
   `next.config.ts` libera `192.168.*.*` (sem ele o Next bloqueia o JS no dev).
 
+## Domínio novo (22/10/2026)
+- Endereço oficial: **https://www.imperiodiaristaoficial.com.br**. O sem `www`
+  redireciona (308) para o `www` (opção "Redirect apex domains to www" da
+  Vercel). `metadataBase` em `src/app/layout.tsx` usa esse endereço. O
+  `projeto-diarista-ten.vercel.app` continua funcionando.
+- Registro.br: titular é o **Bruno, pessoa física** (não o CNPJ da dona, como o
+  plano previa). Trocar o titular exige enviar documentos ao Registro.br. A dona
+  precisa saber disso. DNS no próprio Registro.br (modo avançado, zona):
+  `A` (nome em branco) `76.76.21.21` e `CNAME www` `cname.vercel-dns.com.`.
+  O MX `.` (sem e-mail) é o padrão e fica como está. Não trocar os servidores
+  de nomes para os da Vercel (DNSSEC do Registro.br).
+- Na Vercel (Settings > Domains) os dois domínios estavam em "Invalid
+  Configuration" até o Registro.br publicar a zona (domínio novo fica ~2 h em
+  transição). Conferir com `Resolve-DnsName`/`nslookup` antes de mexer no resto.
+- **Falta, depois de o domínio ficar válido:** Supabase > Authentication > URL
+  Configuration: Site URL = `https://www.imperiodiaristaoficial.com.br` e
+  Redirect URLs com `https://www.imperiodiaristaoficial.com.br/auth/confirmar`
+  (manter o da Vercel e o `localhost`); decidir plano Pro da Vercel (a Hobby é
+  para uso pessoal); preencher CNPJ, razão social e e-mail de privacidade em
+  `/termos-de-uso` e `/privacidade` (atualizar `ATUALIZADA_EM`).
+
 ## Mensagens: sem Meta nem bot (decidido em 22/10/2026)
 - A dona está com pressa: **não usar a API da Meta nem chatbot**. O fluxo é só
   pelo WhatsApp Business, com **atalhos** (saudação e ausência automáticas do
@@ -375,9 +396,9 @@ sem perder a garantia (a dona deve confirmar), materiais por conta da cliente.
   18 anos. Ao mudar o texto, atualizar `ATUALIZADA_EM`.
 - Confirmar com a dona os horários de início (hoje 07:00 às 14:00) e a
   antecedência mínima (hoje 1 dia), em `src/config/agendamento.ts`.
-- Domínio próprio (`imperiodiarista.com.br`): trocar o DNS tira o site
-  original do ar. Só com o acordo da dona; depois atualizar as URLs no
-  Supabase.
+- O domínio **`imperiodiarista.com.br` é o site original da dona**: trocar o DNS
+  dele tira o site original do ar. Não mexer sem o acordo dela. O domínio novo
+  é o `imperiodiaristaoficial.com.br` (seção "Domínio novo").
 - Repasse: valores fixos em `planos.ts` (R$100/120/160). Cada pedido guarda
   o valor do momento em que foi criado: pedidos antigos mantêm o repasse
   da época (80% ou 0 = "a combinar").

@@ -22,6 +22,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
+  // Endereço oficial (domínio próprio): links absolutos de metadados saem com ele
+  metadataBase: new URL("https://www.imperiodiaristaoficial.com.br"),
   title: "Império Diarista",
   description:
     "Profissionais qualificadas, atendimento de confiança e limpeza impecável em São Paulo e Região Metropolitana.",

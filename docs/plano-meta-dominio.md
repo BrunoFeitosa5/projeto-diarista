@@ -7,7 +7,7 @@ Atualizado em 22/10/2026. Estado: **aguardando a dona** passar o Facebook e os d
 - Só o número dos **clientes** (final 2436) entra no bot. O número das diaristas / S.O.S (11 91159-3485) fica no **app WhatsApp Business**, por causa do grupo.
 - Os dois números devem ser **WhatsApp Business**. "Web" é só o jeito de abrir no computador.
 - A conta nova do Facebook foi bloqueada ("muito nova para criar uma conta comercial"). Usar o **Facebook antigo e real da dona**.
-- Domínio novo: **imperiodiaristaoficial.com.br**, com a dona como titular, no **CNPJ dela** (ativo).
+- Domínio novo: **imperiodiaristaoficial.com.br**, registrado em 22/10/2026 no Registro.br. O plano era a dona como titular (CNPJ), mas ficou no **Bruno, pessoa física**; trocar exige documentos. DNS: A `76.76.21.21` e CNAME `www` `cname.vercel-dns.com.`; endereço oficial com `www`.
 - O `imperiodiarista.com.br` original já existe: não mexer no DNS dele sem acordo com a dona.
 
 ## O que a dona precisa passar
