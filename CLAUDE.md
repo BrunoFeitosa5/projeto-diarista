@@ -341,15 +341,24 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
   `A` (nome em branco) `76.76.21.21` e `CNAME www` `cname.vercel-dns.com.`.
   O MX `.` (sem e-mail) é o padrão e fica como está. Não trocar os servidores
   de nomes para os da Vercel (DNSSEC do Registro.br).
-- Na Vercel (Settings > Domains) os dois domínios estavam em "Invalid
-  Configuration" até o Registro.br publicar a zona (domínio novo fica ~2 h em
-  transição). Conferir com `Resolve-DnsName`/`nslookup` antes de mexer no resto.
-- **Falta, depois de o domínio ficar válido:** Supabase > Authentication > URL
-  Configuration: Site URL = `https://www.imperiodiaristaoficial.com.br` e
-  Redirect URLs com `https://www.imperiodiaristaoficial.com.br/auth/confirmar`
-  (manter o da Vercel e o `localhost`); decidir plano Pro da Vercel (a Hobby é
-  para uso pessoal); preencher CNPJ, razão social e e-mail de privacidade em
-  `/termos-de-uso` e `/privacidade` (atualizar `ATUALIZADA_EM`).
+- **Estado (22/10/2026):** DNS publicado, certificado HTTPS emitido e o site
+  abre em `https://www.imperiodiaristaoficial.com.br` (o sem `www` redireciona).
+  A Vercel mostra "DNS Change Recommended" (novos valores `216.198.79.1` e um
+  CNAME `...vercel-dns-017.com.`): os registros antigos continuam valendo, a
+  troca é opcional. Alguns provedores (o do Bruno, em casa) ainda guardavam a
+  resposta antiga "não existe" e não abriam o domínio por horas; não era erro
+  do site. Teste: `Resolve-DnsName <nome> -Server 8.8.8.8`.
+- **O `projeto-diarista-ten.vercel.app` ficou como endereço de reserva**, sem
+  redirect para o domínio novo (opcional; a Vercel não habilitou o Save ao
+  tentar). Os dois servem o mesmo site; `npm run test:seguranca` pode usar
+  qualquer um em `SITE_URL`.
+- **Supabase (Authentication > URL Configuration) já ajustado:** Site URL =
+  `https://www.imperiodiaristaoficial.com.br`; Redirect URLs com
+  `http://localhost:3000/auth/confirmar`, o da Vercel e o do domínio novo.
+- **Falta:** decidir o plano Pro da Vercel (a Hobby é para uso pessoal);
+  preencher CNPJ, razão social e e-mail de privacidade em `/termos-de-uso` e
+  `/privacidade` (atualizar `ATUALIZADA_EM`); avisar a dona de que o titular do
+  domínio é o Bruno e ver se ela quer a troca.
 
 ## Mensagens: sem Meta nem bot (decidido em 22/10/2026)
 - A dona está com pressa: **não usar a API da Meta nem chatbot**. O fluxo é só
