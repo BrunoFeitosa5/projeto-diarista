@@ -326,13 +326,18 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
 - Teste no celular: `http://<IP do PC>:3000`. O `allowedDevOrigins` do
   `next.config.ts` libera `192.168.*.*` (sem ele o Next bloqueia o JS no dev).
 
-## Próxima sessão (20/10/2026)
-- **Mensagens automáticas para clientes, como no S.O.S Diaristas.** Hoje o
-  cliente só abre o WhatsApp com um texto pronto e a dona responde à mão.
-  Bolar as mensagens (boas-vindas, confirmação de data, lembrete, nome da
-  diarista, pós-serviço). Envio automático de verdade exige a API paga da Meta
-  (WhatsApp Business); sem ela, dá para ter respostas rápidas/mensagens
-  prontas no WhatsApp Business da dona. Decidir o caminho com o usuário.
+## Mensagens: sem Meta nem bot (decidido em 22/10/2026)
+- A dona está com pressa: **não usar a API da Meta nem chatbot**. O fluxo é só
+  pelo WhatsApp Business, com **atalhos** (saudação e ausência automáticas do
+  próprio app; o resto `/atalho`, enviado pela dona). Os textos já estão
+  prontos: clientes em `docs/mensagens-whatsapp.md`, diaristas (S.O.S, com
+  `/vaga` e `/preenchida`) em `docs/mensagens-whatsapp-sos.md`.
+- O formulário do site já manda tudo preenchido (com `Pedido IMP-...`), então a
+  dona só confirma e pede o que faltar na conversa. `docs/plano-meta-dominio.md`
+  fica engavetado; só voltar a ele se o usuário pedir.
+- Para lançar: a dona cadastra as mensagens e atalhos nos dois WhatsApp
+  Business, o link real do grupo vai na Vercel (`WHATSAPP_GRUPO_DIARISTAS`, Secret)
+  e na saudação do S.O.S, e a numeração dos pedidos é zerada depois dos testes.
 
 ## Mensagens do WhatsApp Business (20/10/2026)
 As mensagens para clientes (saudação, ausência e respostas rápidas
