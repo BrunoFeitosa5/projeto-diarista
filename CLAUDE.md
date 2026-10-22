@@ -335,9 +335,11 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
 - O formulário do site já manda tudo preenchido (com `Pedido IMP-...`), então a
   dona só confirma e pede o que faltar na conversa. `docs/plano-meta-dominio.md`
   fica engavetado; só voltar a ele se o usuário pedir.
-- Para lançar: a dona cadastra as mensagens e atalhos nos dois WhatsApp
-  Business, o link real do grupo vai na Vercel (`WHATSAPP_GRUPO_DIARISTAS`, Secret)
-  e na saudação do S.O.S, e a numeração dos pedidos é zerada depois dos testes.
+- A dona já cadastrou as mensagens e atalhos nos dois WhatsApp Business (21/10).
+  Para lançar falta: cadastrar `/vaga` e `/preenchida` no S.O.S (escritos
+  depois, em 22/10), conferir o link real do grupo na saudação e no `/grupo` do
+  S.O.S, pôr `WHATSAPP_GRUPO_DIARISTAS` na Vercel (Secret, com Redeploy) e
+  zerar a numeração dos pedidos depois dos testes.
 
 ## Mensagens do WhatsApp Business (20/10/2026)
 As mensagens para clientes (saudação, ausência e respostas rápidas
