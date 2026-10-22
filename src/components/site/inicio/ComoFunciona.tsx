@@ -1,7 +1,6 @@
-import { botaoClasses } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/Button";
 import { CardAmpliavel } from "@/components/ui/CardAmpliavel";
-import { MENSAGEM_AGENDAR } from "@/config/site";
-import { linkWhatsApp } from "@/lib/whatsapp";
+import { LINK_AGENDAR } from "@/config/site";
 
 const PASSOS = [
   {
@@ -63,14 +62,9 @@ export function ComoFunciona() {
         </ol>
 
         <div className="mt-12 flex justify-center">
-          <a
-            href={linkWhatsApp(MENSAGEM_AGENDAR)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={botaoClasses("verde")}
-          >
+          <ButtonLink href={LINK_AGENDAR} variante="verde">
             Garanta sua casa brilhando agora
-          </a>
+          </ButtonLink>
         </div>
       </div>
     </section>

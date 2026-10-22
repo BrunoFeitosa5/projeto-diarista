@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { ButtonLink } from "@/components/ui/Button";
 import { IMAGENS } from "@/config/imagens";
-import { MENSAGEM_AGENDAR } from "@/config/site";
-import { linkWhatsApp } from "@/lib/whatsapp";
+import { LINK_AGENDAR } from "@/config/site";
 
 export const metadata = { title: "Segurança | Império Diarista" };
 
@@ -23,7 +22,7 @@ export default function SegurancaPage() {
               garante a segurança e a qualidade que você merece, com um processo de seleção rigoroso e
               transparente.
             </p>
-            <ButtonLink href={linkWhatsApp(MENSAGEM_AGENDAR)} variante="rosa-forte" className="mt-8 md:mt-[51px]">
+            <ButtonLink href={LINK_AGENDAR} variante="rosa-forte" className="mt-8 md:mt-[51px]">
               Agendar Diária Com Segurança
             </ButtonLink>
           </div>

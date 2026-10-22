@@ -1,8 +1,7 @@
 import Image from "next/image";
-import { ButtonLink } from "@/components/ui/Button";
 import { CardAmpliavel } from "@/components/ui/CardAmpliavel";
 import { PLANOS, formatarReais, type PlanoId } from "@/config/planos";
-import { linkWhatsApp } from "@/lib/whatsapp";
+import { BotaoPlano } from "./BotaoPlano";
 
 type Props = { id: PlanoId; foto: string };
 
@@ -15,17 +14,7 @@ export function PlanoCard({ id, foto }: Props) {
     plano.metragem
   }, por ${formatarReais(plano.precoCliente)}`;
 
-  const botao = (
-    <ButtonLink
-      href={linkWhatsApp(`Olá! Vim pelo site e gostaria de agendar o plano de ${plano.horas} horas.`)}
-      variante="rosa-card"
-      tamanho="card"
-      // z-20: fica acima do botão invisível de ampliar do CardAmpliavel
-      className="absolute bottom-[30px] z-20"
-    >
-      Agendar agora
-    </ButtonLink>
-  );
+  const botao = <BotaoPlano id={id} />;
 
   return (
     // Destaque: cresce 4% com sombra ao passar o mouse, ao tocar (celular) ou com foco do teclado.

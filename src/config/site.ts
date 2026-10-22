@@ -26,4 +26,8 @@ export const NAV_LINKS = [
   { href: "/trabalhe-conosco", label: "Trabalhe Conosco" },
 ] as const;
 
+// Todo botão de agendar/contratar leva ao formulário da Início: lá o servidor gera o número do
+// pedido e o WhatsApp abre com os dados preenchidos.
+export const LINK_AGENDAR = "/#agendar";
+
 export const MENSAGEM_AGENDAR = "Olá! Vim pelo site e gostaria de agendar uma limpeza.";

@@ -1,8 +1,7 @@
 import { FotoFundo } from "@/components/site/FotoFundo";
 import { ButtonLink } from "@/components/ui/Button";
 import { IMAGENS } from "@/config/imagens";
-import { MENSAGEM_AGENDAR } from "@/config/site";
-import { linkWhatsApp } from "@/lib/whatsapp";
+import { LINK_AGENDAR } from "@/config/site";
 
 // Original: título a 104px do topo (700px de largura), texto a 251px, botão a 309px.
 export function ChamadaFinal() {
@@ -19,7 +18,7 @@ export function ChamadaFinal() {
         <p className="mt-6 md:mt-[35px]">
           Agende sua diária hoje mesmo e redescubra o prazer de um ambiente leve e limpo.
         </p>
-        <ButtonLink href={linkWhatsApp(MENSAGEM_AGENDAR)} variante="rosa-chamada" className="mt-8 md:mt-[37px]">
+        <ButtonLink href={LINK_AGENDAR} variante="rosa-chamada" className="mt-8 md:mt-[37px]">
           Reservar Agora
         </ButtonLink>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, type FormEvent } from "react";
+import { useEffect, useState, useTransition, type FormEvent } from "react";
 import { solicitarCodigo } from "@/actions/solicitacoes";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { classeCampo, classeRotulo } from "@/components/ui/Campo";
@@ -8,6 +8,7 @@ import { ANTECEDENCIA_DIAS, HORARIOS, LIMITE_DIAS, dataDaquiA, formatarData } fr
 import { PLANOS, PLANO_IDS, formatarReais, type PlanoId } from "@/config/planos";
 import { mascaraTelefone } from "@/lib/mascaras";
 import { linkWhatsApp } from "@/lib/whatsapp";
+import { EVENTO_ESCOLHER_PLANO } from "./BotaoPlano";
 
 const TIPOS = ["Limpeza comum", "Limpeza pesada", "Pós-obra", "Passadoria"] as const;
 
@@ -27,6 +28,16 @@ export function FormAgendar() {
   const [erro, setErro] = useState("");
   const [enviado, setEnviado] = useState<{ codigo: string | null; link: string } | null>(null);
   const [enviando, iniciar] = useTransition();
+
+  // Os cards de preço ("Agendar agora") avisam qual plano a pessoa escolheu
+  useEffect(() => {
+    const escolher = (e: Event) => {
+      const id = (e as CustomEvent<PlanoId>).detail;
+      if (PLANO_IDS.includes(id)) setPlano(id);
+    };
+    window.addEventListener(EVENTO_ESCOLHER_PLANO, escolher);
+    return () => window.removeEventListener(EVENTO_ESCOLHER_PLANO, escolher);
+  }, []);
 
   function montarLink(codigo: string | null) {
     const linhas = [

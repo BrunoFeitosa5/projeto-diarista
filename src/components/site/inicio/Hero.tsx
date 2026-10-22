@@ -1,8 +1,7 @@
 import { FotoFundo } from "@/components/site/FotoFundo";
 import { ButtonLink } from "@/components/ui/Button";
 import { IMAGENS } from "@/config/imagens";
-import { MENSAGEM_AGENDAR } from "@/config/site";
-import { linkWhatsApp } from "@/lib/whatsapp";
+import { LINK_AGENDAR } from "@/config/site";
 
 // Posições do original (grid de 1224px): título a 157px do topo, subtítulo a 346px, botão a 451px.
 export function Hero() {
@@ -23,7 +22,7 @@ export function Hero() {
           Profissionais qualificadas, experientes e verificadas para deixar a sua casa impecável, sem
           complicação.
         </p>
-        <ButtonLink href={linkWhatsApp(MENSAGEM_AGENDAR)} variante="verde" className="mt-10 md:mt-[79px]">
+        <ButtonLink href={LINK_AGENDAR} variante="verde" className="mt-10 md:mt-[79px]">
           Agende agora
         </ButtonLink>
       </div>
