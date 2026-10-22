@@ -5,8 +5,8 @@ configuradas no app WhatsApp Business (Ferramentas para a empresa), como as
 dos clientes em `mensagens-whatsapp.md`.
 
 O botão "Quero ser diarista" do site abre este chat com uma mensagem pronta
-(nome, telefone e nascimento). A saudação abaixo responde sozinha e já manda o
-link do grupo. **O link do grupo fica só nestas mensagens do WhatsApp, nunca
+(nome, telefone e nascimento). A saudação abaixo responde sozinha e pede os dados; o
+link do grupo só sai depois da conferência, enviado pela dona (`/grupo`). **O link do grupo fica só nestas mensagens do WhatsApp, nunca
 no código nem no git.**
 
 ## Regras
@@ -19,18 +19,19 @@ no código nem no git.**
 
 ## Configurações automáticas
 
-**Mensagem de saudação** (1ª mensagem da diarista ou depois de 14 dias).
-Troque `LINK_DO_GRUPO` pelo convite real (`https://chat.whatsapp.com/...`):
+**Mensagem de saudação** (1ª mensagem da diarista ou depois de 14 dias). **Não leva o
+link do grupo**: a dona só envia o convite depois de conferir a diarista (`/grupo`):
 
 ```
 Olá, tudo bem? 😊 Seja bem-vinda à Império Diarista!
 
-Para entrar no nosso grupo de vagas, toque no link:
-LINK_DO_GRUPO
+Avisamos os serviços disponíveis em um grupo de vagas. Para entrar, a gente faz uma conferência rápida. Me envie por favor:
+- Nome completo
+- Bairro e cidade onde você mora
+- Há quanto tempo trabalha como diarista
+- Uma referência (nome e telefone de uma ex-patroa)
 
-No grupo avisamos os serviços disponíveis (data, plano, bairro e cidade). Se tiver interesse em um serviço, é só chamar aqui com o código do pedido, por exemplo IMP-000123.
-
-Regras do grupo: respeito sempre, sem conversa fora do assunto e sem divulgar o link para outras pessoas.
+Depois da conferência, enviamos o convite do grupo por aqui. Se já estiver no grupo e tiver interesse em um serviço, é só chamar aqui com o código do pedido, por exemplo IMP-000123.
 ```
 
 **Mensagem de ausência** (horário personalizado: todos os dias, das 22h às 8h):
@@ -43,11 +44,14 @@ Nosso atendimento é todos os dias, das 8h às 22h. Deixe aqui seu nome e sua d�
 
 ## Respostas rápidas (atalhos)
 
-**/grupo** (se ela pedir o link de novo):
+**/grupo** (a dona envia **só depois de conferir** a diarista pelo WhatsApp Web; o link é
+secreto e fica só aqui, no app):
 
 ```
-Claro! Este é o link do nosso grupo de vagas:
+Conferência concluída, seja bem-vinda! 💜 Este é o link do nosso grupo de vagas:
 LINK_DO_GRUPO
+
+Regras do grupo: respeito sempre, sem conversa fora do assunto e sem divulgar o link para outras pessoas.
 ```
 
 **/interesse** (quando ela chama com o código de um pedido):
@@ -112,7 +116,7 @@ chamaram e `/preenchida` no grupo. Endereço e valor só no privado.
 `Nova`, `Em análise`, `No grupo`, `Interessada`, `Escolhida`.
 
 ## Pendências
-- Colocar o link real do grupo no lugar de `LINK_DO_GRUPO` (saudação e `/grupo`).
+- Colocar o link real do grupo no lugar de `LINK_DO_GRUPO` só no `/grupo`.
 - A dona revisar o texto das regras do grupo e o pedido de referência.
 - Conferir se a saudação aparece só uma vez por conversa (configuração
   "Mensagem de saudação" > enviar para "Todos").

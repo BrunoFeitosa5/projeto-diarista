@@ -338,10 +338,15 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
 - A dona já cadastrou (21/10) os atalhos dos **clientes** no WhatsApp Business.
   As mensagens do **S.O.S/grupo das diaristas** (`docs/mensagens-whatsapp-sos.md`:
   saudação, ausência, `/grupo`, `/interesse`, `/dados`, `/confirmada`, `/outra`,
-  `/vaga` e `/preenchida`) **ainda não foram cadastradas**. Para lançar falta
-  também: pôr o link real do grupo nelas (`LINK_DO_GRUPO`), colocar
-  `WHATSAPP_GRUPO_DIARISTAS` na Vercel (Secret, com Redeploy) e zerar a
-  numeração dos pedidos depois dos testes.
+  `/vaga` e `/preenchida`) **ainda não foram cadastradas**.
+- **O convite do grupo NÃO sai pelo site nem pela saudação (22/10/2026, decisão
+  do usuário):** a dona confere a diarista (referência) pelo WhatsApp Web e só
+  então manda o link com o atalho `/grupo`. Por isso `WHATSAPP_GRUPO_DIARISTAS`
+  **não deve ser posto na Vercel**: sem a variável, os botões "Entrar no grupo"
+  do painel não aparecem (`linkGrupoDiaristas` devolve `null`). O link real fica
+  só no app da dona (e, se preciso, no `.env.local` local).
+- Para lançar falta: a dona cadastrar as mensagens do S.O.S e zerar a numeração
+  dos pedidos depois dos testes.
 
 ## Mensagens do WhatsApp Business (20/10/2026)
 As mensagens para clientes (saudação, ausência e respostas rápidas
