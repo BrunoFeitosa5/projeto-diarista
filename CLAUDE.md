@@ -122,6 +122,16 @@ Perfis: `cliente`, `diarista` e `admin`.
   dados; nada é gravado) e chamada final. "Serviços", "Segurança" e
   "Termos de Uso" ficam no **rodapé**. Não há link de "Entrar" no site: a
   admin acessa digitando `/entrar`. Sem desconto de 10% (decisão do usuário).
+- **Número do pedido no clique (22/10/2026, decisão do usuário):** o `FormAgendar`
+  (nome, telefone, plano, data, horário, bairro e cidade, tipo, observações)
+  chama a Server Action `solicitarCodigo` (`src/actions/solicitacoes.ts`), que
+  usa a função `solicitar_codigo` (só `service_role`; mesma sequence dos
+  pedidos; limite de 5 por hora por IP, hash do IP; tabela `solicitacoes` sem
+  nome, telefone nem endereço; só a admin lê). A mensagem do WhatsApp abre com
+  `Pedido IMP-000123`. Se o servidor falhar, abre sem código. A dona não usa o
+  site: o aviso do grupo é a resposta rápida `/vaga`
+  (`docs/mensagens-whatsapp-sos.md`). `limpar-dados-teste.sql` também apaga
+  `solicitacoes`.
 - **Diarista também não cria conta (19/10/2026, decisão do usuário):**
   "Trabalhe Conosco" abre o WhatsApp **S.O.S Diaristas**
   (`linkWhatsAppDiaristas`) com nome, telefone e, se preenchido, o

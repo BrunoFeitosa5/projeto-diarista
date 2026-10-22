@@ -79,6 +79,35 @@ Em instantes envio o endereço, o horário e o valor combinado.
 Obrigada pelo interesse! Desta vez outra profissional foi escolhida, mas seguimos avisando as próximas vagas no grupo. 💜
 ```
 
+## Avisos para o grupo das diaristas
+
+A dona os envia **dentro do grupo** (WhatsApp Business no celular ou WhatsApp
+Web), trocando o que está entre `[colchetes]`. Os dados vêm da mensagem do
+cliente, que já chega com o código (`Pedido IMP-000123`). Nunca copiar o nome,
+o telefone, o endereço nem o valor para o grupo.
+
+**/vaga**
+
+```
+📢 Vaga disponível — [IMP-000123]
+• Data: [dia, 25/10] às [horário]
+• Plano: [6h]
+• Local: [bairro, cidade]
+
+Quem tiver interesse, chame o S.O.S Diaristas no privado, (11) 91159-3485, com o código [IMP-000123]. A primeira diarista verificada que chamar leva a vaga.
+```
+
+**/preenchida** (quando a dona escolher a diarista)
+
+```
+✅ [IMP-000123] já foi preenchida. Obrigada a todas! Seguimos avisando as próximas vagas aqui. 💜
+```
+
+Como decidir "a primeira": vale o horário da mensagem no privado do S.O.S. Se
+a primeira não for verificada ou desistir, passa para a seguinte. Depois de
+escolher, a dona manda `/confirmada` para ela, `/outra` para as demais que
+chamaram e `/preenchida` no grupo. Endereço e valor só no privado.
+
 ## Etiquetas sugeridas
 `Nova`, `Em análise`, `No grupo`, `Interessada`, `Escolhida`.
 

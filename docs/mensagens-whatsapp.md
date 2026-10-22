@@ -36,6 +36,36 @@ Olá! Obrigado pelo contato com a Império Diarista. 😊
 Nosso atendimento é todos os dias, das 8h às 22h. Deixe aqui seu dia, horário, bairro e plano que respondemos assim que voltarmos!
 ```
 
+## Mensagem que chega do site
+
+Quem toca em "Contratar serviço" no site já recebe um **número de pedido**
+(gerado pelo servidor, `IMP-000123`) e abre o WhatsApp com esta mensagem. O
+cliente só toca em Enviar; campos que ele não preencheu não aparecem:
+
+```
+Pedido IMP-000123
+Olá! Vim pelo site e gostaria de agendar uma limpeza.
+Nome: Maria
+Telefone: (11) 91234-5678
+Plano: 6h (R$ 199,00)
+Data: sáb., 25/10/2026
+Horário: 09:00
+Bairro/cidade: Mooca, São Paulo
+Tipo: Limpeza comum
+Observações: Apartamento, tenho um gato
+```
+
+- **Use esse código em tudo**: na conversa, no aviso do grupo e com a diarista.
+  Ele aparece uma vez só por pedido (pequenos buracos na numeração acontecem
+  quando alguém toca no botão e desiste).
+- Se a mensagem vier **sem** `Pedido IMP-...` (servidor fora do ar ou cliente
+  que chamou direto), a dona anota um código à mão ou pede para o cliente usar
+  o site; não inventar número que possa repetir.
+- Quando o pedido já vem com plano, data e bairro, **não envie `/dados` de
+  novo**: confirme o que veio e peça só o que faltar (plano, horário, nome) e
+  depois o endereço com `/endereco`.
+- Dê o aviso para as diaristas com `/vaga`, em `mensagens-whatsapp-sos.md`.
+
 ## Respostas rápidas (atalhos)
 
 Onde houver `[colchetes]`, a dona preenche antes de enviar.
@@ -160,7 +190,8 @@ são automáticas. Etiquetas em Ferramentas para a empresa > Etiquetas.
 |---|---|---|
 | Cliente chama | Novo | (saudação automática) |
 | Pergunta preço | Novo | `/valores` |
-| Quer reservar | Aguardando dados | `/dados`, depois `/endereco` |
+| Quer reservar (veio do site com `IMP-`) | Aguardando dados | confirmar o que veio; `/endereco` |
+| Quer reservar (chamou direto) | Aguardando dados | `/dados`, depois `/endereco` |
 | Pede a garantia | Aguardando garantia | `/garantia` |
 | Pix caiu | Garantia paga | `/confirmado` |
 | Véspera | Confirmado | `/diarista` e `/lembrete` |

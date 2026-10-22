@@ -7,8 +7,8 @@ export function Agendar() {
         <div>
           <h2 className="text-h2">Com a Império você agenda em alguns minutos!</h2>
           <p className="mt-6">
-            Deixe seu nome e telefone e continue o atendimento pelo WhatsApp: confirmamos o dia, o horário
-            e a diarista para a sua casa.
+            Preencha os dados, gere o número do seu pedido e continue o atendimento pelo WhatsApp:
+            confirmamos o dia, o horário e a diarista para a sua casa.
           </p>
         </div>
         <FormAgendar />
