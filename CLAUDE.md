@@ -113,8 +113,12 @@ Perfis: `cliente`, `diarista` e `admin`.
 - Senha mínima de 8 caracteres no site e no Supabase (Authentication >
   Email, ajustado em 03/10/2026).
 - **Site igual ao S.O.S Diaristas (19/10/2026, decisão do usuário):** o
-  cliente **não tem conta**: todo botão de agendar abre o WhatsApp da dona
-  (`linkWhatsApp(MENSAGEM_AGENDAR)`; os cards levam o plano na mensagem).
+  cliente **não tem conta**: todo botão de agendar/contratar leva ao
+  formulário da Início (`LINK_AGENDAR` = `/#agendar`, em `site.ts`), que gera o número do
+  pedido e abre o WhatsApp da dona; os cards de preço escolhem o plano no formulário
+  (`BotaoPlano`, evento `escolher-plano`). O "Contato" do rodapé também leva ao
+  formulário. Só "Fale Conosco" (orçamento), o telefone do rodapé e as dúvidas (FAQ,
+  termos, privacidade) abrem o WhatsApp direto, sem número (`linkWhatsApp`).
   Menu do topo: Início, Valores, Agende agora, Trabalhe Conosco (`NAV_LINKS`
   em `site.ts`; Valores e Agende agora são âncoras da Início). Ordem da Início:
   Hero, Valores, Vantagens, Como funciona, Avaliações, Ficou com dúvidas?

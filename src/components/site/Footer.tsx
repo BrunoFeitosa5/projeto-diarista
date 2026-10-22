@@ -1,14 +1,14 @@
 import Link from "next/link";
-import { MENSAGEM_AGENDAR, NAV_LINKS, SITE } from "@/config/site";
+import { LINK_AGENDAR, NAV_LINKS, SITE } from "@/config/site";
 import { linkWhatsApp } from "@/lib/whatsapp";
 
-// O rodapé repete o menu do topo e acrescenta Serviços, Segurança e Contato (WhatsApp).
+// O rodapé repete o menu do topo e acrescenta Serviços, Segurança e Contato (leva ao formulário).
 // Não há link de login no site: a admin entra direto por /entrar.
 const LINKS_RODAPE = [
   ...NAV_LINKS,
   { href: "/servicos", label: "Serviços" },
   { href: "/seguranca", label: "Segurança" },
-  { href: linkWhatsApp(MENSAGEM_AGENDAR), label: "Contato" },
+  { href: LINK_AGENDAR, label: "Contato" },
 ];
 
 const rotulo = "text-pequeno tracking-[0.16em] text-rosa-forte";
