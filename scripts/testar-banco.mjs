@@ -388,5 +388,35 @@ for (const t of ["profiles", "nomes_visiveis", "pedidos", "pedido_enderecos", "d
 erro = await erroDe(`select candidatar($1)`, [p2.id]);
 ok(erro !== null, "visitante não chama funções", erro);
 
+secao("9. Solicitações (número do pedido gerado no clique do site)");
+const sqlSolicitar = `select solicitar_codigo($1,$2,$3,$4,$5,$6) as codigo`;
+const argsSolicitar = (ip) => ["6h", amanha, "09:00", "Mooca, São Paulo", "Limpeza comum", ip];
+await comoServidor();
+const [s1] = await linhas(sqlSolicitar, argsSolicitar("ip-a"));
+const [s2] = await linhas(sqlSolicitar, argsSolicitar("ip-a"));
+ok(/^IMP-\d{6}$/.test(s1.codigo) && s1.codigo !== s2.codigo, "servidor recebe códigos IMP-000000 diferentes", `${s1.codigo} / ${s2.codigo}`);
+const [pSeq] = await linhas(sqlCriar, argsPedido(amanha));
+ok(![s1.codigo, s2.codigo].includes(pSeq.codigo), "pedido criado depois não repete o código de uma solicitação");
+erro = await erroDe(sqlSolicitar, ["6h", amanha, "09:00", "  ", null, "ip-b"]);
+ok(erro !== null, "recusa solicitação sem bairro e cidade", erro ?? "aceitou!");
+erro = await erroDe(sqlSolicitar, ["6h", "2020-01-01", "09:00", "Mooca", null, "ip-b"]);
+ok(erro !== null, "recusa data no passado", erro ?? "aceitou!");
+for (let i = 0; i < 3; i++) await linhas(sqlSolicitar, argsSolicitar("ip-a"));
+erro = await erroDe(sqlSolicitar, argsSolicitar("ip-a"));
+ok(erro?.includes("Muitas solicitações"), "6ª solicitação do mesmo IP na hora é barrada", erro ?? "aceitou!");
+ok((await erroDe(sqlSolicitar, argsSolicitar("ip-c"))) === null, "outro IP continua podendo solicitar");
+
+await comoAnonimo();
+erro = await erroDe(sqlSolicitar, argsSolicitar("ip-d"));
+ok(erro?.includes("permission denied"), "visitante NÃO chama solicitar_codigo direto", erro ?? "chamou!");
+erro = await erroDe(`select * from solicitacoes`);
+ok(erro !== null, "visitante não lê solicitacoes", erro ?? "leu!");
+await comoUsuario(cliente);
+ok((await linhas(`select * from solicitacoes`)).length === 0, "cliente logado não vê nenhuma solicitação (RLS)");
+erro = await erroDe(`insert into solicitacoes (bairro_cidade) values ('x')`);
+ok(erro?.includes("permission denied"), "cliente não escreve em solicitacoes", erro ?? "escreveu!");
+await comoUsuario(dona);
+ok((await linhas(`select * from solicitacoes`)).length >= 6, "admin lê as solicitações");
+
 console.log(falhas === 0 ? "\nTodos os testes passaram." : `\n${falhas} teste(s) falharam.`);
 process.exit(falhas === 0 ? 0 : 1);

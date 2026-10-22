@@ -20,6 +20,10 @@ begin;
 -- Pedidos primeiro: endereço, candidaturas e histórico vão junto (cascade).
 delete from public.pedidos;
 
+-- Solicitações do site (número gerado no "Contratar serviço"). Usam a mesma
+-- numeração: se ficarem, o código IMP-000001 se repetiria depois do restart.
+delete from public.solicitacoes;
+
 -- Contas: o perfil e os dados privados da diarista vão junto (cascade).
 delete from auth.users
 where email not in (
@@ -36,3 +40,4 @@ commit;
 -- Confira: as duas consultas devem voltar vazias (ou só com as contas mantidas).
 select u.email, p.papel from auth.users u left join public.profiles p on p.id = u.id;
 select count(*) as pedidos from public.pedidos;
+select count(*) as solicitacoes from public.solicitacoes;
