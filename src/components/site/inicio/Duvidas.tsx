@@ -80,9 +80,9 @@ const PERGUNTAS: { pergunta: string; resposta: React.ReactNode }[] = [
     pergunta: "Sou diarista. Como posso trabalhar com vocês?",
     resposta: (
       <>
-        Chame a nossa equipe pelo WhatsApp na página{" "}
+        Chame a nossa equipe pelo WhatsApp. É só preencher os seus dados:{" "}
         <Link href="/trabalhe-conosco" className="text-rosa-forte underline underline-offset-2">
-          Trabalhe Conosco
+          FAÇA SEU CADASTRO
         </Link>
         .
       </>

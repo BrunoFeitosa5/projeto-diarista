@@ -23,7 +23,7 @@ export const NAV_LINKS = [
   { href: "/", label: "Início" },
   { href: "/#valores", label: "Valores" },
   { href: "/#agendar", label: "Agende agora" },
-  { href: "/trabalhe-conosco", label: "Trabalhe Conosco" },
+  { href: "/trabalhe-conosco", label: "Trabalhe Conosco - Seja diarista" },
 ] as const;
 
 // Todo botão de agendar/contratar leva ao formulário da Início: lá o servidor gera o número do
