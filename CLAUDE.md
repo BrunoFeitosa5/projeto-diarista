@@ -362,24 +362,27 @@ a seção 5 só roda contra o `npm run dev`). Supabase: projeto
 
 ## Mensagens: sem Meta nem bot (decidido em 22/10/2026)
 - A dona está com pressa: **não usar a API da Meta nem chatbot**. O fluxo é só
-  pelo WhatsApp Business, com **atalhos** (saudação e ausência automáticas do
-  próprio app; o resto `/atalho`, enviado pela dona). Os textos já estão
+  pelo WhatsApp Business **dos clientes (final 2436)**, com **atalhos** (saudação e
+  ausência automáticas do próprio app; o resto `/atalho`, enviado pela dona). O
+  **S.O.S das diaristas (91159-3485) é WhatsApp comum, no WhatsApp Web, sem
+  atalhos nem automação** (23/10/2026): a dona copia e cola os textos. Os textos já estão
   prontos: clientes em `docs/mensagens-whatsapp.md`, diaristas (S.O.S, com
   `/vaga` e `/preenchida`) em `docs/mensagens-whatsapp-sos.md`.
 - O formulário do site já manda tudo preenchido (com `Pedido IMP-...`), então a
   dona só confirma e pede o que faltar na conversa. `docs/plano-meta-dominio.md`
   fica engavetado; só voltar a ele se o usuário pedir.
-- A dona já cadastrou (21/10) os atalhos dos **clientes** no WhatsApp Business.
-  As mensagens do **S.O.S/grupo das diaristas** (`docs/mensagens-whatsapp-sos.md`:
-  saudação, ausência, `/grupo`, `/interesse`, `/dados`, `/confirmada`, `/outra`,
-  `/vaga` e `/preenchida`) **ainda não foram cadastradas**.
+- A dona já cadastrou (21/10) os atalhos dos **clientes** no WhatsApp Business
+  (reenviar com os horários novos de 23/10). Os textos do **S.O.S/grupo das
+  diaristas** (`docs/mensagens-whatsapp-sos.md`) não são cadastrados: ela os copia
+  da lista (ordem de uso em `Documentos\Mensagens-Imperio-Diarista`).
 - **O convite do grupo NÃO sai pelo site nem pela saudação (22/10/2026, decisão
   do usuário):** a dona confere a diarista (referência) pelo WhatsApp Web e só
-  então manda o link com o atalho `/grupo`. Por isso `WHATSAPP_GRUPO_DIARISTAS`
+  então manda o link (texto `/grupo`). Por isso `WHATSAPP_GRUPO_DIARISTAS`
   **não deve ser posto na Vercel**: sem a variável, os botões "Entrar no grupo"
   do painel não aparecem (`linkGrupoDiaristas` devolve `null`). O link real fica
-  só no app da dona (e, se preciso, no `.env.local` local).
-- Para lançar falta: a dona cadastrar as mensagens do S.O.S e zerar a numeração
+  só nos textos da dona (e, se preciso, no `.env.local` local).
+- Para lançar falta: a dona atualizar no WhatsApp Business dos clientes a saudação,
+  a ausência e os atalhos com os horários novos (6h às 21h), e zerar a numeração
   dos pedidos depois dos testes.
 
 ## Mensagens do WhatsApp Business (20/10/2026)
