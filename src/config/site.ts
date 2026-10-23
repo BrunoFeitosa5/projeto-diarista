@@ -9,9 +9,9 @@ export const SITE = {
   // Telefone exibido no rodapé e na Política de Privacidade. O link do WhatsApp usa
   // NEXT_PUBLIC_WHATSAPP_DONA: os dois precisam ser o mesmo número (confirmado: final 2436).
   telefoneExibicao: "(11) 93501-2436",
-  horarioAtendimento: "Atendimento no WhatsApp: Seg a dom, das 8h às 22h",
+  horarioAtendimento: "Atendimento no WhatsApp: Seg a dom, das 6h às 21h",
   // Horário em que as diaristas trabalham
-  horarioDiaristas: "Seg a dom, das 6h às 19h",
+  horarioDiaristas: "Seg a dom, das 8h às 17h",
   rodapeResumo: "Profissionais verificadas, preço fixo e garantia de satisfação.",
   rodapeServicos: "Agendamento de Limpeza Residencial e Comercial",
   // Endereço do perfil (ex.: https://www.instagram.com/usuario). Sem valor, o link não aparece.

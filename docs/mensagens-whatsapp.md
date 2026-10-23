@@ -5,8 +5,8 @@ configuradas no app WhatsApp Business (Ferramentas para a empresa).
 Revisadas em 20/10/2026 com as regras da dona.
 
 ## Regras que valem em todas as mensagens
-- Atendimento no WhatsApp: seg a dom, **8h às 22h**. Diaristas trabalham das
-  6h às 19h. Região: toda a região de São Paulo.
+- Atendimento no WhatsApp: seg a dom, **6h às 21h**. Diaristas trabalham das
+  8h às 17h. Região: toda a região de São Paulo.
 - Pagamento **só por Pix**. Existe uma **garantia de R$ 10,00 paga antes do
   serviço e descontada do valor total** (só aparece no WhatsApp, nunca no
   site). Restante a pagar: 4h = R$ 150, 6h = R$ 189, 8h = R$ 220. Chave Pix: e-mail
@@ -23,17 +23,17 @@ Revisadas em 20/10/2026 com as regras da dona.
 ```
 Olá, tudo bem? 😊 Seja bem-vindo(a) à Império Diarista!
 
-Aqui você agenda sua diária direto pelo WhatsApp, de forma rápida. Atendemos todos os dias, das 8h às 22h, em toda a região de São Paulo.
+Aqui você agenda sua diária direto pelo WhatsApp, de forma rápida. Atendemos todos os dias, das 6h às 21h, em toda a região de São Paulo.
 
 Para começar, me conta: em qual bairro e cidade será o serviço?
 ```
 
-**Mensagem de ausência** (horário personalizado: todos os dias, das 22h às 8h):
+**Mensagem de ausência** (horário personalizado: todos os dias, das 21h às 6h):
 
 ```
 Olá! Obrigado pelo contato com a Império Diarista. 😊
 
-Nosso atendimento é todos os dias, das 8h às 22h. Deixe aqui seu dia, horário, bairro e plano que respondemos assim que voltarmos!
+Nosso atendimento é todos os dias, das 6h às 21h. Deixe aqui seu dia, horário, bairro e plano que respondemos assim que voltarmos!
 ```
 
 ## Mensagem que chega do site

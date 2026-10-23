@@ -37,7 +37,7 @@ Atualizado em 22/10/2026. Estado: **aguardando a dona** passar o Facebook e os d
 1. Escolher a plataforma de chatbot (Take Blip, Wati, Kommo, Respond.io, Zenvia). Pedir teste grátis e o preço final por escrito.
 2. Conectar o WhatsApp pelo "Cadastro incorporado" (Embedded Signup): cria a conta do WhatsApp Business (WABA) e registra o número.
 3. Confirmar o código por SMS ou ligação.
-4. Completar o perfil: foto, descrição, horário (seg a dom, 8h às 22h), site e endereço.
+4. Completar o perfil: foto, descrição, horário (seg a dom, 6h às 21h), site e endereço.
 5. Cadastrar um cartão na conta Meta (cobrança por mensagem de template).
 6. Criar os **templates** (categoria Utilidade) e esperar a aprovação: confirmação, lembrete, nome da diarista, pós-serviço.
 7. Montar o fluxo: menu inicial, coleta do pedido, confirmação e repasse para atendente humana.

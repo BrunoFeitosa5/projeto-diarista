@@ -4,7 +4,7 @@
 //   (tempo para a dona encontrar uma diarista).
 // - LIMITE_DIAS: até quantos dias para a frente dá para agendar.
 
-export const HORARIOS = ["07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00"] as const;
+export const HORARIOS = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00"] as const;
 
 export const ANTECEDENCIA_DIAS = 1;
 export const LIMITE_DIAS = 90;

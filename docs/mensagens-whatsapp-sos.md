@@ -10,7 +10,7 @@ link do grupo só sai depois da conferência, enviado pela dona (`/grupo`). **O 
 no código nem no git.**
 
 ## Regras
-- Diaristas trabalham seg a dom, das 6h às 19h. Atendimento: 8h às 22h.
+- Diaristas trabalham seg a dom, das 8h às 17h. Atendimento: 6h às 21h.
 - Repasse fixo por plano: 4h = R$ 100, 6h = R$ 120, 8h = R$ 160.
 - O valor de cada serviço é combinado no privado, nunca no grupo.
 - No grupo vai só o aviso do pedido (código, data, plano, bairro e cidade),
@@ -34,12 +34,12 @@ Avisamos os serviços disponíveis em um grupo de vagas. Para entrar, a gente fa
 Depois da conferência, enviamos o convite do grupo por aqui. Se já estiver no grupo e tiver interesse em um serviço, é só chamar aqui com o código do pedido, por exemplo IMP-000123.
 ```
 
-**Mensagem de ausência** (horário personalizado: todos os dias, das 22h às 8h):
+**Mensagem de ausência** (horário personalizado: todos os dias, das 21h às 6h):
 
 ```
 Olá! Obrigada pelo contato com a Império Diarista. 😊
 
-Nosso atendimento é todos os dias, das 8h às 22h. Deixe aqui seu nome e sua dúvida que respondemos assim que voltarmos!
+Nosso atendimento é todos os dias, das 6h às 21h. Deixe aqui seu nome e sua dúvida que respondemos assim que voltarmos!
 ```
 
 ## Respostas rápidas (atalhos)

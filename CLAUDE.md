@@ -150,9 +150,9 @@ Perfis: `cliente`, `diarista` e `admin`.
   manda pelo WhatsApp (ela pediu para **não** aparecer no FAQ; os termos só
   dizem que valor e garantia são combinados no WhatsApp). Instagram: preencher
   `SITE.instagram`.
-- **Horários e região (20/10/2026, ditos pela dona):** atendimento no WhatsApp
-  seg a dom, 8h às 22h (`SITE.horarioAtendimento`); diaristas trabalham seg a
-  dom, 6h às 19h (`SITE.horarioDiaristas`, no rodapé e no FAQ); região: "Toda
+- **Horários e região (20/10/2026, atualizados em 23/10/2026 pelo usuário):** atendimento no WhatsApp
+  seg a dom, 6h às 21h (`SITE.horarioAtendimento`); diaristas trabalham seg a
+  dom, 8h às 17h (`SITE.horarioDiaristas`, no rodapé e no FAQ); região: "Toda
   a região de São Paulo" (`SITE.regiao`).
 - CPF/CNPJ/Pix NÃO vão no cadastro (os metadados do usuário entram no token
   de login); a diarista preenche no perfil (etapa 9).
@@ -403,7 +403,8 @@ sem perder a garantia (a dona deve confirmar), materiais por conta da cliente.
   área da equipe). Falta a dona ou um profissional revisar: CNPJ/razão social da Império,
   e-mail de contato para privacidade, prazo de guarda dos dados e a regra de
   18 anos. Ao mudar o texto, atualizar `ATUALIZADA_EM`.
-- Confirmar com a dona os horários de início (hoje 07:00 às 14:00) e a
+- Confirmar com a dona os horários de início (hoje 08:00 às 13:00, ajustados em
+  23/10/2026 para caber no horário das diaristas, 8h às 17h) e a
   antecedência mínima (hoje 1 dia), em `src/config/agendamento.ts`.
 - O domínio **`imperiodiarista.com.br` é o site original da dona**: trocar o DNS
   dele tira o site original do ar. Não mexer sem o acordo dela. O domínio novo
