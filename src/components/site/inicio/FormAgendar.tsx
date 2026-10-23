@@ -10,7 +10,7 @@ import { mascaraTelefone } from "@/lib/mascaras";
 import { linkWhatsApp } from "@/lib/whatsapp";
 import { EVENTO_ESCOLHER_PLANO } from "./BotaoPlano";
 
-const TIPOS = ["Limpeza comum", "Limpeza pesada", "Pós-obra", "Passadoria"] as const;
+const TIPOS = ["Limpeza comum", "Limpeza pesada", "Faxina pós-obra (a combinar)", "Passadoria"] as const;
 
 // "Agende em minutos": o cliente preenche e abre o WhatsApp com os dados escritos.
 // No clique o servidor gera o número do pedido (IMP-000123), que vai no começo da

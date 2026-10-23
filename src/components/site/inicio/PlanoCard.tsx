@@ -5,7 +5,7 @@ import { BotaoPlano } from "./BotaoPlano";
 
 type Props = { id: PlanoId; foto: string };
 
-// Como no site original, o card é a imagem pronta (título, metragem e preço desenhados)
+// Como no site original, o card é a imagem pronta (título, frase e preço desenhados)
 // com o botão por cima. ATENÇÃO: se o preço mudar em planos.ts, a imagem precisa ser refeita.
 // O texto alternativo lê planos.ts, para leitores de tela e buscadores.
 export function PlanoCard({ id, foto }: Props) {

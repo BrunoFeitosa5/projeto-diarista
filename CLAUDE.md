@@ -420,6 +420,6 @@ sem perder a garantia (a dona deve confirmar), materiais por conta da cliente.
   `sessionStorage` (`pre-cadastro-diarista`). O cadastro já usa nome e
   telefone; o perfil da diarista (etapa 9) usa CNPJ e nascimento.
 - Imagens em alta resolução: os cards 4h/6h/8h já usam as versões de
-  1122x1402 (`card-plano-*-hd.png`, qualidade 90 em `next.config.ts`, 19/10/2026).
+  1122x1402 (`card-plano-*-frase.png`, com a frase "Ideal para..." no lugar dos m² (23/10/2026), qualidade 90 em `next.config.ts`, 19/10/2026).
   Ainda em baixa: Segurança (original tem 1388x1133) e topo de Serviços
   (1909x824). Aguardando o usuário decidir se troca.

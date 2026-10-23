@@ -8,7 +8,7 @@ import { criarClienteServico } from "@/lib/supabase/servico";
 
 const texto = (formData: FormData, campo: string) => String(formData.get(campo) ?? "").trim();
 
-const TIPOS = ["Limpeza comum", "Limpeza pesada", "Pós-obra", "Passadoria"];
+const TIPOS = ["Limpeza comum", "Limpeza pesada", "Faxina pós-obra (a combinar)", "Passadoria"];
 
 // codigo = null: não saiu o número (falha do servidor), mas o cliente ainda pode
 // chamar a dona; a mensagem vai sem código e ela anota depois.
