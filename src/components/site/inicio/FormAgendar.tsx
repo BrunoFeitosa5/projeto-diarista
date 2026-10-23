@@ -143,7 +143,7 @@ export function FormAgendar() {
           <option value="">Ainda não sei</option>
           {PLANO_IDS.map((id) => (
             <option key={id} value={id}>
-              {PLANOS[id].horas}h — {formatarReais(PLANOS[id].precoCliente)} ({PLANOS[id].metragem})
+              {PLANOS[id].horas}h — {formatarReais(PLANOS[id].precoCliente)}
             </option>
           ))}
         </select>
