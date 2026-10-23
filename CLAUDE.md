@@ -119,7 +119,8 @@ Perfis: `cliente`, `diarista` e `admin`.
   (`BotaoPlano`, evento `escolher-plano`). O "Contato" do rodapé também leva ao
   formulário. Só "Fale Conosco" (orçamento), o telefone do rodapé e as dúvidas (FAQ,
   termos, privacidade) abrem o WhatsApp direto, sem número (`linkWhatsApp`).
-  Menu do topo: Início, Valores, Agende agora, Trabalhe Conosco (`NAV_LINKS`
+  Menu do topo: Início, Valores, Agende agora, Seja uma diarista (leva a
+  `/trabalhe-conosco`; `NAV_LINKS`
   em `site.ts`; Valores e Agende agora são âncoras da Início). Ordem da Início:
   Hero, Valores, Vantagens, Como funciona, Avaliações, Ficou com dúvidas?
   (FAQ), formulário Nome + Telefone (`FormAgendar`, abre o WhatsApp com os
